@@ -25,6 +25,7 @@ import numpy as np
 
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from g5_trace_oracle import evaluate_one, summarize
+from g5_result_validator import validate
 
 REPO = 'EleutherAI/pythia-14m'
 REVISION = 'cf967c0a9a04383db6f7b1108d86b2962634b4ac'
@@ -197,8 +198,10 @@ def main():
         'statistics_warning':'Sampled adjacent positions and same model/input are correlated; no confidence claims.',
         'sample_warning':'A single Pythia-14M context (<=2048) is not representative of 8K+ long-context workloads.'
     },'reconstruction_checks':checks,'summary':summarize(rows),'rows':rows}
+    # Fail closed before persisting any result with missing/contradictory rows.
+    result['artifact_validation']=validate(result)
     a.output.parent.mkdir(parents=True,exist_ok=True)
-    a.output.write_text(json.dumps(result,indent=2)+'\n')
+    a.output.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
     print(json.dumps(result['summary'],indent=2))
     print('saved',a.output)
 
