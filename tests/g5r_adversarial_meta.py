@@ -11,6 +11,8 @@ B. Unguarded reduced-precision metadata: kmin/kmax rounded to nearest BF16 / FP1
    bounds then computed in float64. Rounding can move kmax DOWN / kmin UP -> the bound
    can fall below the true page max score.
 C. Guarded control: outward-rounded BF16 (kmin rounded down, kmax rounded up).
+A2 (v1.1). Worst-case stale: stale pages carry the smallest-box page's metadata.
+Also reports bound slack (upper bound minus exact page max score, in nats).
 
 Counts bound violations (bound < exact page max score) and FALSE certificates
 (true normalised error > reported certificate). Real data, offline, no timing.
@@ -50,6 +52,16 @@ def variants(meta: C.PageMeta, rng):
         kmin[:, j], kmax[:, j] = meta.kmin[:, src], meta.kmax[:, src]
         stale.kmin, stale.kmax = kmin, kmax
         out["stale_slot_reuse"] = stale
+        # v1.1 worst case: the stale pages carry the metadata of the page whose box is
+        # smallest (lowest summed width), i.e. the most restrictive metadata present.
+        width = (meta.kmax - meta.kmin).sum(-1)                # [Hkv, f]
+        worst = C.PageMeta(**{**meta.__dict__})
+        kmin, kmax = meta.kmin.clone(), meta.kmax.clone()
+        for kv in range(meta.kmin.shape[0]):
+            w = int(torch.argmin(width[kv]))
+            kmin[kv, j], kmax[kv, j] = meta.kmin[kv, w], meta.kmax[kv, w]
+        worst.kmin, worst.kmax = kmin, kmax
+        out["stale_worst_smallest_box"] = worst
     for name, dt in (("bf16_nearest", torch.bfloat16), ("fp16_nearest", torch.float16)):
         m = C.PageMeta(**{**meta.__dict__})
         m.kmin, m.kmax = meta.kmin.to(dt).double(), meta.kmax.to(dt).double()
@@ -69,6 +81,7 @@ def main():
     torch.set_default_dtype(torch.float64)
     rng = np.random.default_rng(20261104)
     agg = {}
+    slack, spread = {}, []
     n_samples = 0
     for p in a.samples:
         z = np.load(p, allow_pickle=True)
@@ -80,7 +93,12 @@ def main():
                 continue
             n_samples += 1
             meta = C.build_meta(K, V, a.ps)
-            base = C.greedy_mass_certificate(ref, V, C.box_bound(q, meta, ref.g, sc))
+            ubb = C.box_bound(q, meta, ref.g, sc); ubs = C.sphere_bound(q, meta, ref.g, sc)
+            m_exact = ref.scores[:, : ref.full * a.ps].reshape(q.shape[0], ref.full, a.ps).amax(-1)
+            slack.setdefault("box", []).append((ubb - m_exact).flatten().numpy())
+            slack.setdefault("sph", []).append((ubs - m_exact).flatten().numpy())
+            spread.append((m_exact.amax(-1) - m_exact.amin(-1)).numpy())
+            base = C.greedy_mass_certificate(ref, V, ubb)
             for name, m in [("exact_fp64", meta)] + list(variants(meta, rng).items()):
                 r = C.greedy_mass_certificate(ref, V, C.box_bound(q, m, ref.g, sc))
                 d = agg.setdefault(name, {"samples": 0, "heads": 0, "page_bounds": 0, "bound_violations": 0,
@@ -94,7 +112,13 @@ def main():
                 ratio = (r["err"] / r["cert"].clamp_min(1e-300))[r["viol"]]
                 if ratio.numel():
                     d["max_err_over_cert"] = max(d["max_err_over_cert"], float(ratio.max()))
-    res = {"version": "1.0", "date": "2026-11-04", "page_size": a.ps, "real_samples_used": n_samples,
+    sl = {k: np.concatenate(v) for k, v in slack.items()}
+    sp = np.concatenate(spread)
+    bound_slack = {k: {"median_nats": float(np.median(v)), "p05_nats": float(np.quantile(v, .05)),
+                       "p95_nats": float(np.quantile(v, .95)), "min_nats": float(v.min())} for k, v in sl.items()}
+    bound_slack["exact_page_max_spread_within_head_median_nats"] = float(np.median(sp))
+    res = {"version": "1.1", "date": "2026-11-04", "page_size": a.ps, "real_samples_used": n_samples,
+           "bound_slack_upper_minus_exact_page_max": bound_slack,
            "sample_files": [p.name for p in a.samples], "results": agg,
            "note": "Real captured decode tensors; certificate math in float64 log domain; metadata variants as described in module docstring."}
     a.output.parent.mkdir(parents=True, exist_ok=True)

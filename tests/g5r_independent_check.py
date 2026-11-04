@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """G5-R independent verification of recorded page counts / certificates.
 
-Version 1.0, 2026-11-04. Separately written from tests/g5r_core.py: NumPy only,
+Version 1.1, 2026-11-04 (v1.1: mpmath certificate arithmetic, see greedy()). Separately written from tests/g5r_core.py: NumPy only,
 explicit per-page loops, no shared helper code. Inputs are real (q, K, V) tensors
 captured at random (layer, step) points during shadow runs, plus the values the
 torch harness recorded for them. Also runs the ARCHIVED project oracle
@@ -18,8 +18,10 @@ import json
 import math
 from pathlib import Path
 
+import mpmath as mp
 import numpy as np
 
+mp.mp.dps = 60
 TOL = 0.02
 
 
@@ -50,23 +52,29 @@ def check_head(q, K, V, scale, ps):
     res = {"full": full}
 
     def greedy(ub):
+        """v1.1: certificate decisions in 60-digit mpmath (unbounded exponent range).
+        v1.0 used float64 with a running total `u = max(0, u - bet[j])`; on a real Qwen2.5
+        head (bounds spanning 60 nats) that subtraction cancelled catastrophically, u hit 0
+        and the checker stopped at 115/128 pages with a false certificate. The tail mass is
+        now summed directly from the unvisited pages (no subtraction)."""
         ub = np.array(ub)
-        s = max(ub.max() if full else -np.inf, part.max() if part.size else -np.inf)
-        z = float(np.exp(part - s).sum()) if part.size else 0.0
-        bet = ps * np.exp(ub - s)
-        u = float(bet.sum())
-        order = np.argsort(-ub, kind="stable")
+        order = [int(j) for j in np.argsort(-ub, kind="stable")]
+        E = lambda x: mp.e ** mp.mpf(float(x))
+        z = mp.fsum(E(x) for x in part) if part.size else mp.mpf(0)
+        bet = [ps * E(b) for b in ub]
+        page_mass = [mp.fsum(E(x) for x in scores[j * ps:(j + 1) * ps]) for j in range(full)]
+        tail = [mp.mpf(0)] * (full + 1)
+        for k in range(full - 1, -1, -1):
+            tail[k] = tail[k + 1] + bet[order[k]]      # suffix sum, smallest terms first
         visited = []
-        k = 0
-        while True:
-            cert = 0.0 if k == full else 2 * u / (z + u)
+        for k in range(full + 1):
+            u = tail[k]
+            cert = mp.mpf(0) if k == full else 2 * u / (z + u)
             if cert <= TOL:
-                return k, cert, visited
+                return k, float(cert), visited
             j = order[k]
-            z += float(np.exp(scores[j * ps:(j + 1) * ps] - s).sum())
-            u = max(0.0, u - bet[j])
-            visited.append(int(j))
-            k += 1
+            z += page_mass[j]
+            visited.append(j)
 
     kb, cb, vis = greedy(box_ub)
     ks, cs, _ = greedy(sph_ub)
@@ -154,7 +162,7 @@ def main():
                         mism.append({**rec, "field": "archived_oracle_mass_vs_independent_unforced",
                                      "independent": r["ormass_unforced_pages"]})
                 rows.append(rec)
-    out = {"version": "1.0", "date": "2026-11-04", "heads_checked": len(rows),
+    out = {"version": "1.1", "date": "2026-11-04", "heads_checked": len(rows),
            "mismatches": mism, "n_mismatches": len(mism),
            "all_box_bounds_valid": all(r["box_bound_valid"] for r in rows),
            "all_sph_bounds_valid": all(r["sph_bound_valid"] for r in rows),
