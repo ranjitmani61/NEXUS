@@ -1,0 +1,17 @@
+{
+  "file": "specs/G5R_real_model_benchmark_contract.md",
+  "sha256": "c6de4161f70123e6bf592b2a131bfa40dfca55b152d86eeeebf579b4e697d1d8",
+  "bytes": 9594,
+  "recorded_utc": "2026-11-04T19:59:05Z",
+  "note": "Recorded before any real-model comparison run. Models were still downloading; no trace, quality or timing data existed.",
+  "amendment_A1": {
+    "sha256_after": "caf5ca11e6e0404a061ac80efa4b9f00073d11190c859a7227bffa63d5734650",
+    "recorded_utc": "2026-11-04T20:16:04Z",
+    "data_existing_at_time": "M1 (Qwen2.5-0.5B) 4K: 2 of 8 books complete; no other configuration run"
+  },
+  "amendment_A2": {
+    "sha256_after": "d45a4394f17ce8f34eafc39b8728c0e64efc081b16242f0c69e093aed95a8701",
+    "recorded_utc": "2026-11-04T20:17:55Z",
+    "data_existing_at_time": "M1 4K: 3 of 8 books; nothing else"
+  }
+}
