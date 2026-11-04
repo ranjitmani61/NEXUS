@@ -8,6 +8,7 @@ and it cannot authorize G5 PASS. No third-party libraries required.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -59,6 +60,35 @@ def validate(payload: dict) -> dict:
     require(m.get('requested_revision') == PILOT_REVISION, 'unpinned revision')
     require(m.get('resolved_revision') == PILOT_REVISION, 'unverified model revision')
     require(m.get('status') == 'PILOT ONLY — NOT G5 PASS', 'invalid pilot status')
+    # v1.2 runs must include model+tokenizer hashes, with an independently
+    # recomputed manifest fingerprint. This checks recorded metadata only.
+    version=m.get('version')
+    require(version in (None,'1.1','1.2'), 'unrecognized G5 capture version')
+    if version=='1.2':
+        manifest=m.get('checkpoint_manifest')
+        require(type(manifest) is dict, 'v1.2 requires checkpoint_manifest')
+        require(manifest.get('repo_id')==PILOT_MODEL and
+                manifest.get('revision')==PILOT_REVISION,
+                'checkpoint manifest identity mismatch')
+        files=manifest.get('files')
+        required={'config.json','model.safetensors','tokenizer.json','tokenizer_config.json'}
+        allowed=required|{'generation_config.json','special_tokens_map.json'}
+        require(type(files) is dict and required.issubset(files) and
+                set(files).issubset(allowed),'checkpoint file inventory invalid')
+        for name, component in files.items():
+            require(type(component) is dict, f'{name}: invalid checkpoint hash entry')
+            checksum=component.get('sha256')
+            require(type(checksum) is str and len(checksum)==64 and
+                    all(c in '0123456789abcdef' for c in checksum),
+                    f'{name}: invalid SHA256')
+            integer(component.get('size_bytes'),f'{name}.size_bytes',1)
+        canonical=json.dumps(files,sort_keys=True,separators=(',', ':'),ensure_ascii=True)
+        expected=hashlib.sha256(canonical.encode('ascii')).hexdigest()
+        require(manifest.get('fingerprint_sha256')==expected,
+                'checkpoint fingerprint mismatched')
+        require('not publisher' in str(manifest.get('origin_warning','')).lower() or
+                'not a signature' in str(manifest.get('origin_warning','')).lower(),
+                'checkpoint provenance caveat missing')
     t=integer(m.get('evaluated_length'), 'evaluated_length', 64)
     q_count=integer(m.get('query_positions_per_head'),'query_positions_per_head',1)
     heads=integer(m.get('heads_per_layer'),'heads_per_layer',1)

@@ -26,10 +26,11 @@ import numpy as np
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from g5_trace_oracle import evaluate_one, summarize
 from g5_result_validator import validate
+from g5_checkpoint_snapshot import stage_pinned_snapshot, REPO as SNAPSHOT_REPO, REVISION as SNAPSHOT_REVISION
 
 REPO = 'EleutherAI/pythia-14m'
 REVISION = 'cf967c0a9a04383db6f7b1108d86b2962634b4ac'
-VERSION = '1.1'
+VERSION = '1.2'
 DATE = '2026-11-04'
 
 
@@ -171,19 +172,33 @@ def main():
         from transformers import AutoModelForCausalLM, AutoTokenizer
     except ImportError as e:
         raise SystemExit('Cannot run pretrained pilot: install transformers, torch, safetensors. '+str(e))
-    model=AutoModelForCausalLM.from_pretrained(a.model,revision=a.revision,
-            attn_implementation='eager',torch_dtype=torch.float32,
-            local_files_only=a.local_files_only,trust_remote_code=False)
-    verify_checkpoint_revision(a.revision, getattr(model.config,'_commit_hash',None))
-    tokenizer=AutoTokenizer.from_pretrained(a.model,revision=a.revision,
-            local_files_only=a.local_files_only,trust_remote_code=False)
-    rows,checks,t=capture_for_text(model,tokenizer,text,max_tokens=a.max_tokens,
-         last_queries=a.last_queries,page_size=a.page_size,tolerance=a.tolerance)
+    # HF's cache snapshot is selected by an immutable commit ID. Model AND tokenizer
+    # are loaded from a single staged snapshot, never from independent 'latest' refs.
+    try:
+        from huggingface_hub import snapshot_download
+        snapshot = Path(snapshot_download(a.model, revision=a.revision,
+            local_files_only=a.local_files_only,
+            allow_patterns=list(('config.json','model.safetensors','tokenizer.json',
+                                 'tokenizer_config.json','special_tokens_map.json',
+                                 'generation_config.json'))))
+    except Exception as e:
+        raise SystemExit('G5 BLOCKED: pinned pretrained snapshot unavailable: '+str(e)) from e
+    with stage_pinned_snapshot(snapshot) as (staged_path, checkpoint_manifest):
+        verify_checkpoint_revision(a.revision, checkpoint_manifest['revision'])
+        model=AutoModelForCausalLM.from_pretrained(staged_path,
+                attn_implementation='eager',torch_dtype=torch.float32,
+                local_files_only=True,trust_remote_code=False,use_safetensors=True)
+        tokenizer=AutoTokenizer.from_pretrained(staged_path,
+                local_files_only=True,trust_remote_code=False)
+        rows,checks,t=capture_for_text(model,tokenizer,text,max_tokens=a.max_tokens,
+             last_queries=a.last_queries,page_size=a.page_size,tolerance=a.tolerance)
+        # Stage is checked again when the context exits.
     result={'metadata':{
         'date':DATE,'version':VERSION,'status':'PILOT ONLY — NOT G5 PASS',
         'model_id':a.model,'requested_revision':a.revision,
-        'resolved_revision':getattr(model.config,'_commit_hash',None),
-        'training':'Pretrained checkpoint requested; exact tensor hashes not independently audited',
+        'resolved_revision':checkpoint_manifest['revision'],
+        'checkpoint_manifest':checkpoint_manifest,
+        'training':'Snapshot file hashes recorded; publisher authenticity and tensor-level semantics not independently audited',
         'max_context':int(model.config.max_position_embeddings),
         'evaluated_length':t,'query_positions_per_head':a.last_queries,
         'layers_sampled':[int(x['layer']) for x in checks],

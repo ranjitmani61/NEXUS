@@ -1,0 +1,25 @@
+{
+  "coverage": "model/tokenizer same snapshot, sha256 manifest, changed source/staged bytes, symlink, incomplete snapshots, invalid architecture, manifest tamper",
+  "date": "2026-11-04",
+  "env": {
+    "huggingface_hub": "1.16.1",
+    "pytest": "9.0.2",
+    "python": "3.13.5",
+    "torch": "2.10.0+cpu"
+  },
+  "experiment": "G5 pinned snapshot provenance hardening",
+  "files_audited": "synthetic mocked local snapshots only",
+  "gate": "G5 BLOCKED",
+  "limitations": [
+    "No pretrained inference executed",
+    "No independent publisher provenance signature or remote checksum verification",
+    "No GPU/silicon/quality/latency benchmark"
+  ],
+  "model": "EleutherAI/pythia-14m",
+  "model_execution_count": 0,
+  "pretrained_snapshot_local": false,
+  "pretrained_weights_download": "blocked: DNS resolution unavailable",
+  "revision": "cf967c0a9a04383db6f7b1108d86b2962634b4ac",
+  "test_cases_failed": 0,
+  "test_cases_passed": 78
+}
