@@ -125,3 +125,20 @@ Thresholds are not changed after data is seen. Any deviation will be recorded as
 **Order of remaining work, by decision value:** M1 timing (bf16, exclusive CPU) → M2 validation and M2 8K → M1 8K and 16K → M1 32K → passkey → M2 timing → remaining M2 contexts → adversarial inputs.
 
 No metric, threshold or decision rule is changed.
+
+## Amendment A3 — 2026-11-04 (recorded with M1 4K complete, M1 batch-1 timing complete, M1 8K at 1 of 8 books; no M1 16K/32K, M2 quality, batch-4 or passkey data yet)
+
+**Reasons:**
+1. **A harness defect invalidated the first M2 runs.** IBM Granite returned no KV cache, so decode attended only to the current token. The details are in `results/g5r/invalid/README.md`; the fix is `tests/g5r_cache.py` plus cache-length guards. All M2 quality, timing and passkey runs are re-run with the fix.
+2. **The batch-1 M1 timing shows a measured Amdahl ceiling of 1.98× at 32K.** So, for M1 at batch 1, no attention-only method can meet the 2× criterion on this platform. The only setting that can still change that conclusion is batch > 1, where KV traffic grows relative to the weight traffic. The batch-4 timing therefore moves up the order.
+3. **Runtime.**
+
+**Scope changes:**
+- M1 16K: 4 books instead of 8.
+- M1 32K: 2 books instead of 4.
+- M1 batch-4 timing: contexts 8K, 16K and 32K.
+- M2: 8K with 4 books, 16K with 2 books, 4K with 4 books.
+
+**New order:** M1 8K (running) → M1 batch-4 timing → M2 8K → M2 batch-1 timing → M1 16K → M1 32K → passkey M1 (16K, 32K, 8K) → passkey M2 8K → adversarial inputs → remaining M2 contexts.
+
+No threshold, metric or decision rule is changed.

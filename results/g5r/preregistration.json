@@ -13,5 +13,10 @@
     "sha256_after": "d45a4394f17ce8f34eafc39b8728c0e64efc081b16242f0c69e093aed95a8701",
     "recorded_utc": "2026-11-04T20:17:55Z",
     "data_existing_at_time": "M1 4K: 3 of 8 books; nothing else"
+  },
+  "amendment_A3": {
+    "sha256_after": "53a1e2c7134f47f536e34ef3b0f2af8a1730923411b4a8b92c037b2993788f3c",
+    "recorded_utc": "2026-11-04T20:57:52Z",
+    "data_existing_at_time": "M1 4K complete; M1 bf16 batch-1 timing complete; M1 8K 1/8 books; M2 validation (fixed). No M1 16K/32K, M2 quality, batch-4 or passkey data."
   }
 }
