@@ -24,6 +24,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import g5r_hf as H  # noqa: E402
+import g5r_cache as KC  # noqa: E402
 
 INTRO = ("There is an important info hidden inside a lot of irrelevant text. "
          "Find it and memorize it. I will quiz you about the important information there.\n\n")
@@ -86,8 +87,9 @@ def main():
             H.CTL.mode = "dense"
             t0 = time.perf_counter()
             with torch.no_grad():
-                pre = model(input_ids=torch.tensor([prefill]), use_cache=True, logits_to_keep=1)
+                pre = model(input_ids=torch.tensor([prefill]), past_key_values=KC.make_cache(model, 1), use_cache=True, logits_to_keep=1)
             tp = time.perf_counter() - t0
+            KC.require_len(pre.past_key_values, a.context, "passkey prefill")
             row = {"depth": depth, "key": key, "book": book.name, "needle_token_pos": len(intro_ids) + pos,
                    "prefill_s": tp, "answers": {}}
             for m in a.methods:

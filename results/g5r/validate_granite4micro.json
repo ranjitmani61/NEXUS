@@ -32,8 +32,13 @@
  "control_random_init_ppl_512": 116415.65777468246,
  "pretrained_ppl_512_same_tokens": 18.503268642571555,
  "vocab_size": 100352,
- "shadow_reconstruction_max_abs": 0.0,
- "shadow_reconstruction_max_rel_to_outnorm": 0.0,
+ "shadow_decode_T_values": [
+  1001,
+  1002,
+  1003
+ ],
+ "shadow_reconstruction_max_abs": 0.11748331455176952,
+ "shadow_reconstruction_max_rel_to_outnorm": 0.0024078576118096535,
  "shadow_layers_seen": [
   0,
   1,

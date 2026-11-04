@@ -26,6 +26,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import g5r_fast_attn as F  # noqa: E402
+import g5r_cache as KC  # noqa: E402
 
 
 def kv_bytes(cache):
@@ -96,11 +97,12 @@ def main():
         F.reset("dense"); F.ST.timing = False
         t0 = time.perf_counter()
         with torch.no_grad():
-            pre = model(input_ids=ids[:, :T], use_cache=True, logits_to_keep=1)
+            pre = model(input_ids=ids[:, :T], past_key_values=KC.make_cache(model, a.batch), use_cache=True, logits_to_keep=1)
         t_pre = time.perf_counter() - t0
         cache0 = pre.past_key_values
+        KC.require_len(cache0, T, "timing prefill")
         toks = ids[:, T: T + a.steps]
-        entry = {"prefill_s": t_pre, "kv_bytes": kv_bytes(cache0), "methods": {}}
+        entry = {"prefill_s": t_pre, "kv_bytes": KC.kv_bytes(cache0), "methods": {}}
         # warm-up each method once (untimed)
         for m in a.methods:
             F.reset(m); run_steps(model, copy.deepcopy(cache0), toks[:, :2])
@@ -111,6 +113,7 @@ def main():
                 c = copy.deepcopy(cache0)
                 F.reset(m); F.ST.timing = True
                 times, lg = run_steps(model, c, toks)
+                KC.require_len(c, T + a.steps, f"timing decode {m}")
                 rec = {"step_s": times, "attn_s": F.ST.attn_seconds, "build_s": F.ST.build_seconds,
                        "pages_read_frac": (F.ST.pages_read / F.ST.pages_total) if F.ST.pages_total else 1.0,
                        "fallbacks": F.ST.fallbacks, "attn_calls": F.ST.calls, "meta_bytes": meta_bytes(),

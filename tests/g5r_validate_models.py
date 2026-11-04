@@ -20,6 +20,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import g5r_hf as H  # noqa: E402
+import g5r_cache as KC  # noqa: E402
 
 
 @torch.no_grad()
@@ -69,7 +70,8 @@ def main():
     # shadow reconstruction at decode
     m = AutoModelForCausalLM.from_pretrained(a.model_dir, dtype=dt, attn_implementation="g5r").eval()
     with torch.no_grad():
-        pre = m(input_ids=ids[:1000].view(1, -1), use_cache=True, logits_to_keep=1)
+        pre = m(input_ids=ids[:1000].view(1, -1), past_key_values=KC.make_cache(m, 1), use_cache=True, logits_to_keep=1)
+        KC.require_len(pre.past_key_values, 1000, "validate prefill")
         H.CTL.mode = "shadow"; H.CTL.records = []
         cache = pre.past_key_values
         for i in range(3):
@@ -77,7 +79,14 @@ def main():
             out = m(input_ids=ids[1000 + i].view(1, 1), past_key_values=cache, use_cache=True)
             cache = out.past_key_values
         H.CTL.mode = "dense"
+    bad = [r for r in H.CTL.records if r["T"] != 1001 + r["step"]]
+    if bad:
+        raise RuntimeError(f"decode attention length guard failed in validation: T={bad[0]['T']}")
+    caps = [r["capture_maxabs"] for r in H.CTL.records]
+    if any(c != c for c in caps):
+        raise RuntimeError("NaN in shadow reconstruction")
     rel = [r["capture_maxabs"] / max(r["capture_outnorm"], 1e-30) for r in H.CTL.records]
+    res["shadow_decode_T_values"] = sorted({r["T"] for r in H.CTL.records})
     res["shadow_reconstruction_max_abs"] = max(r["capture_maxabs"] for r in H.CTL.records)
     res["shadow_reconstruction_max_rel_to_outnorm"] = max(rel)
     res["shadow_layers_seen"] = sorted({r["layer"] for r in H.CTL.records})

@@ -32,6 +32,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import g5r_hf as H  # noqa: E402
+import g5r_cache as KC  # noqa: E402
 
 
 def load(model_dir: str, dtype: str):
@@ -143,9 +144,10 @@ def main():
         H.CTL.mode = "dense"
         t0 = time.perf_counter()
         with torch.no_grad():
-            pre = model(input_ids=prefix.view(1, -1), use_cache=True, logits_to_keep=1)
+            pre = model(input_ids=prefix.view(1, -1), past_key_values=KC.make_cache(model, 1), use_cache=True, logits_to_keep=1)
         t_prefill = time.perf_counter() - t0
         cache0 = pre.past_key_values
+        KC.require_len(cache0, a.context, "after prefill")
         # shadow
         H.CTL.records, H.CTL.capture_samples = [], []
         H.CTL.capture_prob = a.capture_prob
@@ -154,6 +156,9 @@ def main():
         lp_dense, _, _ = decode(model, copy.deepcopy(cache0), cont, "shadow")
         t_shadow = time.perf_counter() - t0
         recs = H.CTL.records
+        bad = [r for r in recs if r["T"] != a.context + r["step"] + 1]
+        if bad:
+            raise RuntimeError(f"decode attention length guard failed: {len(bad)} records, e.g. T={bad[0]['T']} step={bad[0]['step']}")
         tgt = cont[1:]
         nll_dense = -lp_dense[torch.arange(len(tgt)), tgt]
         book_res = {"book": book.name, "text_sha256": text_sha, "book_tokens": n_tok,
