@@ -23,5 +23,10 @@
     "sha256_after": "5979f14d7547b06840497b082c1bac7692566eb4891f9de71b7418830134a105",
     "recorded_utc": "2026-11-04T21:33:08Z",
     "data_existing_at_time": "M1 4K+8K traces; M1 b1 timing; M1 b4 timing 8K+16K (32K running); M2 validation. No M1 16K/32K traces, no M2 traces/timing, no passkey, no adversarial-input data."
+  },
+  "amendment_A5": {
+    "sha256_after": "dfef4aace08b7abbd9c8436653cb39a5cf79444be1c1f69c49c605ef3f54a35b",
+    "recorded_utc": "2026-11-04T23:55:47Z",
+    "data_existing_at_time": "M1 traces 4K/8K/16K/32K + random/repeat; M1 timing b1/b4; M2: only invalid (quarantined) runs + 2-book decode-consistency check. No passkey result yet (M1 16K passkey running)."
   }
 }

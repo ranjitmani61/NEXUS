@@ -163,3 +163,24 @@ No threshold, metric or decision rule is changed.
   11. M2 4K traces
 
 Thresholds and decision rules are unchanged.
+
+## Amendment A5 — 2026-11-04 (order only; recorded before any valid M2 trace, M2 timing or passkey result exists)
+
+**Reason:** a second and a third Granite defect were found and fixed:
+- an empty hybrid cache reports length = batch size, which offset RoPE positions;
+- the dense timing baseline was handicapped by `repeat_kv`.
+
+Both are documented in `results/g5r/invalid/README.md`. All prior M2 trace and timing outputs are invalid. The M2 evidence that the decision rule needs ("both families") is therefore moved ahead of the passkey and optional runs.
+
+**New order, after the M1 16K passkey that is running:**
+1. M2 decode-consistency check (4 books)
+2. M2 8K traces
+3. M2 timing
+4. M1 decode-consistency check
+5. passkey M2 8K
+6. passkey M1 32K
+7. M2 16K traces
+8. passkey M1 8K
+9. M2 4K traces
+
+Thresholds and decision rules are unchanged.
