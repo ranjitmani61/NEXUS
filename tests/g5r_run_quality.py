@@ -117,6 +117,8 @@ def main():
                          "repeat: first 256 book tokens tiled (highly repetitive control)")
     ap.add_argument("--raw-dir", type=Path, required=True); ap.add_argument("--output", type=Path, required=True)
     a = ap.parse_args()
+    if a.dtype != "fp32" and "dense64" not in a.live:
+        a.live = list(a.live) + ["dense64"]   # precision control for reduced-precision models
     torch.set_num_threads(a.threads)
     torch.manual_seed(0)
     tok, model = load(a.model_dir, a.dtype)

@@ -129,6 +129,12 @@ def _shadow_record(layer: int, q, K, V, scale: float, sdpa_out: torch.Tensor):
 
 def _live_output(layer: int, q, K, V, scale: float):
     m = CTL.method
+    if m == "dense64":
+        # Control (added 2026-11-04): dense attention through the SAME float64 path the candidates
+        # use, cast back to the model dtype. For bf16 models, method-vs-dense64 isolates the effect
+        # of page selection from the bf16-SDPA vs float64 arithmetic difference.
+        ref = C.dense_reference(q, K, V, scale, CTL.ps)
+        return ref.out, {"pages_frac": 1.0}
     if m.startswith("quest:"):
         B = int(m.split(":")[1])
         ref16 = C.dense_reference(q, K, V, scale, 16)
