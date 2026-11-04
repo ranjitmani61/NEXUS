@@ -1,0 +1,497 @@
+[
+  {
+    "path": ".pytest_cache/README.md",
+    "size": 302,
+    "sha256": "73fd6fccdd802c419a6b2d983d6c3173b7da97558ac4b589edec2dfe443db9ad"
+  },
+  {
+    "path": "AGENTS.md",
+    "size": 19148,
+    "sha256": "c8abe9220f79d3d147718790bd38e0e7c04d31bb0f809acdba6903905de66955"
+  },
+  {
+    "path": "IMG_8992.jpeg",
+    "size": 642081,
+    "sha256": "1a2ae2fa092bf0ffd3beea6d4a94e52d17bca0b0169787b5dd464b1770b7d2b8"
+  },
+  {
+    "path": "processor_baseline.py",
+    "size": 2733,
+    "sha256": "13ff9f1dec6e02804365bd61b60a972f975714094e51dd70c331e7aa6071e997"
+  },
+  {
+    "path": "processor_project_01.md",
+    "size": 49972,
+    "sha256": "dda660fb435bb90d44e519ea5cfbbfe837cb18f92004ad1c2f9fff1144052183"
+  },
+  {
+    "path": "project_01_G2_G4_weight_reuse_package.zip",
+    "size": 49181,
+    "sha256": "e15ee24bece0efa718a8cec5e93ab933ed6fc654101ff35fc5efdc0d5bee7c69"
+  },
+  {
+    "path": "project_01_G2_codec_pivot_package.zip",
+    "size": 37153,
+    "sha256": "19e551677ebd688fe1fe35f89e7afa7e78126c2d0a2861df3ef8ccebff40fc6d"
+  },
+  {
+    "path": "project_01_G2_decode_memory_traffic_package.zip",
+    "size": 34118,
+    "sha256": "467c0f484e106d663b98d7d4ddae23042f0fe782326a33f551e5c23497b9af01"
+  },
+  {
+    "path": "project_01_G2_engineering_package.zip",
+    "size": 44013,
+    "sha256": "d3f23330a46c270e3f6c438122126de1beb79cb0c75d1ffe3210317fa1ff6f8a"
+  },
+  {
+    "path": "project_01_G2_near_memory_threshold_package.zip",
+    "size": 36762,
+    "sha256": "67641ae9e0c4cdaa02a7fec669ce571ef6233c82905bb35738be0e3d705bc77a"
+  },
+  {
+    "path": "project_01_G2_photonic_calibration_audit_package.zip",
+    "size": 53770,
+    "sha256": "b908631f35f2c7d0b646f222e0d3ccb27dd6ae731a0d7d794240c2d4f775b78b"
+  },
+  {
+    "path": "project_01_G2_photonic_drift_energy_package.zip",
+    "size": 55898,
+    "sha256": "4ae6761a774306aa98e96816b6869a15c28037f9b1349f5625b5fc57f379c1fc"
+  },
+  {
+    "path": "project_01_G2_photonic_flux_audit_package.zip",
+    "size": 43114,
+    "sha256": "082ebfd58419165ff31938e0893d600dc613453d4dabcd8a1a745e196b1099e2"
+  },
+  {
+    "path": "project_01_G2_photonic_power_reality_package.zip",
+    "size": 94537,
+    "sha256": "2fda7d8e926347602264a96bb246a521b1b968c136c12775e0bd28a7b23a66e0"
+  },
+  {
+    "path": "project_01_G2_photonic_precision_package.zip",
+    "size": 39663,
+    "sha256": "e4736b253f178789521721f6da69afb3e5661aea13b3335700eb3dd0ff46e83e"
+  },
+  {
+    "path": "project_01_G2_progressive_bitplane_package.zip",
+    "size": 36390,
+    "sha256": "deb51151d7f61c0b29277f66525fc92b0106eacc2bff052df27620fc3402865e"
+  },
+  {
+    "path": "project_01_G2_temporal_delta_package.zip",
+    "size": 43112,
+    "sha256": "7ac2711fa7c0e637182ad4f1134b7d85a7230b869a32f9f19dbae91bd549b908"
+  },
+  {
+    "path": "project_01_G2_trained_toy_temporal_delta_package.zip",
+    "size": 51108,
+    "sha256": "c40b7da2ca63d118f1fd28adf743b7cfb390cc20fec24e2d7852851356567c1a"
+  },
+  {
+    "path": "project_01_G3_G4_engineering_package.zip",
+    "size": 63129,
+    "sha256": "1e71685fd619e353423be021c73c72fdc1828d815d3f624500df2284c674b818"
+  },
+  {
+    "path": "project_01_G3_G4_token_stream_package.zip",
+    "size": 50941,
+    "sha256": "6cbe7a6aadd76fd9508de741b933ec2d03c73b1da9001cf0a65c172819f4e7a3"
+  },
+  {
+    "path": "project_01_G3_guarded_mixed_precision_package.zip",
+    "size": 44660,
+    "sha256": "beaf95f7acfa980f8e12bee9e511d353e9096f20b853f90f399207cd244bfc24"
+  },
+  {
+    "path": "project_01_G3_reduced_precision_package.zip",
+    "size": 27361,
+    "sha256": "198a343278f06cfa048e1018e174d7eb30acf727a1cdc754f45f0e960aa17045"
+  },
+  {
+    "path": "project_01_G3_snapshot_hypervigilance_package.zip",
+    "size": 42108,
+    "sha256": "8e94e4dee2310bc1cb0c4b6fb5882fac52e843073178b7399138047bbbc633bc"
+  },
+  {
+    "path": "project_01_G3_transactional_KV_package.zip",
+    "size": 44811,
+    "sha256": "eee02bb4108fe111b07263616928597294051b8f5cdafe505430099644082aa6"
+  },
+  {
+    "path": "project_01_G4_compiled_CPU_falsification_package.zip",
+    "size": 48690,
+    "sha256": "7a8bf17f402d831c06114482de74cee0d8703cf61fbb47d17c12aa745436fe80"
+  },
+  {
+    "path": "project_01_G4_dynamic_KV_stream_package.zip",
+    "size": 470852,
+    "sha256": "931cc656996b834dbb984e589081c1b020d2a23ac0cc67d47f190da58f03e92d"
+  },
+  {
+    "path": "project_01_G4_executable_cpu_package.zip",
+    "size": 61145,
+    "sha256": "fff2e548d3e00101c95a61c5383353f301d7c0c64be8ebef4d746eb5a88b1c09"
+  },
+  {
+    "path": "project_01_G4_learned_attention_control_package.zip",
+    "size": 32189,
+    "sha256": "96447f1b08dafdb93d646f810c12e95aad333ec8f854440f854a075373a24d46"
+  },
+  {
+    "path": "project_01_G4_oracle_engineering_package.zip",
+    "size": 79426,
+    "sha256": "9abb870f25a766eb810202e4d119267b69cf074a6a3ff7dbcb2dadb6fc534260"
+  },
+  {
+    "path": "project_01_G4_queue_aware_batching_package.zip",
+    "size": 79163,
+    "sha256": "3a48fccb9deea134c867790896b7bd6be0b1a4ecfde62fc7e9b7c5ab82cc0abe"
+  },
+  {
+    "path": "project_01_G4_value_geometry_package.zip",
+    "size": 63156,
+    "sha256": "d6421e0f22c3a6375bb5621d1080b246581187fe57cccf9ce6767d00d5f65a19"
+  },
+  {
+    "path": "project_01_G5_global_quality_falsification_package.zip",
+    "size": 36989,
+    "sha256": "e07d529756f5ac4df2c4bc69fac2501aa815d50774ce5b1b991360f4c96167e9"
+  },
+  {
+    "path": "project_01_G5_harness_package.zip",
+    "size": 33503,
+    "sha256": "2d2e597028febeb028e500e7c5a40e6c258ff529bc96dfb427606249f273818c"
+  },
+  {
+    "path": "project_01_G5_projection_delta_readiness_package.zip",
+    "size": 47250,
+    "sha256": "819930c6070e87b92983f5403ff2d840ac54ab0660144f203750fe54832a909f"
+  },
+  {
+    "path": "project_01_G5_runtime_logit_certificate_package.zip",
+    "size": 47287,
+    "sha256": "e1dff35115e2f877795f1fe7154f6422ac4e244d6bc0135de79d33fff1896eae"
+  },
+  {
+    "path": "project_01_engineering_gate_package.zip",
+    "size": 28408,
+    "sha256": "5197626c34dfb5ffd032bc7bbbae7315aa3947ee1a79e62136cd59a05fa4bbe7"
+  },
+  {
+    "path": "research/G1_near_memory_prior_art.md",
+    "size": 2356,
+    "sha256": "276da30a336794689c78ac8b13544a4300c1412769622a50660ff0b25b895e80"
+  },
+  {
+    "path": "research/G1_photonic_reduction_prior_art.md",
+    "size": 2292,
+    "sha256": "5ef55d9a9ec6a318c327c7f7ac966a7f2485e6ae237bd9f5878f143f8304c206"
+  },
+  {
+    "path": "research/G1_prior_art_review.md",
+    "size": 9424,
+    "sha256": "3503d22f6ed92c51753b825780815bb6398c9aefac225acdf7376427d6f0495b"
+  },
+  {
+    "path": "reviews/2026-11-03_G2_G4_weight_reuse_review.md",
+    "size": 4560,
+    "sha256": "6ac7045c6d78745427725705d1ea6bf38938f898d1310a45eed2a489feb0a1ac"
+  },
+  {
+    "path": "reviews/2026-11-03_G2_anchor_delta_review.md",
+    "size": 4977,
+    "sha256": "41dd486abe9f4e98c05f210b5d931a2378f670beaa89cb2ed4ad77a6273b181e"
+  },
+  {
+    "path": "reviews/2026-11-03_G2_codec_pivot_review.md",
+    "size": 6119,
+    "sha256": "5cd5944c528ccc36748e4320b06e6342042c8192f7eff07d3d8b78c23fcab19b"
+  },
+  {
+    "path": "reviews/2026-11-03_G2_decode_memory_traffic_gate_review.md",
+    "size": 3442,
+    "sha256": "50d3809f0ea1d987d62d3c2cf837562bd6bff5dceb3757b3a977227444277133"
+  },
+  {
+    "path": "reviews/2026-11-03_G2_near_memory_threshold_review.md",
+    "size": 3908,
+    "sha256": "4d3886c985803fca7f3149b79e23b778bac2d790739521450027bc47eb622c17"
+  },
+  {
+    "path": "reviews/2026-11-03_G2_photonic_count_certificate_review.md",
+    "size": 6618,
+    "sha256": "e4214036ee2c11067963590160322371c52e640fa4baa5b8d3588d1ef93e5e31"
+  },
+  {
+    "path": "reviews/2026-11-03_G2_photonic_drift_energy_review.md",
+    "size": 5439,
+    "sha256": "b068eeeb4a245fb7ab2bad4e3acc435aab8607680b6172d67db13d1646c48dd5"
+  },
+  {
+    "path": "reviews/2026-11-03_G2_photonic_signed_reduction_review.md",
+    "size": 4796,
+    "sha256": "dc8e2457c245fe67638d718c0513f4ee81e0bbbbad3dc1596faacd9df7e3b58e"
+  },
+  {
+    "path": "reviews/2026-11-03_G2_progressive_bitplane_gate_review.md",
+    "size": 4714,
+    "sha256": "c3e3a53cfbc664154976ed22e12af9ec891ed83c18326e0c14584f6bc910f037"
+  },
+  {
+    "path": "reviews/2026-11-03_G2_toy_transformer_delta_gate_review.md",
+    "size": 5778,
+    "sha256": "e36507e371011979568aee0203d5d50daad77ce81d1d16a01b678abe50e7b663"
+  },
+  {
+    "path": "reviews/2026-11-03_G3_G4_token_stream_review.md",
+    "size": 4689,
+    "sha256": "3b9bc418e3423a0d5f1bdc0e3b175aea62d398cbdbf4e1d378fb4de12d0ee1d0"
+  },
+  {
+    "path": "reviews/2026-11-03_G3_G4_toy_trace_review.md",
+    "size": 7270,
+    "sha256": "76ffd74114fa0aa2b0c05208cd1e9de86ce03628a1771201dcc092b67768593e"
+  },
+  {
+    "path": "reviews/2026-11-03_G3_guarded_mixed_precision_review.md",
+    "size": 3130,
+    "sha256": "44cc50a8c2fd3b526eae0ef667d52987afdab7c33893622f6988ee708576bb3f"
+  },
+  {
+    "path": "reviews/2026-11-03_G3_hypervigilance_snapshot_review.md",
+    "size": 3133,
+    "sha256": "19824dc2248600eba29990fffa3ce4e81d9f368d29e5fed6c5fe5e3f96e30f33"
+  },
+  {
+    "path": "reviews/2026-11-03_G3_reduced_precision_gate_review.md",
+    "size": 3629,
+    "sha256": "61074069a98aac5ee7d57db2f4da2ddd134125de32bc007ffec9001eb328ec5d"
+  },
+  {
+    "path": "reviews/2026-11-03_G3_transactional_cow_review.md",
+    "size": 3989,
+    "sha256": "7b019badfacaaf512068dc87345bc12026713283a7b80d4ee04f07c161f40239"
+  },
+  {
+    "path": "reviews/2026-11-03_G4_compiled_CPU_gate_review.md",
+    "size": 6977,
+    "sha256": "791553108dcfa5dcf1f5cd3b25352cd28971bc1534b60547f5e22131861ace22"
+  },
+  {
+    "path": "reviews/2026-11-03_G4_cpu_admission_review.md",
+    "size": 3754,
+    "sha256": "d3dd86c241823d81db098632f655fc375580668c55e4b99ee5ea97fe93ab95bc"
+  },
+  {
+    "path": "reviews/2026-11-03_G4_dynamic_kv_stream_review.md",
+    "size": 3750,
+    "sha256": "029da9e22fc23e1c6363d0122f174139f79ab34dabbc339868f970182acc6db4"
+  },
+  {
+    "path": "reviews/2026-11-03_G4_learned_attention_control_review.md",
+    "size": 6705,
+    "sha256": "3e51cbdfdd83c31ca5910d4cfa8db77ecdd5314fd41043dbbaae0b9f53644ad8"
+  },
+  {
+    "path": "reviews/2026-11-03_G4_oracle_headroom_review.md",
+    "size": 10078,
+    "sha256": "5a18b598ea15aaf375e5fd77c316e629da3ad3c8eea7321aac8338a43a8f4dc0"
+  },
+  {
+    "path": "reviews/2026-11-03_G4_queue_tradeoff_review.md",
+    "size": 5931,
+    "sha256": "c15c2144af512fb8df4a47c270ba1ff33512051d2ebe761a7b0cac44cd7bf2eb"
+  },
+  {
+    "path": "reviews/2026-11-03_G4_value_geometry_review.md",
+    "size": 6559,
+    "sha256": "60a45ea671058d265c602013b12b933b95f0fdca2304d56ced94204691e56fc2"
+  },
+  {
+    "path": "reviews/2026-11-03_G5_harness_readiness_review.md",
+    "size": 3980,
+    "sha256": "67a055d295019fcf671ac5889bb46fb183ce9722da3d12418d433e47ccc99cc9"
+  },
+  {
+    "path": "reviews/2026-11-03_G5_local_to_global_safety_review.md",
+    "size": 3309,
+    "sha256": "052b8f2e81105261f13049fd19a79483e7e26cd7e69029b166136f95af0eb588"
+  },
+  {
+    "path": "reviews/2026-11-03_G5_projection_capture_readiness_review.md",
+    "size": 4077,
+    "sha256": "61bd0a8da77f2bd0dbbd9b4cbda17946c0d2e5c08294a6bc1b4385b13c890a90"
+  },
+  {
+    "path": "reviews/2026-11-03_G5_runtime_safe_certificate_review.md",
+    "size": 4901,
+    "sha256": "935143a9da8d30d29620d5e3ee3c81650afa08532e67791bf38a4cc164c2c7bc"
+  },
+  {
+    "path": "reviews/2026-11-03_gate_review.md",
+    "size": 5745,
+    "sha256": "3180e9d565d78e3f421c0215aa6552ec508126c93d6254485152320f2e28587a"
+  },
+  {
+    "path": "reviews/2026-11-04_G2_photonic_flux_gate_review.md",
+    "size": 6676,
+    "sha256": "a7dd2eb1ca95be020bbec0c9fa622bb1305dba0672b7a60fd34af15aa01169fe"
+  },
+  {
+    "path": "reviews/2026-11-04_G2_photonic_physical_cost_gate_review.md",
+    "size": 5377,
+    "sha256": "1e0f5adafe4319abf6b2edd3370be046cfa44bb2b3cdd705b3bb5c7b5e7fa5f6"
+  },
+  {
+    "path": "specs/G0_benchmark_contract.md",
+    "size": 5482,
+    "sha256": "0d514f0c6eddb7ae8cd9ed2ced5e2b42b91aba1971092625a1447a171c88ec87"
+  },
+  {
+    "path": "specs/G2_anchor_delta_hypothesis.md",
+    "size": 5008,
+    "sha256": "1913df7f11f52270c2babe8fb81d312a911a53c3ffc0c5a45a78d4b3adc7ef4c"
+  },
+  {
+    "path": "specs/G2_decode_memory_traffic_bound.md",
+    "size": 5467,
+    "sha256": "7c93e829475be0308488c3af2b3a351d876b88987016296b7cd2dda05d74bcb3"
+  },
+  {
+    "path": "specs/G2_near_memory_breakeven_contract.md",
+    "size": 5293,
+    "sha256": "bce5c962eaf62eacba1adea2fa820a24a28ed24001f2c0140e0fdc4752a46a29"
+  },
+  {
+    "path": "specs/G2_photonic_detector_flux_contract.md",
+    "size": 4275,
+    "sha256": "1cd15bbb9d476c47a276fdc1fd943a0440893727fbb09f1eff0fe7e9855609ac"
+  },
+  {
+    "path": "specs/G2_photonic_drift_energy_contract.md",
+    "size": 6772,
+    "sha256": "e73be8c36faf5a5dc0c59cff59cabc0e71d500cfcc0ecc96fcdd1bca55457fcd"
+  },
+  {
+    "path": "specs/G2_photonic_signed_reduction_contract.md",
+    "size": 5622,
+    "sha256": "48e17cac1c7683710892de7bc77cab43d60a22a5122a168494b5116540d67803"
+  },
+  {
+    "path": "specs/G2_photonic_static_power_gate_contract.md",
+    "size": 5557,
+    "sha256": "50e3423dfe9c1698435101c29af1399a4f291c403d47efa272bc6f732462b7f6"
+  },
+  {
+    "path": "specs/G2_progressive_bitplane_certified_primitive.md",
+    "size": 5721,
+    "sha256": "2b2151ef218d469bd4d8998fcf81767061a5d8f468f5274a7da4a3f3373a59da"
+  },
+  {
+    "path": "specs/G2_self_certifying_photonic_readout.md",
+    "size": 5817,
+    "sha256": "5e3b1705543d22a492ffafc18cefcb08aa85f238e73b2ad552dcf98e40427df9"
+  },
+  {
+    "path": "specs/G2_weight_reuse_batch_contract.md",
+    "size": 5190,
+    "sha256": "9f1aa78b1a452a8e78feec1bd7eaa901785c74e4ba3636592be46d8c51a1a983"
+  },
+  {
+    "path": "specs/G3_growing_kv_invariant.md",
+    "size": 4270,
+    "sha256": "d365ab4e490280e52de67782fa6b68f7b535e7839066be6a70c84da945c0b2e9"
+  },
+  {
+    "path": "specs/G3_guarded_mixed_precision_datapath.md",
+    "size": 7382,
+    "sha256": "b84b7e848a3686c6ed81146d1bc097af935f15defec07c5a15e2a6ebc6d531c5"
+  },
+  {
+    "path": "specs/G3_reduced_precision_certificate_protocol.md",
+    "size": 5868,
+    "sha256": "9cc5386b04a51eb2f93d04194c13e5818974ab3bd0f001eb3696e4124441113b"
+  },
+  {
+    "path": "specs/G3_snapshot_coherency_contract.md",
+    "size": 6078,
+    "sha256": "de9a5c2d6d6c42067dc806b6272ee2850fc321405243ddefc4f9ba0a5e9576e5"
+  },
+  {
+    "path": "specs/G3_transactional_kv_cow_contract.md",
+    "size": 5899,
+    "sha256": "41df02d5297cac4c506abca8909229cf9e6ee75b2a99984b2280856bc82a7f32"
+  },
+  {
+    "path": "specs/G4_cpu_admission_cost_model.md",
+    "size": 3999,
+    "sha256": "1c980c626ae70d632fe7c543e60ba123c24144f10a4629d5fdb803de2798e031"
+  },
+  {
+    "path": "specs/G4_dynamic_kv_stream_protocol.md",
+    "size": 5329,
+    "sha256": "a6c33201cd5929ffd23979b8ddf75a66c5334c57d5092b407365b093e17edf6f"
+  },
+  {
+    "path": "specs/G4_queue_aware_batching_contract.md",
+    "size": 4509,
+    "sha256": "d49a9732526b072a182c630ebac4d3489ae781ab057529125628c6141b9e8733"
+  },
+  {
+    "path": "specs/G4_value_geometry_certificate.md",
+    "size": 5646,
+    "sha256": "ee700890da380134c5d038ae04c8844e2cdd129ef4900d5a0a9b74ad1eee90cc"
+  },
+  {
+    "path": "specs/G5_deployable_logit_certificate_protocol.md",
+    "size": 5854,
+    "sha256": "9bf3fc4bae6841df76cfd1826f3e11254059efc9d080f693c2cac98cc62c5ea6"
+  },
+  {
+    "path": "specs/G5_end_to_end_quality_safety_contract.md",
+    "size": 5569,
+    "sha256": "bc6d13a59278454b2f9725860a85e519605e0e8aa9875ad9b2fb3c0fb9cc15fe"
+  },
+  {
+    "path": "specs/G5_pretrained_trace_protocol.md",
+    "size": 7510,
+    "sha256": "d897bcf452a08c10f00c5734522db950a25839bef6a11949476043ec9984b556"
+  },
+  {
+    "path": "tests/attention_screening_audit.py",
+    "size": 10862,
+    "sha256": "f08b0743effad1a4ce889697c7fe4849c48634e688bfa947149f7f3cec96950d"
+  },
+  {
+    "path": "tests/g3_g4_autoregressive_trace_audit.py",
+    "size": 17244,
+    "sha256": "f09401fda7870337852fa06b328c5d9c61d45b10c3316468c41b24c8f5d7628b"
+  },
+  {
+    "path": "tests/g3_guarded_mixed_precision_audit.py",
+    "size": 12205,
+    "sha256": "7f36af9d9d77c50e91aad26bcdd90cc3a019b3888ef411d73f7d2a5af3bd258d"
+  },
+  {
+    "path": "tests/g3_snapshot_consistency_audit.py",
+    "size": 9753,
+    "sha256": "a4c5061229bbbe69418912a9e99562d18c163c8ac28fe78b7df3c4e416c2bbdf"
+  },
+  {
+    "path": "tests/g3_transactional_kv.py",
+    "size": 6711,
+    "sha256": "ab66eaeb407e333cc96b64afab7469f3726000d3cc86377982b3edf915086585"
+  },
+  {
+    "path": "tests/g4_dynamic_kv_stream_benchmark.py",
+    "size": 11757,
+    "sha256": "17d8c26705148e31f4a0f59e98ef5f8b2e9bc57f48a0d3347dfff5e54325d477"
+  },
+  {
+    "path": "tests/g4_oracle_headroom_audit.py",
+    "size": 11538,
+    "sha256": "29fefcd246c7b0569fc58d08f7a3f65e01487d074d56ce0b1a8920c2f8575d32"
+  }
+]
