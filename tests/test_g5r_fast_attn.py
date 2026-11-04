@@ -80,3 +80,33 @@ def test_clustered_case_actually_screens():
     F.reset("nx_box")
     F.fast_attention(_Mod(5), q, K, V, None, scaling=sc)
     assert F.ST.pages_read < F.ST.pages_total, "screening should skip pages on a dominant-page case"
+
+
+class _GQAMod(_Mod):
+    def __init__(self, layer_idx, groups):
+        super().__init__(layer_idx)
+        self.num_key_value_groups = groups
+
+
+@pytest.mark.parametrize("mask_kind", ["none", "zeros4d", "bool_true"])
+def test_dense_native_gqa_matches_wrapper(mask_kind):
+    """v1.1 dense path (native GQA, no copies) must equal the transformers wrapper when the
+    mask is a no-op (regression for the Granite baseline handicap, 2026-11-04)."""
+    from transformers.integrations.sdpa_attention import sdpa_attention_forward
+    q, K, V, sc = _case(3, hq=8, hkv=2, T=257, d=16)
+    mask = {"none": None, "zeros4d": torch.zeros(1, 1, 1, 300), "bool_true": torch.ones(1, 1, 1, 300, dtype=torch.bool)}[mask_kind]
+    mod = _GQAMod(5, 4)
+    o_new, _ = F._dense(mod, q, K, V, mask, sc)
+    o_ref, _ = sdpa_attention_forward(mod, q, K, V, None if mask is None else mask[..., :257], scaling=sc)
+    assert torch.allclose(o_new, o_ref, atol=1e-5)
+
+
+def test_dense_falls_back_when_mask_masks_something():
+    q, K, V, sc = _case(4, hq=8, hkv=2, T=64, d=16)
+    mask = torch.zeros(1, 1, 1, 64); mask[..., :10] = float("-inf")
+    mod = _GQAMod(5, 4)
+    o, _ = F._dense(mod, q, K, V, mask, sc)
+    s = torch.einsum("bhd,bhtd->bht", q[:, :, 0], K.repeat_interleave(4, 1)) * sc
+    s[..., :10] = float("-inf")
+    ref = torch.einsum("bht,bhtd->bhd", torch.softmax(s, -1), V.repeat_interleave(4, 1))
+    assert torch.allclose(o[:, 0], ref, atol=1e-5)

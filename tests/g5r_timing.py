@@ -117,6 +117,7 @@ def main():
                 rec = {"step_s": times, "attn_s": F.ST.attn_seconds, "build_s": F.ST.build_seconds,
                        "pages_read_frac": (F.ST.pages_read / F.ST.pages_total) if F.ST.pages_total else 1.0,
                        "fallbacks": F.ST.fallbacks, "attn_calls": F.ST.calls, "meta_bytes": meta_bytes(),
+                       "dense_decode_calls": F.ST.dense_calls, "dense_native_gqa_calls": F.ST.dense_native_gqa_calls,
                        "rss_bytes": proc.memory_info().rss}
                 if m == "dense" and logits_ref is None:
                     logits_ref = lg

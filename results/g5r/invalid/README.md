@@ -30,3 +30,17 @@ These files were produced before `tests/g5r_cache.py` existed. Do **not** use an
 **Fix:** `tests/g5r_cache.py::_fixed_hybrid_cache_class`. A new standing check, `tests/g5r_decode_consistency.py`, requires cached decode to match the full forward (KL ≤ 1e-3, argmax agreement 1.0) before any decode result is used.
 
 **Scope:** this affected every Granite decode run before the fix. Qwen is unaffected: its cached decode matches the full forward to 1.7e-5 in logits.
+
+## Handicapped Granite dense baseline in timing (found 2026-11-04)
+
+`timing_granite4micro_bf16_b1_v1_HANDICAPPED_DENSE.json` is **INVALID as a baseline comparison**.
+
+**What happened:** under the custom attention name `g5r_fast`, Granite's legacy mask builder passed a 4D mask at every decode step. The builder skips the mask only for the literal name `"sdpa"`. The transformers SDPA wrapper then took its `repeat_kv` path, copying K/V 5× for GQA, plus a masked kernel.
+
+**Measured cost:** at 8K, the attention op took 37.1 ms per layer, against 7.9 ms with native GQA (`diag_dense_baseline`).
+
+**What it distorted:** Granite's dense attention share (0.727 / 0.824), its Amdahl ceilings (3.66× / 5.69×), and Quest's apparent speedups (2.13× / 2.78×). NX-BOX still lost (0.43× / 0.24×).
+
+**Fix:** `g5r_fast_attn._dense` v1.1 calls torch SDPA with `enable_gqa=True` when the decode mask is a no-op. Unit tests check equality with the wrapper and the fallback when a mask is real. Timing JSON now records `dense_native_gqa_calls`.
+
+**Qwen is unaffected:** its decode mask was `None` in every call (24/24 at batch 4; verified for batch 1 as well), so the wrapper already used native GQA.

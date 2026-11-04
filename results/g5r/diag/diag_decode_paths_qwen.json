@@ -1,0 +1,34 @@
+{
+ "3340": {
+  "decode_M1_vs_full": {
+   "max_abs_logit_diff": 1.71661376953125e-05,
+   "kl_full_to_x": 1.1020287245094903e-12,
+   "nll_true_x": 0.08838875288931948,
+   "nll_true_full": 0.08838917562871516,
+   "argmax_same": true
+  },
+  "chunk_M2_vs_full": {
+   "max_abs_logit_diff": 1.239776611328125e-05,
+   "kl_full_to_x": 2.775437310876173e-13,
+   "nll_true_x": 0.08838903233459332,
+   "nll_true_full": 0.08838917562871516,
+   "argmax_same": true
+  }
+ },
+ "860": {
+  "decode_M1_vs_full": {
+   "max_abs_logit_diff": 1.33514404296875e-05,
+   "kl_full_to_x": 2.342788285980063e-12,
+   "nll_true_x": 1.817715901089842,
+   "nll_true_full": 1.8177150490064888,
+   "argmax_same": true
+  },
+  "chunk_M2_vs_full": {
+   "max_abs_logit_diff": 1.239776611328125e-05,
+   "kl_full_to_x": 2.7740550962151176e-12,
+   "nll_true_x": 1.8177180901852161,
+   "nll_true_full": 1.8177150490064888,
+   "argmax_same": true
+  }
+ }
+}

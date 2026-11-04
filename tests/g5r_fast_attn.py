@@ -49,6 +49,8 @@ class State:
     pages_total = 0
     fallbacks = 0
     calls = 0
+    dense_calls = 0
+    dense_native_gqa_calls = 0
 
 
 ST = State()
@@ -59,6 +61,7 @@ def reset(method: str):
     ST.meta = {}
     ST.attn_seconds = ST.build_seconds = 0.0
     ST.pages_read = ST.pages_total = ST.fallbacks = ST.calls = 0
+    ST.dense_calls = ST.dense_native_gqa_calls = 0
 
 
 def _update_meta(layer, key, ps, need_sphere):
@@ -114,7 +117,29 @@ def _attend(qf, Ks, Vs, mask=None):
     return torch.einsum("bkgl,bkgld->bkgd", p, Vs.float())
 
 
+def _mask_is_noop(mask, klen):
+    if mask is None:
+        return True
+    m = mask[..., :klen]
+    return bool(m.all()) if m.dtype == torch.bool else bool((m == 0).all())
+
+
 def _dense(module, query, key, value, attention_mask, scaling, **kw):
+    """Dense decode baseline (v1.1, 2026-11-04).
+
+    v1.0 always called the transformers SDPA wrapper. For IBM Granite (whose legacy mask
+    builder skips the mask only when the implementation is literally named "sdpa"), every
+    decode step received a 4D mask, so the wrapper took its repeat_kv path (5x K/V copies)
+    and a masked kernel: 37.1 ms against 7.9 ms per layer at 8K. That handicapped the Granite
+    dense baseline. For a single decode query with no masked positions the mask is a no-op,
+    so torch SDPA with native GQA is called directly. Qwen already received mask=None
+    (native GQA), so its v1.0 timings are unaffected."""
+    if query.shape[2] == 1:
+        ST.dense_calls += 1
+    if query.shape[2] == 1 and _mask_is_noop(attention_mask, key.shape[2]):
+        ST.dense_native_gqa_calls += 1
+        o = torch.nn.functional.scaled_dot_product_attention(query, key, value, scale=scaling, enable_gqa=True)
+        return o.transpose(1, 2).contiguous(), None
     return sdpa_attention_forward(module, query, key, value, attention_mask, scaling=scaling, **kw)
 
 

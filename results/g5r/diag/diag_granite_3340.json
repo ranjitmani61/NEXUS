@@ -1,0 +1,12 @@
+{
+ "3340": {
+  "ppl_full_nocache": 8.323518104243737,
+  "ppl_cached_decode": 298.1988525390625,
+  "max_abs_nll_diff": 13.700905340749078
+ },
+ "860": {
+  "ppl_full_nocache": 5.794305682894159,
+  "ppl_cached_decode": 5.846436500549316,
+  "max_abs_nll_diff": 0.8799153902155314
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "qwen05": {
+  "decode_mask_is_None": [
+   true
+  ],
+  "ms_hf_wrapper_with_mask": 25.098046866696677,
+  "ms_hf_wrapper_mask_none": 8.248550100021626,
+  "ms_torch_sdpa_enable_gqa": 8.0135938666596
+ },
+ "granite4micro": {
+  "decode_mask_is_None": [
+   false
+  ],
+  "ms_hf_wrapper_with_mask": 37.11804119999821,
+  "ms_hf_wrapper_mask_none": 8.031901066715363,
+  "ms_torch_sdpa_enable_gqa": 7.912023500042172
+ }
+}
