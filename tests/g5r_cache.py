@@ -70,7 +70,10 @@ def decode_consistency(model, ids, T: int, steps: int = 3) -> dict:
     dec = torch.stack(dec)
     ref = full
     lf, ld = torch.log_softmax(ref, -1), torch.log_softmax(dec, -1)
+    import math
+    mx = float(ref.abs().max())
     return {"T": T, "steps": steps, "max_abs_logit_diff": float((dec - ref).abs().max()),
+            "max_abs_logit": mx, "bf16_ulp_at_max_abs_logit": 2.0 ** (math.floor(math.log2(mx)) - 7) if mx > 0 else 0.0,
             "max_kl": float((lf.exp() * (lf - ld)).sum(-1).max()),
             "argmax_agree": float((dec.argmax(-1) == ref.argmax(-1)).double().mean())}
 
