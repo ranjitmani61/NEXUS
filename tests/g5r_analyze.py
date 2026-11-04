@@ -112,6 +112,29 @@ def passkey_tables(files):
     return out
 
 
+def family_ceiling(quality, timing):
+    """[Derived] Zero-overhead end-to-end ceiling for ANY valid-bound mass-certificate method:
+    1 / (1 - f * (1 - r)), f = measured dense attention share of decode time (timing run),
+    r = measured OR-SCORE mean page fraction (trace run) at the same model and context.
+    Optimistic for the candidates: it ignores all screening overhead and uses the per-query-head
+    fraction, which is <= the per-KV-head union that actually sets traffic."""
+    q_by = {(r["model"].replace("qwen05", "qwen05"), r["T"]): r for r in quality if r["input_kind"] == "book"}
+    out = []
+    for t in timing:
+        key = (t["model"], t["T"] if t["T"] != 32000 else 32000)
+        qr = q_by.get(key)
+        if qr is None:
+            continue
+        f = t["dense_attn_share"]; r = qr["orscore_frac_mean"]; rb = qr["box_frac_mean"]
+        out.append({"model": t["model"], "batch": t["batch"], "T": t["T"], "f_attn_share": f,
+                    "r_orscore": r, "family_ceiling": 1 / (1 - f * (1 - r)),
+                    "r_nxbox_measured": rb, "nxbox_ceiling_zero_overhead": 1 / (1 - f * (1 - rb)),
+                    "amdahl_ceiling": t["amdahl_ceiling"],
+                    "nxbox_measured_speedup": t["methods"].get("nx_box", {}).get("speedup_vs_dense_total"),
+                    "r_needed_for_2x": max(0.0, 1 - 0.5 / f) if f > 0.5 else None})
+    return out
+
+
 def fmt(x, n=3):
     return "—" if x is None else (f"{x:.{n}f}" if isinstance(x, float) else str(x))
 
@@ -140,6 +163,12 @@ def markdown(summary):
         for m, v in r["methods"].items():
             ci = v["speedup_vs_dense_total_ci95"]
             L.append(f"| {r['model']} | {r['batch']} | {r['T']} | {r['dense_attn_share']:.3f} | {r['amdahl_ceiling']:.3f} | {m} | {v['tokens_per_s']:.2f} | {v['speedup_vs_dense_total']:.3f} | [{ci[0]:.3f}, {ci[1]:.3f}] | {v['pages_read_frac']:.3f} |")
+    L += ["", "## [Derived] Ceiling for the whole NX valid-bound mass-certificate family (zero overhead)", "",
+          "| model | batch | T | attention share f | OR-SCORE r | family ceiling 1/(1-f(1-r)) | page fraction needed for 2x | NX-BOX zero-overhead ceiling | NX-BOX measured |",
+          "|---|---:|---:|---:|---:|---:|---:|---:|---:|"]
+    for c in summary.get("family_ceiling", []):
+        need = "impossible (f<=0.5)" if c["r_needed_for_2x"] is None else f"<= {c['r_needed_for_2x']:.3f}"
+        L.append(f"| {c['model']} | {c['batch']} | {c['T']} | {c['f_attn_share']:.3f} | {c['r_orscore']:.3f} | {c['family_ceiling']:.3f} | {need} | {c['nxbox_ceiling_zero_overhead']:.3f} | {fmt(c['nxbox_measured_speedup'])} |")
     L += ["", "## Passkey retrieval accuracy (question+answer decoded with the method)", "", "| model | T | trials | " + " | ".join(["dense", "nx_box", "quest:1024", "quest:2048", "quest:4096"]) + " |", "|---|---:|---:|---:|---:|---:|---:|---:|"]
     for r in summary["passkey"]:
         L.append(f"| {r['model']} | {r['T']} | {r['n_trials']} | " + " | ".join(fmt(r["accuracy"].get(m)) for m in ["dense", "nx_box", "quest:1024", "quest:2048", "quest:4096"]) + " |")
@@ -154,6 +183,7 @@ def main():
          "quality": quality_tables(glob.glob(str(a.results / "quality_*.json"))),
          "timing": timing_tables(glob.glob(str(a.results / "timing_*.json"))),
          "passkey": passkey_tables(glob.glob(str(a.results / "passkey_*.json")))}
+    s["family_ceiling"] = family_ceiling(s["quality"], s["timing"])
     (a.results / "summary.json").write_text(json.dumps(s, indent=1) + "\n")
     (a.results / "summary_tables.md").write_text(markdown(s))
     print(markdown(s))
