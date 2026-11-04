@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-04",
+  "project": "NEXUS Project 01",
+  "gate": "G5: BLOCKED",
+  "scope": "Pythia-14M pilot capture software instrumentation, no pretrained checkpoint executed",
+  "model_cached": false,
+  "pretrained_inference_executed": false,
+  "offline_synthetic_integration_test_count": 19,
+  "legacy_three_position_max_reconstruction_error": 0.0,
+  "measured_query_max_reconstruction_error": 1.8470681306847547,
+  "invalid_attn_row_rejection_tested": [
+    "future attention",
+    "negative weights",
+    "NaN",
+    "not normalized"
+  ],
+  "revision_check": "must equal pinned commit and resolved model config commit",
+  "environment": {
+    "python": "3.13.5",
+    "torch": "2.10.0+cpu",
+    "numpy": "2.3.5",
+    "pytest": "9.0.2",
+    "cuda_available": false
+  },
+  "source_sha256": {
+    "tests/g5_pythia_capture.py": "8c6058e9199055ad720669f581bd5552ecb5afd5b8c73f1ea43cbe556c661acd",
+    "tests/g5_trace_oracle.py": "2d7d0c9d22ce5d02b2025df16d7fea3e39b25fe86f20054b6027d62d901e47cd",
+    "tests/test_g5_pythia_capture_integrity.py": "6400d64aff23d4450e604b5db9dfc7f6d8501024bdde26d7685a41aca89f4562",
+    "tests/test_g5_capture_shapes.py": "2e412afb05add859ad9efb04b3dc5f8aa793fbf2c32ebb008fde222cde9e8a66",
+    "tests/test_g5_trace_oracle.py": "4777a9bf11e00bf9941865daa972a55c5e3d0c281e390900a0c5975cd9941f29"
+  },
+  "external_model_data": "NOT ACCESSED; network name resolution failure for huggingface.co; not cached",
+  "limitations": [
+    "Synthetic fixture only: no pretrained-model output or GPU speed/power results",
+    "Runtime integration with installed Transformers remains untested",
+    "A matching resolved commit is not a full tensor-level checksum",
+    "Absolute 0.005 reconstruction tolerance remains exploratory"
+  ]
+}
