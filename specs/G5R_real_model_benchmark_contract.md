@@ -142,3 +142,24 @@ No metric, threshold or decision rule is changed.
 **New order:** M1 8K (running) → M1 batch-4 timing → M2 8K → M2 batch-1 timing → M1 16K → M1 32K → passkey M1 (16K, 32K, 8K) → passkey M2 8K → adversarial inputs → remaining M2 contexts.
 
 No threshold, metric or decision rule is changed.
+
+## Amendment A4 — 2026-11-04 (recorded during M1 batch-4 32K timing; no M1 16K/32K traces, M2 traces or timing, passkey or adversarial-input data yet)
+
+**Reason:** runtime. M1 batch-4 timing at 32K is taking more than 45 minutes, because NX runs at a few percent of dense speed. M2 has 40 query heads and would be slower still.
+
+**Changes (scope and order only):**
+- **M2 timing:** 3 reps × 8 steps (instead of 5 × 16), methods `{dense, quest:1024, quest:2048, nx_box, nx_one}`. `nx_sph` is dropped because it matched `nx_box` within CI at every timed M1 context.
+- **New order:**
+  1. M2 8K traces
+  2. M1 16K traces
+  3. M1 32K traces
+  4. M2 timing at 8K and 16K
+  5. adversarial inputs (M1 4K)
+  6. passkey M1 16K
+  7. passkey M1 32K
+  8. passkey M2 8K
+  9. M2 16K traces
+  10. passkey M1 8K
+  11. M2 4K traces
+
+Thresholds and decision rules are unchanged.
