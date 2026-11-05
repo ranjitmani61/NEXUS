@@ -135,6 +135,14 @@ def _live_output(layer: int, q, K, V, scale: float):
         # of page selection from the bf16-SDPA vs float64 arithmetic difference.
         ref = C.dense_reference(q, K, V, scale, CTL.ps)
         return ref.out, {"pages_frac": 1.0}
+    if m.startswith("dense64p:"):
+        # Post-hoc diagnostic control (added 2026-11-05, not pre-registered; changes no decision rule):
+        # the dense64 output scaled by (1 + eps) before the cast to the model dtype. A dose-response over
+        # eps tests whether float64 output perturbations far below the certificate tolerance are
+        # amplified by bf16 rounding to the bf16 noise floor (gate review §5.8).
+        eps = float(m.split(":", 1)[1])
+        ref = C.dense_reference(q, K, V, scale, CTL.ps)
+        return ref.out * (1.0 + eps), {"pages_frac": 1.0}
     if m.startswith("quest:"):
         B = int(m.split(":")[1])
         ref16 = C.dense_reference(q, K, V, scale, 16)
