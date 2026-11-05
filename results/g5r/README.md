@@ -45,11 +45,25 @@ $V tests/g5r_adversarial_meta.py <raw dir>/*_samples.npz --output results/g5r/ad
 $V tests/g5r_analyze.py
 ```
 
-The exact queue used is reproduced in the gate review. Raw per-record traces and captured q/K/V samples (hundreds of MB) are **not** committed. They are regenerated deterministically by steps 3 and 5.
+Post-hoc bf16-amplification diagnostic (gate review §5.9; not pre-registered):
+
+```bash
+$V tests/g5r_run_quality.py --model-dir $M/granite-4.0-micro-base --model-name granite4micro --dtype bf16 --context 4096 --steps 32 \
+   --books $B/860.txt $B/2544.txt --live nx_box dense64p:1e-12 dense64p:1e-9 dense64p:1e-6 --capture-prob 0 --raw-dir <dir> \
+   --output results/g5r/diag/bf16_amplification_granite4micro_T4096.json
+# same with Qwen: --dtype fp32 --live nx_box dense64 dense64p:1e-6 and --dtype bf16 --live nx_box dense64p:1e-9 dense64p:1e-6
+```
+
+The exact queue scripts actually executed (v1–v9) and the queue log are in `run_record/`. Their paths refer to the session scratchpad. They are a record, not a portable script.
+- `queue_out.log` holds the stdout of every queue. Queues v1–v4 piped it through a warning filter (`filt`, defect D6); v5 onward is unfiltered. It includes lines from runs later quarantined in `invalid/`, e.g. the Granite book-860 PPL 2967 line (defect D4a).
+- `queue8.sh` is the faulty diagnostic queue: its sentinel matched its own log note (gate review §5.8).
+
+Raw per-record traces and captured q/K/V samples (hundreds of MB) are **not** committed. They are regenerated deterministically by steps 3 and 5.
 
 ## Labels
 
-- `quality_*`, `validate_*`, `passkey_*`: **[Measured]** model outputs on CPU.
+- `quality_*`, `validate_*`, `passkey_*`, `decode_consistency_*`: **[Measured]** model outputs on CPU.
+- `diag/bf16_amplification_*`: **[Measured]** post-hoc diagnostic (not pre-registered).
 - `timing_*`: **[Measured]** wall-clock on this VM only.
 - Oracle columns: **[Derived/diagnostic]**; they need full attention and are not executable savings.
 - No GPU, energy or silicon numbers exist in this directory.

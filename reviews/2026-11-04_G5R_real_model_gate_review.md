@@ -1,6 +1,6 @@
 # G5-R Gate Review — NEXUS candidates on genuine pretrained transformers
 
-**Dates:** 2026-11-04 to 2026-11-05 · **Version:** 1.0
+**Dates:** 2026-11-04 to 2026-11-05 · **Version:** 1.1. Revision note, 2026-11-05: added the completed Granite 16K/4K traces, all passkeys, the Qwen fp32 consistency check and the post-hoc §5.9 diagnostic, and corrected the §5.3/§5.7 wording that had implied exact NX quality on bf16 models. The decision is unchanged.
 **Governing protocol:** `AGENTS.md` v1.0, read in full before work, unchanged.
 **Contract:** `specs/G5R_real_model_benchmark_contract.md` v1.0 plus amendments A1–A5 (scope and order only; thresholds unchanged) and notice N1 (the platform changed mid-study). SHA-256 and UTC times are in `results/g5r/preregistration.json`.
 **Review lenses applied:** A1, A2, A3, A4, A6, A8, A10, A11. **Missing:** any independent human reviewer, GPU and energy measurement (impossible on this platform), and A5/A7/A9/A12 (not applicable to a CPU software study).
@@ -32,7 +32,7 @@ This follows the pre-registered rule (contract §11): *FAIL if, on any genuine p
 - At 16K (2 books), NX-BOX / NX-SPH / NX-VAL read 99.8% / 99.97% / 99.8% of pages, with 0 violations; OR-SCORE is 0.502.
 - Measured speed (host B, native-GQA dense) is 0.365× (8K) and 0.163× (16K) for NX-BOX, and 0.93× / 0.89× for NX-ONE.
 - The family ceiling is 1.32× at 8K and 1.54× at 16K. At 16K the attention-only Amdahl ceiling (3.39×) is above 2×, so the family bound, not Amdahl, is what rules out 2×.
-- At 16K, NX-BOX also misses the pre-registered top-1 criterion (0.969 vs bf16 dense; the dense64 control gets 0.984). This is one token out of 64; §5.9 tests whether it is page selection or bf16 rounding.
+- At 16K, NX-BOX also misses the pre-registered top-1 criterion (0.969 vs bf16 dense; the dense64 control gets 0.984, and fails it at 4K with 0.969). §5.9 shows that this drift matches the bf16 rounding floor reproduced by exact attention perturbed by 1e-6. It is not attributable to page selection.
 
 Under the contract a PASS needs both families and FAIL needs one; both families fail.
 
@@ -267,7 +267,35 @@ Quest-4096 at T = 4096 is not a pure summation-order control. Decode positions e
 
 **Test:** dense64 with its output scaled by (1+ε) before the bf16 cast, for ε ∈ {1e-12, 1e-9, 1e-6}, on Granite 4K (2 books), with a Qwen fp32 negative control (ε = 1e-6). Control code: `dense64p:<eps>` in `tests/g5r_hf.py`. Tests: `tests/test_g5r_hf_controls.py`.
 
-*[Result pending at the time of this revision.]*
+Plus Qwen bf16, which removes the model-family confound. Contexts are 4K, 2 books × 32 tokens = 64 tokens per arm, on host B. Outputs: `results/g5r/diag/bf16_amplification_*.json`.
+
+| arm | model / dtype | mean \|ΔNLL\| vs dense64 (nats) | max | tokens changed (> 1e-6) |
+|---|---|---:|---:|---:|
+| dense64 × (1 + 1e-12) | Granite bf16 | 0 | 0 | 0/64 |
+| dense64 × (1 + 1e-9) | Granite bf16 | 0 | 0 | 0/64 |
+| dense64 × (1 + 1e-6) | Granite bf16 | 0.033 | 0.189 | 64/64 |
+| NX-BOX | Granite bf16 | 0.020 | 0.191 | 37/64 |
+| dense64 × (1 + 1e-9) | Qwen bf16 | 0 | 0 | 0/64 |
+| dense64 × (1 + 1e-6) | Qwen bf16 | 0.029 | 0.131 | 63/64 |
+| NX-BOX | Qwen bf16 | 0.005 | 0.107 | 10/64 |
+| dense64 × (1 + 1e-6) | **Qwen fp32** | < 1e-5 | 1e-5 | 41/64 (all < 1e-5) |
+| NX-BOX | **Qwen fp32** | < 5e-6 | < 5e-6 | 26/64 (all < 5e-6) |
+
+**Result [Measured]:**
+- In bf16, a 1e-6 relative change to *exact* attention, with no page skipped, moves per-token NLL by about 0.03 nats on average (max 0.13–0.19) in **both** families. 1e-9 and 1e-12 change nothing within 32 tokens.
+- In fp32, the same 1e-6 change stays below 1e-5 nats.
+- NX-BOX's Granite drift (0.020 mean / 0.19 max here; 0.025–0.041 mean at 8K/16K) lies within the bf16 envelope of the exact-attention control.
+
+**Interpretation:**
+- [Supported hypothesis] The NX-BOX vs dense64 drift on Granite is consistent with bf16 rounding amplification of NX-BOX's ≤ ~5e-6 output errors. It is not evidence of a distinct page-selection quality loss. The Qwen bf16 arm shows that the amplification is a property of the dtype, not of the model family.
+- Limits:
+  - The evidence is consistency in magnitude, not a token-by-token proof of mechanism.
+  - The control's perturbation (a uniform scale) has a different shape from NX-BOX's error.
+  - The sample is 64 tokens per arm at a single context.
+- **Consequence for evaluation [Derived]:** in a bf16 model, any approximate-attention method with output error ≳ 1e-6 relative lands on the same noise floor: about 0.03 nats/token, and top-1 agreement with a bf16 reference of 0.91–1.00 per book.
+  - Quality thresholds tighter than that floor cannot separate approximation error from rounding.
+  - A future contract revision should calibrate bf16 quality thresholds against the dense64 × (1 + 1e-6) control's distribution.
+  - **This review does not apply that change retroactively.**
 
 ## 6. Failure analysis summary
 
@@ -284,6 +312,7 @@ Quest-4096 at T = 4096 is not a pure summation-order control. Decode positions e
 - Only two model families, both small (0.5B and 3.4B); long-context instruction or retrieval benchmarks (RULER, LongBench) not run.
 - Qwen weights not cross-checked against the Hugging Face revision (host blocked). Granite's signature was checked offline against an embedded trust root, without revocation check.
 - Granite cached-decode residual (KL up to 0.0051) fails the pre-set criterion. A bf16 Qwen control on a verified path shows the same order (≤ 1.8e-3), which supports, but does not prove, that it is ordinary bf16 rounding. The control ran on a different host.
+- **The quality criterion is not discriminating for bf16 models at the top-1 level.** Exact float64 attention fails top-1 ≥ 0.98 against bf16 SDPA on Granite 4K (0.969). §5.9 is post-hoc (64 tokens per arm, 4K only) and is not a validated recalibration. The pre-registered criterion was applied unchanged.
 - **The platform changed mid-study** (notice N1). Qwen timings are from host A (AMX), Granite timings and post-restart traces from host B (no AMX). Page-read fractions are host-independent; attention shares and speeds are not, and they are not pooled.
 - The decision covers attention-page candidates. The photonic, near-memory, codec, bitplane, temporal-delta and batching branches were **not** re-tested here; their earlier gate status stands (no G5 evidence).
 

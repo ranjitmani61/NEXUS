@@ -1,0 +1,61 @@
+[20:25:46] start queue
+[20:25:46] BEGIN timing qwen bf16 b1
+[20:38:43] END rc=0
+[20:38:43] BEGIN validate granite
+[20:43:07] END rc=0
+[20:43:07] BEGIN quality granite 8K
+[20:45:39] END rc=143
+[20:45:39] BEGIN quality qwen 8K
+[20:58:15] controller replaced by queue3 (Amendment A3)
+[21:06:44] END (qwen 8K, finished under queue v1 controller)
+[21:06:44] BEGIN timing qwen bf16 b4
+[21:33:19] controller replaced by queue4 (Amendment A4)
+[21:45:33] BEGIN quality granite 8K (fixed cache)
+[22:12:40] END rc=0
+[22:12:40] BEGIN quality qwen 16K
+[23:26:29] END rc=0
+[23:26:29] BEGIN quality qwen 32K
+[23:39:04] END rc=0
+[23:39:04] BEGIN timing granite bf16 b1
+[23:50:45] END rc=0
+[23:50:45] BEGIN adversarial qwen random 4K
+[23:52:59] END rc=0
+[23:52:59] BEGIN adversarial qwen repeat 4K
+[23:54:52] END rc=0
+[23:54:52] BEGIN passkey qwen 16384
+[23:55:49] controllers replaced by queue6 (Amendment A5)
+[00:02:18] END (passkey qwen 16384, finished under queue v4 controller)
+[00:02:18] BEGIN decode consistency granite 8K (4 books)
+[00:09:26] END rc=0
+[00:09:26] BEGIN quality granite 8K (all fixes)
+[00:13:33] CONTAINER RESTART detected; queue v7 resumes (granite 8K traces restarted from scratch)
+[00:13:33] BEGIN quality granite 8K (all fixes)
+[01:33:26] END rc=0
+[01:33:26] BEGIN timing granite bf16 b1 (native-GQA dense)
+[02:14:02] END rc=0
+[02:14:02] BEGIN decode consistency qwen BF16 8K (control for bf16 residual)
+[02:24:50] END rc=0
+[02:24:50] BEGIN decode consistency qwen 8K
+[02:30:00] END rc=0
+[02:30:00] BEGIN passkey granite 8K
+[03:38:28] END rc=0
+[03:38:28] BEGIN passkey qwen 32000
+[04:05:37] END rc=0
+[04:05:37] BEGIN quality granite 16K
+[06:12:54] queue8 armed (post-hoc bf16-amplification diagnostic; starts after QUEUE7 DONE)
+[06:13:52] BEGIN diag granite bf16 amplification 4K
+[06:28:40] END rc=0
+[06:28:40] BEGIN passkey qwen 8192
+[06:30:26] queue8 stopped by me: its wait loop matched its own arming note in this log (my error), so the diagnostic began 06:13:52 concurrently with queue v7 (granite 16K book-2 live phase, then passkey qwen 8192). Those are deterministic quality/passkey computations, not timing runs; only their wall-clock seconds are affected. The partial diagnostic was discarded; re-armed as queue9 with an anchored sentinel.
+[06:30:38] queue9 armed (anchored sentinel)
+[06:35:49] END rc=0
+[06:35:49] BEGIN quality granite 4K
+[07:13:22] END rc=0
+[07:13:22] QUEUE7 DONE
+[07:13:36] BEGIN diag granite bf16 amplification 4K
+[07:30:30] END rc=0
+[07:30:30] BEGIN diag qwen fp32 amplification 4K (negative control)
+[07:32:35] END rc=0
+[07:32:35] QUEUE9 DONE
+[07:33:37] BEGIN diag qwen BF16 amplification 4K (removes model-family confound)
+[07:36:15] END rc=0
