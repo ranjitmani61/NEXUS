@@ -902,10 +902,199 @@
  ],
  "timing": [
   {
+   "file": "timing_granite4micro_bf16_b1.json",
+   "model": "granite4micro",
+   "dtype": "bf16",
+   "batch": 1,
+   "host": "fam6/m85 noAMX",
+   "T": 8192,
+   "prefill_s": 563.4990368750005,
+   "kv_bytes": 671088640,
+   "dense_attn_share": 0.5638145847154848,
+   "amdahl_ceiling": 2.292603019171835,
+   "methods": {
+    "dense": {
+     "tokens_per_s": 1.041292838469884,
+     "speedup_vs_dense_total": 1.0,
+     "speedup_vs_dense_total_ci95": [
+      0.9407716150838592,
+      1.0629572405953822
+     ],
+     "steady_step_s_p50": 0.934540014999584,
+     "steady_step_s_p95": 1.0415075890005028,
+     "first_step_s_median": 0.9715674159997434,
+     "pages_read_frac": 1.0,
+     "fallbacks_median": 0.0,
+     "build_s_median": 0.0,
+     "meta_bytes": 0,
+     "rss_bytes_max": 9450094592
+    },
+    "quest:1024": {
+     "tokens_per_s": 1.4003579084101996,
+     "speedup_vs_dense_total": 1.3448262166749745,
+     "speedup_vs_dense_total_ci95": [
+      1.193233560770963,
+      1.3991273989960684
+     ],
+     "steady_step_s_p50": 0.7179453110002214,
+     "steady_step_s_p95": 0.7859585750002225,
+     "first_step_s_median": 0.7663854849997733,
+     "pages_read_frac": 0.16875,
+     "fallbacks_median": 0.0,
+     "build_s_median": 0.07676393299971096,
+     "meta_bytes": 79691776,
+     "rss_bytes_max": 9554644992
+    },
+    "quest:2048": {
+     "tokens_per_s": 0.6881675488179488,
+     "speedup_vs_dense_total": 0.6608780195100245,
+     "speedup_vs_dense_total_ci95": [
+      0.6194237691344283,
+      0.7447403887127995
+     ],
+     "steady_step_s_p50": 1.3649656519992277,
+     "steady_step_s_p95": 1.8378307940001832,
+     "first_step_s_median": 1.4056077110008118,
+     "pages_read_frac": 0.2875,
+     "fallbacks_median": 0.0,
+     "build_s_median": 0.13837690699801897,
+     "meta_bytes": 79691776,
+     "rss_bytes_max": 9595064320
+    },
+    "nx_box": {
+     "tokens_per_s": 0.3801071537432551,
+     "speedup_vs_dense_total": 0.36503386914847047,
+     "speedup_vs_dense_total_ci95": [
+      0.33810103906568806,
+      0.37354668096064697
+     ],
+     "steady_step_s_p50": 2.6450554800003374,
+     "steady_step_s_p95": 2.838536619000479,
+     "first_step_s_median": 2.7992288569994344,
+     "pages_read_frac": 1.0,
+     "fallbacks_median": 0.0,
+     "build_s_median": 0.0830216999993354,
+     "meta_bytes": 41943040,
+     "rss_bytes_max": 9550692352
+    },
+    "nx_one": {
+     "tokens_per_s": 0.9673104912511621,
+     "speedup_vs_dense_total": 0.9289514491164323,
+     "speedup_vs_dense_total_ci95": [
+      0.8860685498167977,
+      0.9980314803274565
+     ],
+     "steady_step_s_p50": 0.9988345850006226,
+     "steady_step_s_p95": 1.0918257969997285,
+     "first_step_s_median": 1.1082767540001441,
+     "pages_read_frac": 1.0,
+     "fallbacks_median": 320.0,
+     "build_s_median": 0.08858684500046365,
+     "meta_bytes": 41943040,
+     "rss_bytes_max": 9537310720
+    }
+   }
+  },
+  {
+   "file": "timing_granite4micro_bf16_b1.json",
+   "model": "granite4micro",
+   "dtype": "bf16",
+   "batch": 1,
+   "host": "fam6/m85 noAMX",
+   "T": 16384,
+   "prefill_s": 1302.5952812079995,
+   "kv_bytes": 1342177280,
+   "dense_attn_share": 0.7052066730549075,
+   "amdahl_ceiling": 3.392207043364511,
+   "methods": {
+    "dense": {
+     "tokens_per_s": 0.6547517755082661,
+     "speedup_vs_dense_total": 1.0,
+     "speedup_vs_dense_total_ci95": [
+      0.9821991711319913,
+      1.018123441142282
+     ],
+     "steady_step_s_p50": 1.5203360210007304,
+     "steady_step_s_p95": 1.6704536090001056,
+     "first_step_s_median": 1.5700304660003894,
+     "pages_read_frac": 1.0,
+     "fallbacks_median": 0.0,
+     "build_s_median": 0.0,
+     "meta_bytes": 0,
+     "rss_bytes_max": 11912757248
+    },
+    "quest:1024": {
+     "tokens_per_s": 1.1447394131804804,
+     "speedup_vs_dense_total": 1.7483563328894376,
+     "speedup_vs_dense_total_ci95": [
+      1.6676270262410637,
+      1.7868772591780022
+     ],
+     "steady_step_s_p50": 0.8365638639997997,
+     "steady_step_s_p95": 0.8898219279999466,
+     "first_step_s_median": 1.1473756979994505,
+     "pages_read_frac": 0.109375,
+     "fallbacks_median": 0.0,
+     "build_s_median": 0.27814303199920687,
+     "meta_bytes": 159383552,
+     "rss_bytes_max": 12127322112
+    },
+    "quest:2048": {
+     "tokens_per_s": 0.8877043992642015,
+     "speedup_vs_dense_total": 1.3557876930919361,
+     "speedup_vs_dense_total_ci95": [
+      1.2523855198703997,
+      1.3951701957397364
+     ],
+     "steady_step_s_p50": 1.081096169000375,
+     "steady_step_s_p95": 1.1889383320003617,
+     "first_step_s_median": 1.4537002039996878,
+     "pages_read_frac": 0.16875,
+     "fallbacks_median": 0.0,
+     "build_s_median": 0.28388940500099125,
+     "meta_bytes": 159383552,
+     "rss_bytes_max": 12114866176
+    },
+    "nx_box": {
+     "tokens_per_s": 0.1067768956251583,
+     "speedup_vs_dense_total": 0.1630799634598475,
+     "speedup_vs_dense_total_ci95": [
+      0.15885428243552077,
+      0.17098309392797298
+     ],
+     "steady_step_s_p50": 9.232008596000014,
+     "steady_step_s_p95": 9.89862531000017,
+     "first_step_s_median": 9.709337795000465,
+     "pages_read_frac": 1.0,
+     "fallbacks_median": 0.0,
+     "build_s_median": 0.3024416830039627,
+     "meta_bytes": 83886080,
+     "rss_bytes_max": 12083265536
+    },
+    "nx_one": {
+     "tokens_per_s": 0.5810895862116262,
+     "speedup_vs_dense_total": 0.8874960068043223,
+     "speedup_vs_dense_total_ci95": [
+      0.8657435151508694,
+      0.943078114628774
+     ],
+     "steady_step_s_p50": 1.647508588999699,
+     "steady_step_s_p95": 1.7993196650004393,
+     "first_step_s_median": 2.081438896999316,
+     "pages_read_frac": 1.0,
+     "fallbacks_median": 320.0,
+     "build_s_median": 0.3103994760003843,
+     "meta_bytes": 83886080,
+     "rss_bytes_max": 11963731968
+    }
+   }
+  },
+  {
    "file": "timing_qwen05_bf16_b1.json",
    "model": "qwen05",
    "dtype": "bf16",
    "batch": 1,
+   "host": "fam6/m207 AMX",
    "T": 4096,
    "prefill_s": 3.706424452999727,
    "kv_bytes": 50331648,
@@ -1031,6 +1220,7 @@
    "model": "qwen05",
    "dtype": "bf16",
    "batch": 1,
+   "host": "fam6/m207 AMX",
    "T": 8192,
    "prefill_s": 9.003609146000144,
    "kv_bytes": 100663296,
@@ -1156,6 +1346,7 @@
    "model": "qwen05",
    "dtype": "bf16",
    "batch": 1,
+   "host": "fam6/m207 AMX",
    "T": 16384,
    "prefill_s": 25.016350504000002,
    "kv_bytes": 201326592,
@@ -1281,6 +1472,7 @@
    "model": "qwen05",
    "dtype": "bf16",
    "batch": 1,
+   "host": "fam6/m207 AMX",
    "T": 32000,
    "prefill_s": 67.55253080600005,
    "kv_bytes": 393216000,
@@ -1406,6 +1598,7 @@
    "model": "qwen05",
    "dtype": "bf16",
    "batch": 4,
+   "host": "fam6/m207 AMX",
    "T": 8192,
    "prefill_s": 39.654813430000104,
    "kv_bytes": 402653184,
@@ -1499,6 +1692,7 @@
    "model": "qwen05",
    "dtype": "bf16",
    "batch": 4,
+   "host": "fam6/m207 AMX",
    "T": 16384,
    "prefill_s": 99.36777011699996,
    "kv_bytes": 805306368,
@@ -1592,6 +1786,7 @@
    "model": "qwen05",
    "dtype": "bf16",
    "batch": 4,
+   "host": "fam6/m207 AMX",
    "T": 32000,
    "prefill_s": 315.45334838300005,
    "kv_bytes": 1572864000,
@@ -1698,7 +1893,22 @@
  ],
  "family_ceiling": [
   {
+   "model": "granite4micro",
+   "host": "fam6/m85 noAMX",
+   "batch": 1,
+   "T": 8192,
+   "f_attn_share": 0.5638145847154848,
+   "r_orscore": 0.5724969140286575,
+   "family_ceiling": 1.3175794311408702,
+   "r_nxbox_measured": 0.9990014178650852,
+   "nxbox_ceiling_zero_overhead": 1.0005633323363534,
+   "amdahl_ceiling": 2.292603019171835,
+   "nxbox_measured_speedup": 0.36503386914847047,
+   "r_needed_for_2x": 0.11318363597792935
+  },
+  {
    "model": "qwen05",
+   "host": "fam6/m207 AMX",
    "batch": 1,
    "T": 4096,
    "f_attn_share": 0.14489854150577747,
@@ -1712,6 +1922,7 @@
   },
   {
    "model": "qwen05",
+   "host": "fam6/m207 AMX",
    "batch": 1,
    "T": 8192,
    "f_attn_share": 0.24346475457878444,
@@ -1725,6 +1936,7 @@
   },
   {
    "model": "qwen05",
+   "host": "fam6/m207 AMX",
    "batch": 1,
    "T": 16384,
    "f_attn_share": 0.37321116984858954,
@@ -1738,6 +1950,7 @@
   },
   {
    "model": "qwen05",
+   "host": "fam6/m207 AMX",
    "batch": 1,
    "T": 32000,
    "f_attn_share": 0.49423839840169825,
@@ -1751,6 +1964,7 @@
   },
   {
    "model": "qwen05",
+   "host": "fam6/m207 AMX",
    "batch": 4,
    "T": 8192,
    "f_attn_share": 0.3820237402481843,
@@ -1764,6 +1978,7 @@
   },
   {
    "model": "qwen05",
+   "host": "fam6/m207 AMX",
    "batch": 4,
    "T": 16384,
    "f_attn_share": 0.516921737799586,
@@ -1777,6 +1992,7 @@
   },
   {
    "model": "qwen05",
+   "host": "fam6/m207 AMX",
    "batch": 4,
    "T": 32000,
    "f_attn_share": 0.5861178531211508,

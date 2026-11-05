@@ -31,6 +31,7 @@ import numpy as np
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import g5r_host  # noqa: E402
 import g5r_hf as H  # noqa: E402
 import g5r_cache as KC  # noqa: E402
 
@@ -123,7 +124,7 @@ def main():
     torch.manual_seed(0)
     tok, model = load(a.model_dir, a.dtype)
     import transformers
-    meta = {"version": "1.0", "input_kind": a.input_kind, "date": "2026-11-04", "model": a.model_name, "model_dir": a.model_dir,
+    meta = {"version": "1.0", "input_kind": a.input_kind, "host": g5r_host.host_info(), "date": "2026-11-04", "model": a.model_name, "model_dir": a.model_dir,
             "dtype": a.dtype, "context": a.context, "steps": a.steps, "live_methods": a.live,
             "torch": torch.__version__, "transformers": transformers.__version__, "numpy": np.__version__,
             "python": platform.python_version(), "threads": a.threads, "page_size_nx": H.CTL.ps,

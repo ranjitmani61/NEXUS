@@ -97,8 +97,12 @@ def timing_tables(files):
     out = []
     for f in sorted(files):
         d = json.load(open(f))
+        meta = d["meta"]
+        h = meta.get("host") or meta.get("host_post_hoc") or {}
+        host = h.get("cpu_model") or ("207" if "207" in str(meta.get("cpu", "")) else "?")
+        host = f"fam6/m{host}" + (" AMX" if h.get("amx_bf16") or ("AMX" in str(meta.get("cpu", ""))) else " noAMX")
         for T, e in d["contexts"].items():
-            row = {"file": Path(f).name, "model": d["meta"]["model"], "dtype": d["meta"]["dtype"], "batch": d["meta"]["batch"],
+            row = {"file": Path(f).name, "model": d["meta"]["model"], "dtype": d["meta"]["dtype"], "batch": d["meta"]["batch"], "host": host,
                    "T": int(T), "prefill_s": e["prefill_s"], "kv_bytes": e["kv_bytes"],
                    "dense_attn_share": e["methods"]["dense"]["attn_share_of_decode"],
                    "amdahl_ceiling": e["amdahl_ceiling_attention_only"], "methods": {}}
@@ -136,7 +140,7 @@ def family_ceiling(quality, timing):
         if qr is None:
             continue
         f = t["dense_attn_share"]; r = qr["orscore_frac_mean"]; rb = qr["box_frac_mean"]
-        out.append({"model": t["model"], "batch": t["batch"], "T": t["T"], "f_attn_share": f,
+        out.append({"model": t["model"], "host": t["host"], "batch": t["batch"], "T": t["T"], "f_attn_share": f,
                     "r_orscore": r, "family_ceiling": 1 / (1 - f * (1 - r)),
                     "r_nxbox_measured": rb, "nxbox_ceiling_zero_overhead": 1 / (1 - f * (1 - rb)),
                     "amdahl_ceiling": t["amdahl_ceiling"],
@@ -169,18 +173,18 @@ def markdown(summary):
     for r in summary["quality"]:
         L.append(f"| {r['model']} | {r['T']} | {r['input_kind']} | " + " | ".join(fmt(r[f'quest{B}_local_err_share_gt_tol']) for B in (512, 1024, 2048, 4096)) + " |")
     L += ["", "## Measured CPU decode speed (bf16 unless noted; 16 steps × 5 reps; speedup = dense time / method time incl. metadata+fallback)", "",
-          "| model | batch | T | dense attn share of decode | Amdahl ceiling (attention-only) | method | tokens/s | speedup vs dense | 95% CI | KV pages read |",
-          "|---|---:|---:|---:|---:|---|---:|---:|---|---:|"]
+          "| model | host CPU | batch | T | dense attn share of decode | Amdahl ceiling (attention-only) | method | tokens/s | speedup vs dense | 95% CI | KV pages read |",
+          "|---|---|---:|---:|---:|---:|---|---:|---:|---|---:|"]
     for r in summary["timing"]:
         for m, v in r["methods"].items():
             ci = v["speedup_vs_dense_total_ci95"]
-            L.append(f"| {r['model']} | {r['batch']} | {r['T']} | {r['dense_attn_share']:.3f} | {r['amdahl_ceiling']:.3f} | {m} | {v['tokens_per_s']:.2f} | {v['speedup_vs_dense_total']:.3f} | [{ci[0]:.3f}, {ci[1]:.3f}] | {v['pages_read_frac']:.3f} |")
+            L.append(f"| {r['model']} | {r['host']} | {r['batch']} | {r['T']} | {r['dense_attn_share']:.3f} | {r['amdahl_ceiling']:.3f} | {m} | {v['tokens_per_s']:.2f} | {v['speedup_vs_dense_total']:.3f} | [{ci[0]:.3f}, {ci[1]:.3f}] | {v['pages_read_frac']:.3f} |")
     L += ["", "## [Derived] Ceiling for the whole NX valid-bound mass-certificate family (zero overhead)", "",
-          "| model | batch | T | attention share f | OR-SCORE r | family ceiling 1/(1-f(1-r)) | page fraction needed for 2x | NX-BOX zero-overhead ceiling | NX-BOX measured |",
-          "|---|---:|---:|---:|---:|---:|---:|---:|---:|"]
+          "| model | host CPU (for f) | batch | T | attention share f | OR-SCORE r | family ceiling 1/(1-f(1-r)) | page fraction needed for 2x | NX-BOX zero-overhead ceiling | NX-BOX measured |",
+          "|---|---|---:|---:|---:|---:|---:|---|---:|---:|"]
     for c in summary.get("family_ceiling", []):
         need = "impossible (f<=0.5)" if c["r_needed_for_2x"] is None else f"<= {c['r_needed_for_2x']:.3f}"
-        L.append(f"| {c['model']} | {c['batch']} | {c['T']} | {c['f_attn_share']:.3f} | {c['r_orscore']:.3f} | {c['family_ceiling']:.3f} | {need} | {c['nxbox_ceiling_zero_overhead']:.3f} | {fmt(c['nxbox_measured_speedup'])} |")
+        L.append(f"| {c['model']} | {c['host']} | {c['batch']} | {c['T']} | {c['f_attn_share']:.3f} | {c['r_orscore']:.3f} | {c['family_ceiling']:.3f} | {need} | {c['nxbox_ceiling_zero_overhead']:.3f} | {fmt(c['nxbox_measured_speedup'])} |")
     L += ["", "## Passkey retrieval accuracy (question+answer decoded with the method)", "", "| model | T | trials | " + " | ".join(["dense", "nx_box", "quest:1024", "quest:2048", "quest:4096"]) + " |", "|---|---:|---:|---:|---:|---:|---:|---:|"]
     for r in summary["passkey"]:
         L.append(f"| {r['model']} | {r['T']} | {r['n_trials']} | " + " | ".join(fmt(r["accuracy"].get(m)) for m in ["dense", "nx_box", "quest:1024", "quest:2048", "quest:4096"]) + " |")

@@ -9,6 +9,7 @@ import argparse, json, sys
 from pathlib import Path
 import torch
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import g5r_host  # noqa: E402
 import g5r_hf as H  # noqa: E402
 import g5r_cache as KC  # noqa: E402
 
@@ -29,7 +30,7 @@ for b in a.books:
     r = KC.decode_consistency(m, ids, a.T, a.steps); r["book"] = b.name
     r["pass"] = bool(r["max_kl"] <= 1e-3 and r["argmax_agree"] == 1.0)
     rows.append(r); print(json.dumps(r), flush=True)
-out = {"model": a.model_name, "dtype": a.dtype, "criterion": "max KL <= 1e-3 and argmax agreement 1.0", "rows": rows,
+out = {"model": a.model_name, "dtype": a.dtype, "host": g5r_host.host_info(), "criterion": "max KL <= 1e-3 and argmax agreement 1.0", "rows": rows,
        "all_pass": all(r["pass"] for r in rows)}
 a.output.parent.mkdir(parents=True, exist_ok=True); a.output.write_text(json.dumps(out, indent=1) + "\n")
 print("ALL PASS" if out["all_pass"] else "FAIL")

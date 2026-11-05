@@ -184,3 +184,20 @@ Both are documented in `results/g5r/invalid/README.md`. All prior M2 trace and t
 9. M2 4K traces
 
 Thresholds and decision rules are unchanged.
+
+## Notice N1 — 2026-11-05: platform changed mid-study (a fact, not a design choice)
+
+The cloud container was restarted between 00:09 and 00:13 UTC on 2026-11-05, and came back on a different CPU.
+
+| | Before (host A) | After (host B) |
+|---|---|---|
+| CPU | Xeon family 6 model 207 | Xeon family 6 model 85 |
+| AMX-BF16 / AVX512-BF16 | yes | no (AVX-512F only) |
+| L3 | 260 MiB | 33 MiB |
+
+**Rules applied from this point:**
+- Speed ratios are taken only within one run, on one host.
+- Attention shares, Amdahl ceilings and absolute speeds are reported per host and never pooled.
+- The family-ceiling bound uses f and r from the same model, with the host stated.
+
+`results/g5r/host_log.json` maps every result file to its host. No threshold or decision rule is changed.

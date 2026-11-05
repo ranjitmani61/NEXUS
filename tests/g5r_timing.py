@@ -25,6 +25,7 @@ import psutil
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import g5r_host  # noqa: E402
 import g5r_fast_attn as F  # noqa: E402
 import g5r_cache as KC  # noqa: E402
 
@@ -82,7 +83,7 @@ def main():
     res = {"meta": {"version": "1.0", "date": "2026-11-04", "model": a.model_name, "dtype": a.dtype,
                     "batch": a.batch, "steps": a.steps, "reps": a.reps, "threads": a.threads,
                     "torch": torch.__version__, "transformers": transformers.__version__,
-                    "python": platform.python_version(), "cpu": "4 vCPU Xeon fam6 model207 (AVX512, AMX-BF16)",
+                    "python": platform.python_version(), "host": g5r_host.host_info(),
                     "energy": "NOT MEASURED (no RAPL/powercap on this VM)",
                     "baseline": "stock transformers SDPA on CPU; not llama.cpp, not GPU"}, "contexts": {}}
     rng = np.random.default_rng(20261104)

@@ -30,7 +30,20 @@
   ],
   "quest_dense_layers": 2,
   "contract": "specs/G5R_real_model_benchmark_contract.md",
-  "note": "Shadow statistics use float64 recomputation of the real q/K/V; live runs replace attention."
+  "note": "Shadow statistics use float64 recomputation of the real q/K/V; live runs replace attention.",
+  "host_post_hoc": {
+   "cpu_model_name": "Intel(R) Xeon(R) Processor @ 2.80GHz",
+   "cpu_family": "6",
+   "cpu_model": "85",
+   "logical_cpus": 4,
+   "amx_bf16": false,
+   "avx512_bf16": false,
+   "avx512f": true,
+   "l3": "33 MiB",
+   "kernel": "6.18.44-fc-v236",
+   "evidence": "lscpu and /proc/cpuinfo captured 2026-11-05 ~02:15 UTC after the container restart",
+   "annotation": "Added 2026-11-05 after the fact from queue.log timestamps and lscpu on the post-restart host; see results/g5r/host_log.json. The script did not record the host at run time."
+  }
  },
  "books": [
   {

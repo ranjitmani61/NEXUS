@@ -1,0 +1,917 @@
+{
+ "meta": {
+  "version": "1.0",
+  "date": "2026-11-04",
+  "model": "granite4micro",
+  "dtype": "bf16",
+  "batch": 1,
+  "steps": 8,
+  "reps": 3,
+  "threads": 4,
+  "torch": "2.15.0+cu132",
+  "transformers": "4.57.1",
+  "python": "3.13.18",
+  "energy": "NOT MEASURED (no RAPL/powercap on this VM)",
+  "baseline": "stock transformers SDPA on CPU; not llama.cpp, not GPU",
+  "cpu_field_INCORRECT_hardcoded_in_v1.0_script": "4 vCPU Xeon fam6 model207 (AVX512, AMX-BF16)",
+  "host_post_hoc": {
+   "cpu_model_name": "Intel(R) Xeon(R) Processor @ 2.80GHz",
+   "cpu_family": "6",
+   "cpu_model": "85",
+   "logical_cpus": 4,
+   "amx_bf16": false,
+   "avx512_bf16": false,
+   "avx512f": true,
+   "l3": "33 MiB",
+   "kernel": "6.18.44-fc-v236",
+   "evidence": "lscpu and /proc/cpuinfo captured 2026-11-05 ~02:15 UTC after the container restart",
+   "annotation": "Added 2026-11-05 after the fact from queue.log timestamps and lscpu on the post-restart host; see results/g5r/host_log.json. The script did not record the host at run time."
+  }
+ },
+ "contexts": {
+  "8192": {
+   "prefill_s": 563.4990368750005,
+   "kv_bytes": 671088640,
+   "methods": {
+    "dense": {
+     "total_s_median": 7.682757150001635,
+     "first_step_s_median": 0.9715674159997434,
+     "steady_step_s_p50": 0.934540014999584,
+     "steady_step_s_p95": 1.0415075890005028,
+     "tokens_per_s": 1.041292838469884,
+     "speedup_vs_dense_total": 1.0,
+     "speedup_vs_dense_total_ci95": [
+      0.9407716150838592,
+      1.0629572405953822
+     ],
+     "speedup_vs_dense_steady_p50": 1.0,
+     "attn_share_of_decode": 0.5638145847154848,
+     "build_s_median": 0.0,
+     "pages_read_frac": 1.0,
+     "fallbacks_median": 0.0,
+     "meta_bytes": 0,
+     "rss_bytes_max": 9450094592,
+     "raw": [
+      {
+       "step_s": [
+        1.0700607079998008,
+        0.8931452229999195,
+        1.0107679239999925,
+        1.0740880140001536,
+        0.9832359950005412,
+        0.9886869499996465,
+        0.934540014999584,
+        0.8755878889996893
+       ],
+       "attn_s": 4.355101909009136,
+       "build_s": 0.0,
+       "pages_read_frac": 1.0,
+       "fallbacks": 0,
+       "attn_calls": 0,
+       "meta_bytes": 0,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 9450094592,
+       "final_logits_maxabs_vs_dense": 0.0
+      },
+      {
+       "step_s": [
+        0.9715674159997434,
+        0.9138292550005644,
+        0.9669665279998299,
+        1.0415075890005028,
+        1.0135706490000302,
+        0.8790820809999786,
+        0.8970710290004718,
+        0.9991626030005136
+       ],
+       "attn_s": 4.331650531998093,
+       "build_s": 0.0,
+       "pages_read_frac": 1.0,
+       "fallbacks": 0,
+       "attn_calls": 0,
+       "meta_bytes": 0,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 9419898880,
+       "final_logits_maxabs_vs_dense": 0.0
+      },
+      {
+       "step_s": [
+        0.9048945820004519,
+        0.9246395030004351,
+        0.93277647099967,
+        0.9407321590006177,
+        0.8996174049998444,
+        0.9031563010003083,
+        0.9718954469999517,
+        0.888635919999615
+       ],
+       "attn_s": 4.188624374003666,
+       "build_s": 0.0,
+       "pages_read_frac": 1.0,
+       "fallbacks": 0,
+       "attn_calls": 0,
+       "meta_bytes": 0,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 9436655616,
+       "final_logits_maxabs_vs_dense": 0.0
+      }
+     ]
+    },
+    "quest:1024": {
+     "total_s_median": 5.712825237001198,
+     "first_step_s_median": 0.7663854849997733,
+     "steady_step_s_p50": 0.7179453110002214,
+     "steady_step_s_p95": 0.7859585750002225,
+     "tokens_per_s": 1.4003579084101996,
+     "speedup_vs_dense_total": 1.3448262166749745,
+     "speedup_vs_dense_total_ci95": [
+      1.193233560770963,
+      1.3991273989960684
+     ],
+     "speedup_vs_dense_steady_p50": 1.3016869121933659,
+     "attn_share_of_decode": 0.45726343877696335,
+     "build_s_median": 0.07676393299971096,
+     "pages_read_frac": 0.16875,
+     "fallbacks_median": 0.0,
+     "meta_bytes": 79691776,
+     "rss_bytes_max": 9554644992,
+     "raw": [
+      {
+       "step_s": [
+        0.7663854849997733,
+        0.7091812039998331,
+        0.7457391399993867,
+        0.7097357470001953,
+        0.7179453110002214,
+        0.6714681089997612,
+        0.6297421859999304,
+        0.6462286500000118
+       ],
+       "attn_s": 2.5326096799908555,
+       "build_s": 0.07271479199971509,
+       "pages_read_frac": 0.16875,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 79691776,
+       "dense_decode_calls": 16,
+       "dense_native_gqa_calls": 16,
+       "rss_bytes": 9456336896,
+       "final_logits_maxabs_vs_dense": 1.5625
+      },
+      {
+       "step_s": [
+        0.8545753190001051,
+        0.7836721429994213,
+        0.7242127660001643,
+        0.7074341629995615,
+        0.7667373650001537,
+        0.8050963189998583,
+        0.7859585750002225,
+        0.7457466409996414
+       ],
+       "attn_s": 2.823291760999382,
+       "build_s": 0.08228385999973398,
+       "pages_read_frac": 0.16875,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 79691776,
+       "dense_decode_calls": 16,
+       "dense_native_gqa_calls": 16,
+       "rss_bytes": 9504817152,
+       "final_logits_maxabs_vs_dense": 1.5625
+      },
+      {
+       "step_s": [
+        0.7493508229999861,
+        0.6977739920002932,
+        0.7061567850005304,
+        0.7515516169996772,
+        0.7279939560003186,
+        0.6669908020003277,
+        0.6520439289997739,
+        0.7609633330002907
+       ],
+       "attn_s": 2.6122661130029883,
+       "build_s": 0.07676393299971096,
+       "pages_read_frac": 0.16875,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 79691776,
+       "dense_decode_calls": 16,
+       "dense_native_gqa_calls": 16,
+       "rss_bytes": 9554644992,
+       "final_logits_maxabs_vs_dense": 1.5625
+      }
+     ]
+    },
+    "quest:2048": {
+     "total_s_median": 11.625075918998846,
+     "first_step_s_median": 1.4056077110008118,
+     "steady_step_s_p50": 1.3649656519992277,
+     "steady_step_s_p95": 1.8378307940001832,
+     "tokens_per_s": 0.6881675488179488,
+     "speedup_vs_dense_total": 0.6608780195100245,
+     "speedup_vs_dense_total_ci95": [
+      0.6194237691344283,
+      0.7447403887127995
+     ],
+     "speedup_vs_dense_steady_p50": 0.6846619280351772,
+     "attn_share_of_decode": 0.7221352616956938,
+     "build_s_median": 0.13837690699801897,
+     "pages_read_frac": 0.2875,
+     "fallbacks_median": 0.0,
+     "meta_bytes": 79691776,
+     "rss_bytes_max": 9595064320,
+     "raw": [
+      {
+       "step_s": [
+        1.445066708000013,
+        1.8393231449999803,
+        1.4141669419996106,
+        1.7336288579999746,
+        1.3432323679999172,
+        1.2613641520001693,
+        1.2233280939999531,
+        1.3649656519992277
+       ],
+       "attn_s": 8.39487724099854,
+       "build_s": 0.13837690699801897,
+       "pages_read_frac": 0.2875,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 79691776,
+       "dense_decode_calls": 16,
+       "dense_native_gqa_calls": 16,
+       "rss_bytes": 9595064320,
+       "final_logits_maxabs_vs_dense": null
+      },
+      {
+       "step_s": [
+        1.4056077110008118,
+        1.7261389499999495,
+        1.3248100569999224,
+        1.8378307940001832,
+        1.3454079159992034,
+        1.4379650099999708,
+        1.441653720999966,
+        1.3728446710001663
+       ],
+       "attn_s": 8.588141505993917,
+       "build_s": 0.13991363999775785,
+       "pages_read_frac": 0.2875,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 79691776,
+       "dense_decode_calls": 16,
+       "dense_native_gqa_calls": 16,
+       "rss_bytes": 9545424896,
+       "final_logits_maxabs_vs_dense": 1.0
+      },
+      {
+       "step_s": [
+        1.3448049509997873,
+        1.680887817000439,
+        1.2080454880006073,
+        1.4073445049998554,
+        1.2337455080005384,
+        1.247831964999932,
+        1.193616393999946,
+        1.1976055740005904
+       ],
+       "attn_s": 7.293883527998332,
+       "build_s": 0.1229638229988268,
+       "pages_read_frac": 0.2875,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 79691776,
+       "dense_decode_calls": 16,
+       "dense_native_gqa_calls": 16,
+       "rss_bytes": 9527447552,
+       "final_logits_maxabs_vs_dense": 1.0
+      }
+     ]
+    },
+    "nx_box": {
+     "total_s_median": 21.046696756998244,
+     "first_step_s_median": 2.7992288569994344,
+     "steady_step_s_p50": 2.6450554800003374,
+     "steady_step_s_p95": 2.838536619000479,
+     "tokens_per_s": 0.3801071537432551,
+     "speedup_vs_dense_total": 0.36503386914847047,
+     "speedup_vs_dense_total_ci95": [
+      0.33810103906568806,
+      0.37354668096064697
+     ],
+     "speedup_vs_dense_steady_p50": 0.35331584613849565,
+     "attn_share_of_decode": 0.8493475102237864,
+     "build_s_median": 0.0830216999993354,
+     "pages_read_frac": 1.0,
+     "fallbacks_median": 0.0,
+     "meta_bytes": 41943040,
+     "rss_bytes_max": 9550692352,
+     "raw": [
+      {
+       "step_s": [
+        2.5799628150007266,
+        2.705680174999543,
+        2.8586770369993246,
+        2.6501301420003074,
+        2.6593677440005195,
+        2.792545162999886,
+        2.702515713000139,
+        2.838536619000479
+       ],
+       "attn_s": 18.505087030996947,
+       "build_s": 0.07863504699889745,
+       "pages_read_frac": 1.0,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 41943040,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 9526779904,
+       "final_logits_maxabs_vs_dense": null
+      },
+      {
+       "step_s": [
+        2.811355005999758,
+        2.6450554800003374,
+        2.555072129999644,
+        2.560832764999759,
+        2.6633618650002973,
+        2.622633144000247,
+        2.625147464999827,
+        2.4780795300002865
+       ],
+       "attn_s": 17.81691424499786,
+       "build_s": 0.08606165900255291,
+       "pages_read_frac": 1.0,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 41943040,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 9517989888,
+       "final_logits_maxabs_vs_dense": 0.0
+      },
+      {
+       "step_s": [
+        2.7992288569994344,
+        2.6345951590001278,
+        2.673643838999851,
+        2.6170412369992846,
+        2.593700708999677,
+        2.647909633999916,
+        2.58917039500011,
+        2.4914069269998436
+       ],
+       "attn_s": 17.87331764200735,
+       "build_s": 0.0830216999993354,
+       "pages_read_frac": 1.0,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 41943040,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 9550692352,
+       "final_logits_maxabs_vs_dense": 0.0
+      }
+     ]
+    },
+    "nx_one": {
+     "total_s_median": 8.270353802999125,
+     "first_step_s_median": 1.1082767540001441,
+     "steady_step_s_p50": 0.9988345850006226,
+     "steady_step_s_p95": 1.0918257969997285,
+     "tokens_per_s": 0.9673104912511621,
+     "speedup_vs_dense_total": 0.9289514491164323,
+     "speedup_vs_dense_total_ci95": [
+      0.8860685498167977,
+      0.9980314803274565
+     ],
+     "speedup_vs_dense_steady_p50": 0.9356304127164373,
+     "attn_share_of_decode": 0.6013632222359007,
+     "build_s_median": 0.08858684500046365,
+     "pages_read_frac": 1.0,
+     "fallbacks_median": 320.0,
+     "meta_bytes": 41943040,
+     "rss_bytes_max": 9537310720,
+     "raw": [
+      {
+       "step_s": [
+        1.1082767540001441,
+        1.0309797330000947,
+        1.0833074089996444,
+        1.0481978759999038,
+        0.9476576339993699,
+        1.0244414009994216,
+        1.0202951290002602,
+        1.0071978670002864
+       ],
+       "attn_s": 4.973486612002489,
+       "build_s": 0.10122146399862686,
+       "pages_read_frac": 1.0,
+       "fallbacks": 320,
+       "attn_calls": 320,
+       "meta_bytes": 41943040,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 9537310720,
+       "final_logits_maxabs_vs_dense": null
+      },
+      {
+       "step_s": [
+        1.0712671810006213,
+        0.9930093180000767,
+        0.969780912000715,
+        0.9683025459999044,
+        0.9402743740001824,
+        0.95032291500047,
+        0.9374405290000141,
+        1.0151590760006002
+       ],
+       "attn_s": 4.671998965994135,
+       "build_s": 0.08858684500046365,
+       "pages_read_frac": 1.0,
+       "fallbacks": 320,
+       "attn_calls": 320,
+       "meta_bytes": 41943040,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 9487597568,
+       "final_logits_maxabs_vs_dense": 0.0
+      },
+      {
+       "step_s": [
+        1.1263846800002284,
+        1.1062689189993762,
+        1.0385795979991599,
+        0.9988345850006226,
+        0.9821681029998217,
+        1.0918257969997285,
+        0.9862249020006857,
+        0.983232487999885
+       ],
+       "attn_s": 5.004465219997655,
+       "build_s": 0.07961855000030482,
+       "pages_read_frac": 1.0,
+       "fallbacks": 320,
+       "attn_calls": 320,
+       "meta_bytes": 41943040,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 9476849664,
+       "final_logits_maxabs_vs_dense": 0.0
+      }
+     ]
+    }
+   },
+   "amdahl_ceiling_attention_only": 2.292603019171835
+  },
+  "16384": {
+   "prefill_s": 1302.5952812079995,
+   "kv_bytes": 1342177280,
+   "methods": {
+    "dense": {
+     "total_s_median": 12.218370838001647,
+     "first_step_s_median": 1.5700304660003894,
+     "steady_step_s_p50": 1.5203360210007304,
+     "steady_step_s_p95": 1.6704536090001056,
+     "tokens_per_s": 0.6547517755082661,
+     "speedup_vs_dense_total": 1.0,
+     "speedup_vs_dense_total_ci95": [
+      0.9821991711319913,
+      1.018123441142282
+     ],
+     "speedup_vs_dense_steady_p50": 1.0,
+     "attn_share_of_decode": 0.7052066730549075,
+     "build_s_median": 0.0,
+     "pages_read_frac": 1.0,
+     "fallbacks_median": 0.0,
+     "meta_bytes": 0,
+     "rss_bytes_max": 11912757248,
+     "raw": [
+      {
+       "step_s": [
+        1.4654004370004259,
+        1.4086474949999683,
+        1.5759445269995922,
+        1.538986080999166,
+        1.5203360210007304,
+        1.679629942000247,
+        1.43743870399976,
+        1.4479096539998864
+       ],
+       "attn_s": 8.514871897996272,
+       "build_s": 0.0,
+       "pages_read_frac": 1.0,
+       "fallbacks": 0,
+       "attn_calls": 0,
+       "meta_bytes": 0,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 11835981824,
+       "final_logits_maxabs_vs_dense": 0.0
+      },
+      {
+       "step_s": [
+        1.5700304660003894,
+        1.4474285720007174,
+        1.570915498999966,
+        1.6704536090001056,
+        1.4809547830000156,
+        1.549834436999845,
+        1.437158231000467,
+        1.491595241000141
+       ],
+       "attn_s": 8.568601761002355,
+       "build_s": 0.0,
+       "pages_read_frac": 1.0,
+       "fallbacks": 0,
+       "attn_calls": 0,
+       "meta_bytes": 0,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 11912757248,
+       "final_logits_maxabs_vs_dense": 0.0
+      },
+      {
+       "step_s": [
+        1.596502665999651,
+        1.5285548129995732,
+        1.4937956670000858,
+        1.5374813039998116,
+        1.5925911350004753,
+        1.5751518360002592,
+        1.503014288000486,
+        1.4660288880004373
+       ],
+       "attn_s": 8.671979314000055,
+       "build_s": 0.0,
+       "pages_read_frac": 1.0,
+       "fallbacks": 0,
+       "attn_calls": 0,
+       "meta_bytes": 0,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 11800268800,
+       "final_logits_maxabs_vs_dense": 0.0
+      }
+     ]
+    },
+    "quest:1024": {
+     "total_s_median": 6.988490051000554,
+     "first_step_s_median": 1.1473756979994505,
+     "steady_step_s_p50": 0.8365638639997997,
+     "steady_step_s_p95": 0.8898219279999466,
+     "tokens_per_s": 1.1447394131804804,
+     "speedup_vs_dense_total": 1.7483563328894376,
+     "speedup_vs_dense_total_ci95": [
+      1.6676270262410637,
+      1.7868772591780022
+     ],
+     "speedup_vs_dense_steady_p50": 1.8173579883449216,
+     "attn_share_of_decode": 0.4779879644409182,
+     "build_s_median": 0.27814303199920687,
+     "pages_read_frac": 0.109375,
+     "fallbacks_median": 0.0,
+     "meta_bytes": 159383552,
+     "rss_bytes_max": 12127322112,
+     "raw": [
+      {
+       "step_s": [
+        1.1179878729999473,
+        0.8648970869999175,
+        0.8536536280007567,
+        0.8205911550003293,
+        0.8201837209999212,
+        0.7947222980001243,
+        0.7958047229994918,
+        0.8118265619996237
+       ],
+       "attn_s": 3.2468958079934964,
+       "build_s": 0.2643163460015785,
+       "pages_read_frac": 0.109375,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 159383552,
+       "dense_decode_calls": 16,
+       "dense_native_gqa_calls": 16,
+       "rss_bytes": 12048769024,
+       "final_logits_maxabs_vs_dense": 1.8359375
+      },
+      {
+       "step_s": [
+        1.2223883939996085,
+        0.7945923770002992,
+        0.7914288459996897,
+        0.8126852240002336,
+        0.8297184220000418,
+        0.8586314470003344,
+        0.8398464279998734,
+        0.8391989130004731
+       ],
+       "attn_s": 3.340414133993363,
+       "build_s": 0.3040613930015752,
+       "pages_read_frac": 0.109375,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 159383552,
+       "dense_decode_calls": 16,
+       "dense_native_gqa_calls": 16,
+       "rss_bytes": 12127322112,
+       "final_logits_maxabs_vs_dense": 1.8359375
+      },
+      {
+       "step_s": [
+        1.1473756979994505,
+        0.8365638639997997,
+        0.8631362280002577,
+        0.8786746830000993,
+        0.8476805570007855,
+        0.8130771910000476,
+        0.8898219279999466,
+        0.9640735330003736
+       ],
+       "attn_s": 3.497446961996502,
+       "build_s": 0.27814303199920687,
+       "pages_read_frac": 0.109375,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 159383552,
+       "dense_decode_calls": 16,
+       "dense_native_gqa_calls": 16,
+       "rss_bytes": 12048777216,
+       "final_logits_maxabs_vs_dense": 1.8359375
+      }
+     ]
+    },
+    "quest:2048": {
+     "total_s_median": 9.012008959999548,
+     "first_step_s_median": 1.4537002039996878,
+     "steady_step_s_p50": 1.081096169000375,
+     "steady_step_s_p95": 1.1889383320003617,
+     "tokens_per_s": 0.8877043992642015,
+     "speedup_vs_dense_total": 1.3557876930919361,
+     "speedup_vs_dense_total_ci95": [
+      1.2523855198703997,
+      1.3951701957397364
+     ],
+     "speedup_vs_dense_steady_p50": 1.4062911927682569,
+     "attn_share_of_decode": 0.6058403360701833,
+     "build_s_median": 0.28388940500099125,
+     "pages_read_frac": 0.16875,
+     "fallbacks_median": 0.0,
+     "meta_bytes": 159383552,
+     "rss_bytes_max": 12114866176,
+     "raw": [
+      {
+       "step_s": [
+        1.591157963999649,
+        1.3182152709996444,
+        1.148167408999143,
+        1.0555788049996409,
+        1.0201279949997115,
+        1.1507750579994536,
+        1.1686437360003765,
+        1.1883689460000824
+       ],
+       "attn_s": 5.856786789007856,
+       "build_s": 0.31664643100248213,
+       "pages_read_frac": 0.16875,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 159383552,
+       "dense_decode_calls": 16,
+       "dense_native_gqa_calls": 16,
+       "rss_bytes": 12095864832,
+       "final_logits_maxabs_vs_dense": 1.25
+      },
+      {
+       "step_s": [
+        1.3688276390003011,
+        1.1850275500000862,
+        1.1889383320003617,
+        1.0311706380007308,
+        0.9969511039998906,
+        0.9927246320003178,
+        1.0333569320000606,
+        1.0142010000008668
+       ],
+       "attn_s": 5.243952149003235,
+       "build_s": 0.2716826260002563,
+       "pages_read_frac": 0.16875,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 159383552,
+       "dense_decode_calls": 16,
+       "dense_native_gqa_calls": 16,
+       "rss_bytes": 12114866176,
+       "final_logits_maxabs_vs_dense": 1.25
+      },
+      {
+       "step_s": [
+        1.4537002039996878,
+        1.1077557420003359,
+        1.081096169000375,
+        1.1535028179996516,
+        1.109663797000394,
+        1.0614480389995151,
+        1.0211868329997742,
+        1.0236553579998144
+       ],
+       "attn_s": 5.4598385369936295,
+       "build_s": 0.28388940500099125,
+       "pages_read_frac": 0.16875,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 159383552,
+       "dense_decode_calls": 16,
+       "dense_native_gqa_calls": 16,
+       "rss_bytes": 11917651968,
+       "final_logits_maxabs_vs_dense": 1.25
+      }
+     ]
+    },
+    "nx_box": {
+     "total_s_median": 74.92257527400034,
+     "first_step_s_median": 9.709337795000465,
+     "steady_step_s_p50": 9.232008596000014,
+     "steady_step_s_p95": 9.89862531000017,
+     "tokens_per_s": 0.1067768956251583,
+     "speedup_vs_dense_total": 0.1630799634598475,
+     "speedup_vs_dense_total_ci95": [
+      0.15885428243552077,
+      0.17098309392797298
+     ],
+     "speedup_vs_dense_steady_p50": 0.16468095812426473,
+     "attn_share_of_decode": 0.9508144877520054,
+     "build_s_median": 0.3024416830039627,
+     "pages_read_frac": 1.0,
+     "fallbacks_median": 0.0,
+     "meta_bytes": 83886080,
+     "rss_bytes_max": 12083265536,
+     "raw": [
+      {
+       "step_s": [
+        9.636828771999717,
+        9.085774506999769,
+        7.300005500000225,
+        8.534588316999361,
+        9.191150548999758,
+        9.182047518999752,
+        9.232008596000014,
+        9.734298508000393
+       ],
+       "attn_s": 68.24915997798962,
+       "build_s": 0.2931841750023523,
+       "pages_read_frac": 1.0,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 83886080,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 12051894272,
+       "final_logits_maxabs_vs_dense": 0.0
+      },
+      {
+       "step_s": [
+        9.709337795000465,
+        9.076467166999464,
+        8.98804707599993,
+        9.89862531000017,
+        9.486126794000484,
+        9.334345061000022,
+        9.461425436000354,
+        8.968200634999448
+       ],
+       "attn_s": 71.26330225399761,
+       "build_s": 0.3024416830039627,
+       "pages_read_frac": 1.0,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 83886080,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 12083265536,
+       "final_logits_maxabs_vs_dense": 0.0
+      },
+      {
+       "step_s": [
+        10.823202257000048,
+        9.601559243000338,
+        8.448183704999792,
+        9.416912309000509,
+        10.136651777000225,
+        9.315057130000241,
+        9.252756105999651,
+        9.014285335999375
+       ],
+       "attn_s": 72.27008555000157,
+       "build_s": 0.3401624839971191,
+       "pages_read_frac": 1.0,
+       "fallbacks": 0,
+       "attn_calls": 320,
+       "meta_bytes": 83886080,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 12068634624,
+       "final_logits_maxabs_vs_dense": 0.0
+      }
+     ]
+    },
+    "nx_one": {
+     "total_s_median": 13.76724035299867,
+     "first_step_s_median": 2.081438896999316,
+     "steady_step_s_p50": 1.647508588999699,
+     "steady_step_s_p95": 1.7993196650004393,
+     "tokens_per_s": 0.5810895862116262,
+     "speedup_vs_dense_total": 0.8874960068043223,
+     "speedup_vs_dense_total_ci95": [
+      0.8657435151508694,
+      0.943078114628774
+     ],
+     "speedup_vs_dense_steady_p50": 0.9228091623630426,
+     "attn_share_of_decode": 0.7303483918494468,
+     "build_s_median": 0.3103994760003843,
+     "pages_read_frac": 1.0,
+     "fallbacks_median": 320.0,
+     "meta_bytes": 83886080,
+     "rss_bytes_max": 11963731968,
+     "raw": [
+      {
+       "step_s": [
+        1.937463231000038,
+        1.6322599710001668,
+        1.5192464720003045,
+        1.73300010299954,
+        1.5568083779999142,
+        1.6360155270003816,
+        1.516705379999621,
+        1.5036041879993718
+       ],
+       "attn_s": 9.485660400996494,
+       "build_s": 0.294811468997068,
+       "pages_read_frac": 1.0,
+       "fallbacks": 320,
+       "attn_calls": 320,
+       "meta_bytes": 83886080,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 11950186496,
+       "final_logits_maxabs_vs_dense": 0.0
+      },
+      {
+       "step_s": [
+        2.112144748999526,
+        1.657588123000096,
+        1.7259622759993363,
+        1.680117732999861,
+        1.6798891939997702,
+        1.6175676910006587,
+        1.6422751410000274,
+        1.651695445999394
+       ],
+       "attn_s": 10.054881852017388,
+       "build_s": 0.3236357380010304,
+       "pages_read_frac": 1.0,
+       "fallbacks": 320,
+       "attn_calls": 320,
+       "meta_bytes": 83886080,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 11950194688,
+       "final_logits_maxabs_vs_dense": 0.0
+      },
+      {
+       "step_s": [
+        2.081438896999316,
+        1.7993196650004393,
+        1.5695600959998046,
+        1.647508588999699,
+        1.6524680919992534,
+        1.8631496529997094,
+        1.7026024180004242,
+        1.6306846759998734
+       ],
+       "attn_s": 10.224203738006509,
+       "build_s": 0.3103994760003843,
+       "pages_read_frac": 1.0,
+       "fallbacks": 320,
+       "attn_calls": 320,
+       "meta_bytes": 83886080,
+       "dense_decode_calls": 320,
+       "dense_native_gqa_calls": 320,
+       "rss_bytes": 11963731968,
+       "final_logits_maxabs_vs_dense": 0.0
+      }
+     ]
+    }
+   },
+   "amdahl_ceiling_attention_only": 3.392207043364511
+  }
+ }
+}

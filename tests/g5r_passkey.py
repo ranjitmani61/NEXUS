@@ -23,6 +23,7 @@ import numpy as np
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import g5r_host  # noqa: E402
 import g5r_hf as H  # noqa: E402
 import g5r_cache as KC  # noqa: E402
 
@@ -109,7 +110,7 @@ def main():
             summary = {m: float(np.mean([t["answers"][m]["correct"] for t in trials])) for m in a.methods}
             a.output.parent.mkdir(parents=True, exist_ok=True)
             a.output.write_text(json.dumps({"meta": {"version": "1.0", "date": "2026-11-04", "model": a.model_name,
-                                                     "dtype": a.dtype, "context": a.context, "methods": a.methods,
+                                                     "dtype": a.dtype, "context": a.context, "methods": a.methods, "host": g5r_host.host_info(),
                                                      "seed": 20261104 + a.context},
                                             "accuracy": summary, "n_trials": len(trials), "trials": trials}, indent=1) + "\n")
 

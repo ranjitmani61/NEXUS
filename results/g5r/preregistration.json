@@ -28,5 +28,10 @@
     "sha256_after": "dfef4aace08b7abbd9c8436653cb39a5cf79444be1c1f69c49c605ef3f54a35b",
     "recorded_utc": "2026-11-04T23:55:47Z",
     "data_existing_at_time": "M1 traces 4K/8K/16K/32K + random/repeat; M1 timing b1/b4; M2: only invalid (quarantined) runs + 2-book decode-consistency check. No passkey result yet (M1 16K passkey running)."
+  },
+  "notice_N1": {
+    "sha256_after": "8c3bb6c6b3874ca1320ac65125c0c4e36869413448be4437b249024362e58c19",
+    "recorded_utc": "2026-11-05T02:15:44Z",
+    "content": "platform changed mid-study (container restart onto non-AMX host)"
   }
 }
