@@ -88,7 +88,7 @@ def evaluate_one(weights: np.ndarray, values: np.ndarray, page_size: int = 32,
     mass_needed = int(np.searchsorted(cum, 1.0-tolerance/2.0, side="left")+1)
     mass_needed = min(mass_needed, num_pages)
     mass_read_mass = float(cum[mass_needed-1])
-    mass_error_certificate = min(1.0, 2.0*(1.0-mass_read_mass))
+    mass_error_certificate = min(1.0, max(0.0, 2.0*(1.0-mass_read_mass)))  # FP roundoff can make cum mass > 1
 
     # Score-max oracle: selecting pages in descending max exact attention weight.
     # Per-page mass upper bounds U_j = page_size_j * max_i p_i.

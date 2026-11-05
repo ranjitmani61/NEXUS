@@ -1,0 +1,11 @@
+Local preflight, 2026-11-05
+Public repository: ranjitmani61/NEXUS
+Free standard GitHub Actions runner according to official GitHub documentation.
+Model weights downloaded locally: NO
+Pretrained inference performed locally: NO
+Local Python G5 integration regression: 93 passed in 2.43s
+Workflow parsed locally: PASS (push to main/manual dispatch; standard ubuntu-24.04; read-only; 20 min; artifact 7 days)
+Paid cloud job invoked: NO
+Numerical bug: float64 page mass >1 can produce negative mass certificate; fixed with clamp.
+GitHub Actions remote run: NOT VERIFIED AT TIME OF PREFLIGHT
+Gate: G5 BLOCKED, G6 NOT AUTHORIZED, breakthrough NOT DEMONSTRATED
