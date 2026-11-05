@@ -82,6 +82,7 @@ def quality_tables(files):
                        "matched_quality_ppl_top1": bool(ppl_ratio <= 1.01 and np.mean([b["live"][m]["top1_agree"] for b in books]) >= 0.98)}
         r["live"] = live
         rows.append(r)
+    rows.sort(key=lambda r: (r["model"], r["input_kind"] != "book", r["input_kind"], r["T"]))
     return rows
 
 
@@ -100,6 +101,7 @@ def timing_tables(files):
                                                          "pages_read_frac", "fallbacks_median", "build_s_median",
                                                          "meta_bytes", "rss_bytes_max")}
             out.append(row)
+    out.sort(key=lambda r: (r["model"], r["batch"], r["T"]))
     return out
 
 
@@ -109,6 +111,7 @@ def passkey_tables(files):
         d = json.load(open(f))
         out.append({"file": Path(f).name, "model": d["meta"]["model"], "T": d["meta"]["context"],
                     "n_trials": d["n_trials"], "accuracy": d["accuracy"]})
+    out.sort(key=lambda r: (r["model"], r["T"]))
     return out
 
 

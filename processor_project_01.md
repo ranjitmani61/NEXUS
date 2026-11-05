@@ -202,3 +202,32 @@ Read the complete `AGENTS.md` before experiment, read previous G2 photonic revie
 ## 2026-11-04 — G2 detector photon-flux and current stress audit
 
 Read full `AGENTS.md` and latest photonic review, then predeclared 24 Poisson/shot-noise throughput cases. For the **specified** independent-Poisson two-channel direct-difference estimator, relative RMS is `kappa/sqrt(N)`. At `kappa=1000` and target 1% RMS, this requires N=10 billion **detected** photons per reduction; for **assumed** 1550nm, 10% link/detector and 20% wall-plug efficiency, electrical photon cost is **64.0789 nJ/reduction**. At an assumed **100M reductions/s**, detector current sum-equivalent is **0.160218 A** and source electric optical power **6.40789 W**; neither is hardware-measured. At κ=1,100 with same target costs are much lower; workload cancellation distribution not measured. Against an entirely **hypothetical** 30nJ matched digital baseline, the κ=1000/1% case loses even before static/control cost, but not a universal optical no-go. **28 new tests passed**; results repeat byte-for-byte; 120,000 simulated Poisson count pairs cross-check exact variance. G2 mathematical audit PASS under assumptions; G2 physical feasibility HOLD, G1 novelty unproven, G5 BLOCKED and G6 NOT AUTHORIZED. Photonic branch suspended pending actual device and workload data or new mechanism. Source/reproduction and all limitations in `reviews/2026-11-04_G2_photonic_flux_gate_review.md`.
+## 2026-11-04/05 — G5-R: NEXUS candidates on genuine pretrained models (G5 FAIL)
+
+Read `AGENTS.md` in full before work. Pre-registered `specs/G5R_real_model_benchmark_contract.md` (hash recorded before any data) with dated scope/order amendments A1–A5; no threshold was changed.
+
+**Weights:** huggingface.co was blocked, so they came from Kaggle official publishers.
+- Qwen2.5-0.5B (QwenLM): SHA-256 manifest; PG-19 perplexity 13–26 against 189,356 for random init.
+- IBM Granite-4.0-micro-base: Sigstore signature verified; 11/11 file digests and the subject digest match.
+
+**Method:** CPU only (4 vCPU, AMX-BF16); no GPU or energy counter. 8 PG-19 test books chosen by a fixed rule; real KV-cache decode. Every layer, head and step was evaluated in float64 shadow mode, plus live replacement runs, measured timing, passkey and adversarial inputs.
+
+**Result on Qwen2.5-0.5B (4K–32K, batch 1 and 4):**
+- NX-BOX / NX-SPH / NX-VAL read 97.8–100% of KV pages. The NX-BOX KV-head union is 100% in every layer. NX-ONE admission is 0.
+- 0 certificate violations (log-domain evaluation).
+- Measured end-to-end decode speed 0.04×–0.80× of dense.
+- Even the exact-max-score oracle needs 53–64% of pages (mechanism: median bound slack 16 nats, larger than the 14-nat spread of true page maxima).
+- The derived zero-overhead ceiling for the whole valid-bound family is ≤ 1.38×.
+- Batch-1 Amdahl ceiling < 2× up to 32K.
+- Quest (comparator) meets matched quality only with large budgets (78% of KV at 4K/8K), and at no tested budget at 16K/32K.
+
+**Defects found and fixed (outputs quarantined in `results/g5r/invalid/`):**
+- archived-pattern float64 underflow and subtract-from-total cancellation (false certificates);
+- a zipped Kaggle file;
+- Granite returning no cache;
+- a transformers 4.57.1 empty hybrid cache reporting length = batch size (RoPE offset);
+- a handicapped Granite dense baseline (`repeat_kv`).
+
+**Decision:** G5 **FAIL** for all NX attention-page candidates under the pre-registered rule; G4 benefit FAIL; G3 conditional PASS only for the log-domain certificate; G6–G12 not authorised. Granite runs are confirmatory and are being completed.
+
+Report: `reviews/2026-11-04_G5R_real_model_gate_review.md`. Tables: `results/g5r/summary_tables.md`. Reproduce: `results/g5r/README.md`.
