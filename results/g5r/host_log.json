@@ -29,10 +29,14 @@
  "restart": "between 2026-11-05 00:09:26 UTC (last step started on host A) and 00:13:33 UTC (queue v7 started on host B)",
  "host_B_files": {
   "results/g5r/quality_granite4micro_T8192.json": "queue v7, 00:13:33-01:33:26 UTC",
-  "results/g5r/timing_granite4micro_bf16_b1.json": "queue v7, 01:33:26-02:14:02 UTC"
+  "results/g5r/timing_granite4micro_bf16_b1.json": "queue v7, 01:33:26-02:14:02 UTC",
+  "results/g5r/decode_consistency_qwen05_bf16_T8192.json": "queue v7, 02:14:02-02:24:50 UTC"
  },
  "host_B_files_in_progress": [
-  "results/g5r/decode_consistency_qwen05_bf16_T8192.json (queue v7, started 02:14:02 UTC)"
+  "results/g5r/decode_consistency_qwen05_T8192.json and later queue v7 outputs (these record the host themselves)"
  ],
- "consequence": "Speed ratios within a run are valid (dense and candidates on the same host). Attention shares, Amdahl ceilings and absolute tokens/s are host-specific and are not pooled across hosts."
+ "consequence": "Speed ratios within a run are valid (dense and candidates on the same host). Attention shares, Amdahl ceilings and absolute tokens/s are host-specific and are not pooled across hosts.",
+ "host_A_files_annotated": {
+  "results/g5r/decode_consistency_granite4micro_T8192.json": "queue v6, 00:02:18-00:09:26 UTC"
+ }
 }
