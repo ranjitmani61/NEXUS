@@ -198,6 +198,7 @@ Even with *perfect* per-page score bounds, a mass certificate at tol 0.02 needs 
 |---|---|---|---|---|---|---|
 | Qwen 16,384 | A | 6/6 | 6/6 (0.987) | 6/6 (0.24) | 6/6 (0.36) | 6/6 (0.54) |
 | Qwen 32,000 | B | 6/6 | 6/6 (0.978) | **3/6** (0.17) | **5/6** (0.24) | 6/6 (0.36) |
+| Qwen 8,192 | B | 6/6 | 6/6 (0.993) | 6/6 (0.35) | 6/6 (0.54) | 6/6 (0.79) |
 | Granite 8,192 | B | 6/6 | 6/6 (0.999) | 6/6 (0.27) | 6/6 (0.44) | 6/6 (0.71) |
 
 - The failures are Quest's, at 32K, at depths 0.1 and 0.5. The wrong answers continue the book (e.g. "in the drawer.", "the key to the pass.").
@@ -230,7 +231,28 @@ Even with *perfect* per-page score bounds, a mass certificate at tol 0.02 needs 
   - Book 2's live phase was already slow before the overlap, because of memory thrashing on host B (15 GB RAM, process RSS 13.9 GB).
   - The diagnostic's partial output was discarded and re-run strictly after the queue.
 
-**Granite 4K traces, Qwen 8K passkey:** *[pending at the time of this revision; added below when complete].*
+**Granite 4K traces** (4 books, 204,800 head-steps):
+
+| T | NX-BOX | NX-SPH | NX-VAL | NX-BOX@16 | NX-BOX reads all pages | OR-SCORE | OR-MASS | violations | naive-eval false early stops (box/sph) |
+|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
+| 4096 | 0.999 | 1.000 | 0.999 | 0.994 | 97.3% | 0.605 | 0.358 | 0/0/0 | 358/5,180 |
+
+**Live quality, Granite 4K** (4 books × 32 tokens):
+
+| method | PPL ratio vs bf16 dense | PPL ratio vs dense64 | top-1 vs bf16 dense | KV pages read | matched quality |
+|---|---|---|---:|---:|---|
+| NX-BOX | 0.997 [0.994, 0.999] | 0.999 [0.993, 1.005] | 0.977 | 0.999 | no (top-1) |
+| Quest-1024 | 1.017 [1.006, 1.028] | 1.019 | 0.953 | 0.431 | no |
+| Quest-2048 | 0.994 [0.982, 1.005] | 0.995 | 0.977 | 0.697 | no (top-1) |
+| Quest-4096 | 0.999 [0.995, 1.007] | 1.001 | 1.000 | 1.000 (budget ≈ T) | yes |
+| **dense64 (control)** | 0.998 [0.991, 1.006] | — | **0.969** | 1.000 | **no (top-1)** |
+
+**Finding [Measured]: on Granite (bf16), exact float64 attention fails the pre-registered top-1 criterion against bf16 SDPA.** It does so at 4K (0.969; 3 of 32 tokens differ on book 2544) and nearly at 16K (0.984).
+- The top-1 ≥ 0.98 rule, measured against a bf16 reference, therefore sits at or below this model's arithmetic noise floor. NX-BOX's top-1 misses on Granite (0.977 at 4K, 0.969 at 16K) are **not** evidence of page-selection error.
+- The criterion is **not** relaxed here. It is reported as a limitation of applying a fixed top-1 threshold to a bf16 model, for the next contract revision.
+- No decision depends on it: NX fails G5 on speed in every configuration.
+
+Quest-4096 at T = 4096 is not a pure summation-order control. Decode positions exceed 4096, so a few tokens are skipped (shadow error median 5e-11, max 0.007).
 
 ### 5.9 Post-hoc diagnostic: why NX-BOX on Granite drifts from dense64
 
