@@ -1878,6 +1878,19 @@
  ],
  "passkey": [
   {
+   "file": "passkey_granite4micro_T8192.json",
+   "model": "granite4micro",
+   "T": 8192,
+   "n_trials": 6,
+   "accuracy": {
+    "dense": 1.0,
+    "nx_box": 1.0,
+    "quest:1024": 1.0,
+    "quest:2048": 1.0,
+    "quest:4096": 1.0
+   }
+  },
+  {
    "file": "passkey_qwen05_T16384.json",
    "model": "qwen05",
    "T": 16384,
@@ -1887,6 +1900,19 @@
     "nx_box": 1.0,
     "quest:1024": 1.0,
     "quest:2048": 1.0,
+    "quest:4096": 1.0
+   }
+  },
+  {
+   "file": "passkey_qwen05_T32000.json",
+   "model": "qwen05",
+   "T": 32000,
+   "n_trials": 6,
+   "accuracy": {
+    "dense": 1.0,
+    "nx_box": 1.0,
+    "quest:1024": 0.5,
+    "quest:2048": 0.8333333333333334,
     "quest:4096": 1.0
    }
   }

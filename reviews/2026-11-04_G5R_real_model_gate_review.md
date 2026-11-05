@@ -189,7 +189,22 @@ Even with *perfect* per-page score bounds, a mass certificate at tol 0.02 needs 
 - NX-BOX: PPL ratio 1.0055 [0.998, 1.013] against bf16 SDPA dense, but **1.0002 [0.995, 1.004] against the float64 dense64 control**. So the small offset is arithmetic precision, not page selection: dense64 itself is 1.0053 against bf16 dense.
 - Quest meets matched quality only at budget 4096, reading 70% of KV pages. Quest-1024 has top-1 agreement 0.914.
 
-**Passkey, Granite 16K and 4K traces, Qwen 32K/8K passkey:** *[filled in below as each completes; see `results/g5r/summary_tables.md` for the generated tables].*
+**Passkey retrieval** (6 trials per row: 3 depths × 2 keys; question and answer decoded with the method; prefill dense and shared). Entries are correct/6 and the mean fraction of KV pages read during the answer:
+
+| model, T | host | dense | NX-BOX | Quest-1024 | Quest-2048 | Quest-4096 |
+|---|---|---|---|---|---|---|
+| Qwen 16,384 | A | 6/6 | 6/6 (0.987) | 6/6 (0.24) | 6/6 (0.36) | 6/6 (0.54) |
+| Qwen 32,000 | B | 6/6 | 6/6 (0.978) | **3/6** (0.17) | **5/6** (0.24) | 6/6 (0.36) |
+| Granite 8,192 | B | 6/6 | 6/6 (0.999) | 6/6 (0.27) | 6/6 (0.44) | 6/6 (0.71) |
+
+- The failures are Quest's, at 32K, at depths 0.1 and 0.5. The wrong answers continue the book (e.g. "in the drawer.", "the key to the pass.").
+- **This test does not discriminate the NX candidates.** They pass because they read 97.8–99.9% of pages, which is the reason they FAIL on speed.
+- With 6 trials, 6/6 has a 95% Clopper–Pearson interval of [0.54, 1.00] and 3/6 of [0.12, 0.88]. The passkey rows are a sanity check, not a precise accuracy estimate.
+- The Qwen 16K row ran before the restart (host A). Its host record is empty: the v1.0 host parser bug, fixed later. Host A is inferred from the queue log time (00:02 UTC, before the 00:13 restart).
+
+**Qwen fp32 cached-decode consistency on host B** (4 books, 8K, 3 steps): max KL 4.7e-12, max |Δlogit| 2.0e-5, argmax agreement 1.0. It passes the pre-set criterion, so the cached decode path is exact to fp32 rounding on the post-restart host too (`results/g5r/decode_consistency_qwen05_T8192.json`).
+
+**Granite 16K and 4K traces, Qwen 8K passkey:** *[pending at the time of this revision; added below when complete].*
 
 ## 6. Failure analysis summary
 

@@ -1,0 +1,241 @@
+{
+ "meta": {
+  "version": "1.0",
+  "date": "2026-11-04",
+  "model": "granite4micro",
+  "dtype": "bf16",
+  "context": 8192,
+  "methods": [
+   "dense",
+   "nx_box",
+   "quest:1024",
+   "quest:2048",
+   "quest:4096"
+  ],
+  "host": {
+   "kernel": "6.18.44-fc-v236",
+   "cpu_model_name": "Intel(R) Xeon(R) Processor @ 2.80GHz",
+   "cpu_family": "6",
+   "cpu_model": "85",
+   "logical_cpus": 4,
+   "amx_bf16": false,
+   "avx512_bf16": false,
+   "avx512f": true
+  },
+  "seed": 20269296
+ },
+ "accuracy": {
+  "dense": 1.0,
+  "nx_box": 1.0,
+  "quest:1024": 1.0,
+  "quest:2048": 1.0,
+  "quest:4096": 1.0
+ },
+ "n_trials": 6,
+ "trials": [
+  {
+   "depth": 0.1,
+   "key": 40656,
+   "book": "860.txt",
+   "needle_token_pos": 844,
+   "prefill_s": 560.1011857020003,
+   "answers": {
+    "dense": {
+     "text": " 40656. Remember it.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 40656. Remember it.",
+     "correct": true,
+     "pages_frac": 0.9989234754774307
+    },
+    "quest:1024": {
+     "text": " 40656. Remember it.",
+     "correct": true,
+     "pages_frac": 0.2793185697790604
+    },
+    "quest:2048": {
+     "text": " 40656. Remember it.",
+     "correct": true,
+     "pages_frac": 0.4544800095519953
+    },
+    "quest:4096": {
+     "text": " 40656. Remember it.",
+     "correct": true,
+     "pages_frac": 0.7191269611625515
+    }
+   }
+  },
+  {
+   "depth": 0.1,
+   "key": 43621,
+   "book": "2544.txt",
+   "needle_token_pos": 844,
+   "prefill_s": 560.2457689060011,
+   "answers": {
+    "dense": {
+     "text": " 43621. Remember it.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 43621. Remember it.",
+     "correct": true,
+     "pages_frac": 0.9993310546875
+    },
+    "quest:1024": {
+     "text": " 43621. Remember it.",
+     "correct": true,
+     "pages_frac": 0.27532829101245226
+    },
+    "quest:2048": {
+     "text": " 43621. Remember it.",
+     "correct": true,
+     "pages_frac": 0.44902422605253856
+    },
+    "quest:4096": {
+     "text": " 43621. Remember it.",
+     "correct": true,
+     "pages_frac": 0.712010958619724
+    }
+   }
+  },
+  {
+   "depth": 0.5,
+   "key": 53492,
+   "book": "3247.txt",
+   "needle_token_pos": 4101,
+   "prefill_s": 550.9070193389998,
+   "answers": {
+    "dense": {
+     "text": " 53492. Remember it.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 53492. Remember it.",
+     "correct": true,
+     "pages_frac": 0.9992069498697915
+    },
+    "quest:1024": {
+     "text": " 53492. Remember it.",
+     "correct": true,
+     "pages_frac": 0.27360283230093096
+    },
+    "quest:2048": {
+     "text": " 53492. Remember it.",
+     "correct": true,
+     "pages_frac": 0.44455792594580823
+    },
+    "quest:4096": {
+     "text": " 53492. Remember it.",
+     "correct": true,
+     "pages_frac": 0.7065421008795196
+    }
+   }
+  },
+  {
+   "depth": 0.5,
+   "key": 77894,
+   "book": "3340.txt",
+   "needle_token_pos": 4101,
+   "prefill_s": 550.4963569539996,
+   "answers": {
+    "dense": {
+     "text": " 77894. Remember it.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 77894. Remember it.",
+     "correct": true,
+     "pages_frac": 0.9993943956163195
+    },
+    "quest:1024": {
+     "text": " 77894. Remember it.",
+     "correct": true,
+     "pages_frac": 0.26763438389418526
+    },
+    "quest:2048": {
+     "text": " 77894. Remember it.",
+     "correct": true,
+     "pages_frac": 0.43801699632789654
+    },
+    "quest:4096": {
+     "text": " 77894. Remember it.",
+     "correct": true,
+     "pages_frac": 0.7021603682404193
+    }
+   }
+  },
+  {
+   "depth": 0.9,
+   "key": 16996,
+   "book": "3608.txt",
+   "needle_token_pos": 7357,
+   "prefill_s": 561.0230009420011,
+   "answers": {
+    "dense": {
+     "text": " 16996. Remember it.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 16996. Remember it.",
+     "correct": true,
+     "pages_frac": 0.9990294053819445
+    },
+    "quest:1024": {
+     "text": " 16996. Remember it.",
+     "correct": true,
+     "pages_frac": 0.2674700219160761
+    },
+    "quest:2048": {
+     "text": " 16996. Remember it.",
+     "correct": true,
+     "pages_frac": 0.43909833915104
+    },
+    "quest:4096": {
+     "text": " 16996. Remember it.",
+     "correct": true,
+     "pages_frac": 0.703210829283888
+    }
+   }
+  },
+  {
+   "depth": 0.9,
+   "key": 56087,
+   "book": "3754.txt",
+   "needle_token_pos": 7357,
+   "prefill_s": 547.08863767,
+   "answers": {
+    "dense": {
+     "text": " 56087. Remember it.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 56087. Remember it.",
+     "correct": true,
+     "pages_frac": 0.9992549641927083
+    },
+    "quest:1024": {
+     "text": " 56087. Remember it.",
+     "correct": true,
+     "pages_frac": 0.2657186044251374
+    },
+    "quest:2048": {
+     "text": " 56087. Remember it.",
+     "correct": true,
+     "pages_frac": 0.433677390108693
+    },
+    "quest:4096": {
+     "text": " 56087. Remember it.",
+     "correct": true,
+     "pages_frac": 0.7022118687190766
+    }
+   }
+  }
+ ]
+}
