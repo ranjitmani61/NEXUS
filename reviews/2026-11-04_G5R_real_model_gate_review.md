@@ -23,14 +23,16 @@ This follows the pre-registered rule (contract §11): *FAIL if, on any genuine p
 | Best possible for *any* valid-bound mass-certificate method (OR-SCORE), 4K → 32K | 0.640 → 0.526 | Measured oracle |
 | Certificate violations (log-domain evaluation), 2 × 86,016 + 43,008 + 21,504 + 2 × 21,504 head-steps | **0** | Measured |
 | End-to-end decode speed, NX-BOX vs dense (bf16, batch 1 / batch 4) | 0.29×→0.08× / 0.10×→0.04× | Measured |
-| Zero-overhead ceiling for the whole family, worst case for this claim (batch 4, 32K) | 1.38× (< 2×) | Derived |
+| Zero-overhead ceiling for the whole family, worst case for this claim (Qwen batch 4, 32K; Granite batch 1, 16K) | 1.38× / 1.54× (< 2×) | Derived |
 
 **This is not a BLOCKED result.** Genuine weights, real data and valid measurements were obtained. The failure mechanism (§5.2) is a property of the bounds on real attention, independent of hardware: page-read fractions do not depend on the CPU. What remains unverified (§7) cannot turn this FAIL into a PASS, because the candidates do not skip KV reads on real models. A faster machine cannot make a method that reads ≥ 97.8% of the KV cache, plus metadata, ≥ 2× faster through KV savings.
 
 **Second family (IBM Granite-4.0-micro-base, 8K, 4 books) confirms the result:**
 - NX-BOX / NX-SPH / NX-VAL read 99.9% / 99.98% / 99.9% of pages, with 0 violations; OR-SCORE is 0.572.
+- At 16K (2 books), NX-BOX / NX-SPH / NX-VAL read 99.8% / 99.97% / 99.8% of pages, with 0 violations; OR-SCORE is 0.502.
 - Measured speed (host B, native-GQA dense) is 0.365× (8K) and 0.163× (16K) for NX-BOX, and 0.93× / 0.89× for NX-ONE.
-- The family ceiling at 8K is 1.32×.
+- The family ceiling is 1.32× at 8K and 1.54× at 16K. At 16K the attention-only Amdahl ceiling (3.39×) is above 2×, so the family bound, not Amdahl, is what rules out 2×.
+- At 16K, NX-BOX also misses the pre-registered top-1 criterion (0.969 vs bf16 dense; the dense64 control gets 0.984). This is one token out of 64; §5.9 tests whether it is page selection or bf16 rounding.
 
 Under the contract a PASS needs both families and FAIL needs one; both families fail.
 
@@ -120,7 +122,7 @@ For comparison, the spread of the true page maxima *within a head* has a median 
 
 ### 5.3 Live end-to-end quality (teacher-forced; book-cluster bootstrap 95% CI)
 
-- **NX candidates:** PPL ratio 1.0000, KL 0, top-1 agreement 1.0 at every context. This is trivially so, because they compute (nearly) dense attention.
+- **NX candidates on Qwen (fp32):** PPL ratio 1.0000, mean KL ≤ 1e-10 (max ≤ 2e-9), top-1 agreement 1.0 at every context. This is trivially so, because they compute (nearly) dense attention. On Granite (bf16) the picture is different; see §5.8–5.9.
 - **Quest** (the comparator, not a candidate):
   - meets the matched-quality rule (PPL ≤ 1.01 and top-1 ≥ 0.98) only at **budget 2048 @ 4K** (reading 78% of KV pages) and **budget 4096 @ 8K** (78%);
   - fails at every tested budget at 16K and 32K. For example, budget 4096 @ 16K gives PPL ratio 1.022 [1.004, 1.041] and top-1 0.992, reading 53% of pages.
@@ -162,20 +164,21 @@ For any method that must read a page fraction ≥ r while attention is a fractio
 | 4 | 16384 | 1.29× | ≤ 0.033 | 1.007× | 0.05× |
 | 4 | 32000 | 1.38× | ≤ 0.147 | 1.013× | 0.04× |
 | Granite, 1 (host B) | 8192 | 1.32× | ≤ 0.113 | 1.001× | 0.365× |
+| Granite, 1 (host B) | 16384 | 1.54× | ≤ 0.291 | 1.001× | 0.163× |
 
-Even with *perfect* per-page score bounds, a mass certificate at tol 0.02 needs ≥ 53% of pages on Qwen and ≥ 57% on Granite (8K), while 2× would need ≤ 15% and ≤ 11% respectively.
+Even with *perfect* per-page score bounds, a mass certificate at tol 0.02 needs ≥ 53% of pages on Qwen, and ≥ 57% (8K) and ≥ 50% (16K) on Granite. 2× would need ≤ 15% on Qwen and ≤ 11% / ≤ 29% on Granite.
 
 ### 5.6 Independent verification
 
 - 294 real heads; harness, mpmath checker and archived oracle agree (0 mismatches).
 - The v1.0 float64 checker's mismatch is kept as evidence (D3).
-- Unit and property tests: 108 pass (67 core + 41 timed-path; synthetic math and timed-path correctness only). **Tests passing does not establish hardware correctness.**
+- Unit and property tests: 113 pass (67 core + 41 timed-path + 5 live-control tests; synthetic math and code-path correctness only). **Tests passing does not establish hardware correctness.**
 
 ### 5.7 Adversarial results
 
 - **Unguarded BF16/FP16 metadata** and **worst-case stale metadata** (smallest-box slot reuse) gave **0** bound violations and 0 false certificates on 294 real heads. This is **not** robustness by design: the 5.9-nat minimum slack absorbs these perturbations. The hazard is real (the synthetic witness stands) but is masked by bounds that are too loose to be useful.
 - **Naive (archived-pattern) evaluation** produces false early stops on every real run (§5.1, last column). **Any implementation must evaluate in the log domain without subtract-from-total.** This matters far more in fp32/bf16 hardware arithmetic.
-- **Error accumulation:** live runs replace attention in all layers for 32 steps. Because NX reads (nearly) everything, it accumulates no error; Quest's local per-head error exceeds 0.02 in 21–41% of head-steps at budget 1024 (37–54% at budget 512), which shows up as KL 0.011–0.044 and top-1 agreement 0.80–0.94.
+- **Error accumulation:** live runs replace attention in all layers for 32 steps. On Qwen (fp32), NX reads (nearly) everything and accumulates no measurable error (KL ≤ 2e-9). On Granite (bf16), NX-BOX outputs drift from dense64 at the bf16 noise level (§5.9). Quest's local per-head error exceeds 0.02 in 21–41% of head-steps at budget 1024 (37–54% at budget 512), which shows up as KL 0.011–0.044 and top-1 agreement 0.80–0.94.
 
 ### 5.8 Second family (Granite-4.0-micro-base) and remaining runs
 
@@ -204,7 +207,45 @@ Even with *perfect* per-page score bounds, a mass certificate at tol 0.02 needs 
 
 **Qwen fp32 cached-decode consistency on host B** (4 books, 8K, 3 steps): max KL 4.7e-12, max |Δlogit| 2.0e-5, argmax agreement 1.0. It passes the pre-set criterion, so the cached decode path is exact to fp32 rounding on the post-restart host too (`results/g5r/decode_consistency_qwen05_T8192.json`).
 
-**Granite 16K and 4K traces, Qwen 8K passkey:** *[pending at the time of this revision; added below when complete].*
+**Granite 16K traces** (2 books, 102,400 head-steps, decode-length guards passed):
+
+| T | NX-BOX | NX-SPH | NX-VAL | NX-BOX@16 | NX-BOX reads all pages | OR-SCORE | OR-MASS | violations | naive-eval false early stops (box/sph) |
+|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
+| 16384 | 0.998 | 1.000 | 0.998 | 0.989 | 86.2% | 0.502 | 0.262 | 0/0/0 | 377/6,196 |
+
+**Live quality, Granite 16K** (2 books × 32 tokens = 64 tokens; the CIs are from only 2 book clusters and are therefore crude):
+
+| method | PPL ratio vs bf16 dense | PPL ratio vs dense64 | top-1 vs bf16 dense | KV pages read | matched quality |
+|---|---|---|---:|---:|---|
+| NX-BOX | 0.998 [0.996, 1.001] | 1.002 [0.990, 1.014] | 0.969 | 0.998 | **no** (top-1) |
+| Quest-1024 | 1.047 [1.030, 1.064] | 1.051 | 0.938 | 0.166 | no |
+| Quest-2048 | 1.003 [0.993, 1.013] | 1.007 | 0.953 | 0.264 | no (top-1) |
+| Quest-4096 | 0.998 [0.982, 1.015] | 1.002 | 0.969 | 0.433 | no (top-1) |
+| dense64 (control) | 0.996 [0.987, 1.006] | — | 0.984 | 1.000 | yes |
+
+- No method meets matched quality at Granite 16K except the dense64 control, and that by one token. Read at face value, the top-1 rows separate 62/64 from 63/64; a 64-token sample cannot resolve differences that small.
+- Quest-1024 is the only configuration measured faster than dense at 16K (1.75×, §5.4 tables), at a 4.7% perplexity cost.
+- **Process incident (disclosed):** a diagnostic queue I armed at 06:12 UTC started early, at 06:13, because its wait condition matched its own note in the log. It ran concurrently with the book-2 live phase until I stopped it at 06:30.
+  - These are deterministic quality computations, so the values are unaffected. Only wall-clock fields (`seconds`) are inflated.
+  - Book 2's live phase was already slow before the overlap, because of memory thrashing on host B (15 GB RAM, process RSS 13.9 GB).
+  - The diagnostic's partial output was discarded and re-run strictly after the queue.
+
+**Granite 4K traces, Qwen 8K passkey:** *[pending at the time of this revision; added below when complete].*
+
+### 5.9 Post-hoc diagnostic: why NX-BOX on Granite drifts from dense64
+
+*Not pre-registered, and it changes no decision rule.*
+
+**Observation [Measured]:**
+- On Granite (bf16), NX-BOX's per-token NLL differs from dense64 by a mean 0.025–0.041 nats (max 0.21). That is the same order as dense64 vs bf16 SDPA (0.022–0.036).
+- On Qwen (fp32), the same comparison gives KL ~1e-11.
+- NX-BOX's float64 output errors are similar in both families: median ~1e-16, max 0.7–5.5e-6, with 3–6% of head-steps above 1e-12 (raw records, 8K).
+
+**[Hypothesis]:** bf16 rounding of the attention output amplifies any perturbation, however small. A bf16 ulp is 2⁻⁸–2⁻⁷ relative, so tiny float64 differences flip some roundings, and 40 bf16 layers carry the flips forward to the noise floor.
+
+**Test:** dense64 with its output scaled by (1+ε) before the bf16 cast, for ε ∈ {1e-12, 1e-9, 1e-6}, on Granite 4K (2 books), with a Qwen fp32 negative control (ε = 1e-6). Control code: `dense64p:<eps>` in `tests/g5r_hf.py`. Tests: `tests/test_g5r_hf_controls.py`.
+
+*[Result pending at the time of this revision.]*
 
 ## 6. Failure analysis summary
 
@@ -212,7 +253,7 @@ Even with *perfect* per-page score bounds, a mass certificate at tol 0.02 needs 
 2. Even an oracle with exact page maxima needs 53–64% of pages (OR-SCORE), because real attention is spread across many pages (OR-MASS 32–42%) and the 0.02 tolerance requires 99% of the mass.
 3. With grouped-query attention, the page actually read is the union over the 7 query heads of a group; for NX-BOX it is 100%.
 4. Per-step screening cost (bounds, sort, doubling gathers) is paid on top of what is effectively a dense read, so the measured speed is 0.04–0.80×. It gets worse with context and batch.
-5. The batch-1 Amdahl ceiling is < 2× at every context Qwen supports (≤ 32K). Batch 4 lifts it to 2.42×, but the family bound (5.5) keeps the NX family ≤ 1.38×.
+5. On Qwen, the batch-1 Amdahl ceiling is < 2× at every context it supports (≤ 32K). Batch 4 lifts it to 2.42×, but the family bound (5.5) keeps the NX family ≤ 1.38×. On Granite at 16K (host B), the Amdahl ceiling is 3.39×, but the family bound is 1.54×.
 
 ## 7. What remains unverified (explicitly)
 
