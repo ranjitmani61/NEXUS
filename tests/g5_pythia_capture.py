@@ -26,11 +26,11 @@ import numpy as np
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from g5_trace_oracle import evaluate_one, summarize
 from g5_result_validator import validate
-from g5_checkpoint_snapshot import stage_pinned_snapshot, REPO as SNAPSHOT_REPO, REVISION as SNAPSHOT_REVISION
+from g5_checkpoint_snapshot import stage_pinned_snapshot, verify_loaded_model_weights, REPO as SNAPSHOT_REPO, REVISION as SNAPSHOT_REVISION
 
 REPO = 'EleutherAI/pythia-14m'
 REVISION = 'cf967c0a9a04383db6f7b1108d86b2962634b4ac'
-VERSION = '1.2'
+VERSION = '1.3'
 DATE = '2026-11-04'
 
 
@@ -190,14 +190,19 @@ def main():
                 local_files_only=True,trust_remote_code=False,use_safetensors=True)
         tokenizer=AutoTokenizer.from_pretrained(staged_path,
                 local_files_only=True,trust_remote_code=False)
+        model_verification_before=verify_loaded_model_weights(model,staged_path)
         rows,checks,t=capture_for_text(model,tokenizer,text,max_tokens=a.max_tokens,
              last_queries=a.last_queries,page_size=a.page_size,tolerance=a.tolerance)
+        model_verification_after=verify_loaded_model_weights(model,staged_path)
+        if model_verification_after != model_verification_before:
+            raise RuntimeError('model parameters changed during G5 capture')
         # Stage is checked again when the context exits.
     result={'metadata':{
         'date':DATE,'version':VERSION,'status':'PILOT ONLY — NOT G5 PASS',
         'model_id':a.model,'requested_revision':a.revision,
         'resolved_revision':checkpoint_manifest['revision'],
         'checkpoint_manifest':checkpoint_manifest,
+        'model_weight_integrity':{**model_verification_after, 'checks':2},
         'training':'Snapshot file hashes recorded; publisher authenticity and tensor-level semantics not independently audited',
         'max_context':int(model.config.max_position_embeddings),
         'evaluated_length':t,'query_positions_per_head':a.last_queries,

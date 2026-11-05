@@ -63,8 +63,8 @@ def validate(payload: dict) -> dict:
     # v1.2 runs must include model+tokenizer hashes, with an independently
     # recomputed manifest fingerprint. This checks recorded metadata only.
     version=m.get('version')
-    require(version in (None,'1.1','1.2'), 'unrecognized G5 capture version')
-    if version=='1.2':
+    require(version in (None,'1.1','1.2','1.3'), 'unrecognized G5 capture version')
+    if version in ('1.2','1.3'):
         manifest=m.get('checkpoint_manifest')
         require(type(manifest) is dict, 'v1.2 requires checkpoint_manifest')
         require(manifest.get('repo_id')==PILOT_MODEL and
@@ -89,6 +89,21 @@ def validate(payload: dict) -> dict:
         require('not publisher' in str(manifest.get('origin_warning','')).lower() or
                 'not a signature' in str(manifest.get('origin_warning','')).lower(),
                 'checkpoint provenance caveat missing')
+    if version=='1.3':
+        weight_check=m.get('model_weight_integrity')
+        require(type(weight_check) is dict,'v1.3 requires model_weight_integrity')
+        require(weight_check.get('status')=='PASS: in-memory tensors match staged checkpoint',
+                'v1.3 memory verification status missing')
+        require(weight_check.get('method')=='exact tensor equality after lossless dtype promotion',
+                'v1.3 weight integrity method mismatch')
+        integer(weight_check.get('checkpoint_tensors_verified'),'checkpoint_tensors_verified',1)
+        integer(weight_check.get('checkpoint_elements_verified'),'checkpoint_elements_verified',1)
+        require(integer(weight_check.get('unverified_model_parameters'),
+                        'unverified_model_parameters')==0,
+                'v1.3 unverified model parameters')
+        require(weight_check.get('checks')==2, 'v1.3 must compare weights before and after capture')
+        require('not established' in str(weight_check.get('authenticity_warning','')).lower(),
+                'v1.3 publisher authenticity caveat missing')
     t=integer(m.get('evaluated_length'), 'evaluated_length', 64)
     q_count=integer(m.get('query_positions_per_head'),'query_positions_per_head',1)
     heads=integer(m.get('heads_per_layer'),'heads_per_layer',1)

@@ -98,6 +98,76 @@ def verify_staged_files(staged_dir: Path, manifest: dict) -> None:
         raise RuntimeError('checkpoint manifest fingerprint mismatch')
 
 
+def verify_loaded_model_weights(model, staged_dir: Path) -> dict:
+    """Compare actual in-memory parameters against the staged safetensors bytes.
+
+    This is a runtime-integrity diagnostic, not proof of publisher authenticity,
+    inference quality, or exact reproducibility on another compute device.
+
+    Require every checkpoint tensor to map to an equally-shaped state tensor;
+    require every model parameter to be backed by one checkpoint tensor (or
+    tied to a verified tensor). Only lossless dtype promotions are permitted.
+    """
+    import torch
+    from safetensors import safe_open
+
+    staged = Path(staged_dir) / 'model.safetensors'
+    if not staged.is_file() or staged.is_symlink():
+        raise ValueError('staged model.safetensors must be an ordinary file')
+    state = model.state_dict()
+    if not isinstance(state, dict):
+        raise ValueError('model.state_dict() must be a dictionary')
+
+    matched_names = set()
+    matched_tensors = {}
+    count = 0
+    elements = 0
+    with safe_open(str(staged), framework='pt', device='cpu') as tensors:
+        names = list(tensors.keys())
+        if not names:
+            raise ValueError('checkpoint has no tensors')
+        for name in names:
+            if name not in state:
+                raise RuntimeError(f'checkpoint tensor missing from loaded model: {name}')
+            expected = tensors.get_tensor(name)
+            actual = state[name]
+            if not isinstance(actual, torch.Tensor) or expected.shape != actual.shape:
+                raise RuntimeError(f'checkpoint tensor shape mismatch: {name}')
+            if not torch.isfinite(expected).all() or not torch.isfinite(actual).all():
+                raise RuntimeError(f'non-finite checkpoint or model tensor: {name}')
+            # Precision must not be lost by an unrecorded cast.
+            safe_promotions = {
+                torch.float16: (torch.float32, torch.float64),
+                torch.bfloat16: (torch.float32, torch.float64),
+                torch.float32: (torch.float64,),
+            }
+            if expected.dtype != actual.dtype and actual.dtype not in safe_promotions.get(expected.dtype, ()):
+                raise RuntimeError(f'unsafe dtype conversion for {name}: {expected.dtype} -> {actual.dtype}')
+            if not torch.equal(expected.to(dtype=actual.dtype), actual.detach().cpu()):
+                raise RuntimeError(f'loaded model value mismatch: {name}')
+            count += 1
+            elements += expected.numel()
+            matched_names.add(name)
+            matched_tensors.setdefault(actual.data_ptr(), []).append(actual)
+
+    # Tied model parameters need not be duplicated in safetensors.
+    uncovered = [name for name, parameter in model.named_parameters(remove_duplicate=False)
+                 if name not in matched_names and not any(
+                     param.shape == parameter.shape and param.dtype == parameter.dtype and
+                     torch.equal(param.detach().cpu(), parameter.detach().cpu())
+                     for param in matched_tensors.get(parameter.data_ptr(), ()))]
+    if uncovered:
+        raise RuntimeError('unverified model parameters: ' + ', '.join(uncovered[:8]))
+    return {
+        'status': 'PASS: in-memory tensors match staged checkpoint',
+        'method': 'exact tensor equality after lossless dtype promotion',
+        'checkpoint_tensors_verified': count,
+        'checkpoint_elements_verified': elements,
+        'unverified_model_parameters': 0,
+        'authenticity_warning': 'Self-audit only; independent publisher provenance not established',
+    }
+
+
 @contextmanager
 def stage_pinned_snapshot(snapshot: Path) -> Iterator[tuple[Path, dict]]:
     """Stage model and tokenizer from exactly one pinned HF snapshot.
