@@ -1,0 +1,52 @@
+{
+ "model": "granite4micro",
+ "dtype": "bf16",
+ "criterion": "max KL <= 1e-3 and argmax agreement 1.0",
+ "rows": [
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 0.25,
+   "max_abs_logit": 29.25,
+   "bf16_ulp_at_max_abs_logit": 0.125,
+   "max_kl": 0.0016125927123539084,
+   "argmax_agree": 1.0,
+   "book": "860.txt",
+   "pass": false
+  },
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 0.25,
+   "max_abs_logit": 26.0,
+   "bf16_ulp_at_max_abs_logit": 0.125,
+   "max_kl": 0.00027067295260218465,
+   "argmax_agree": 1.0,
+   "book": "2544.txt",
+   "pass": true
+  },
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 0.25,
+   "max_abs_logit": 25.75,
+   "bf16_ulp_at_max_abs_logit": 0.125,
+   "max_kl": 0.0051339982564301365,
+   "argmax_agree": 1.0,
+   "book": "3247.txt",
+   "pass": false
+  },
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 0.5390625,
+   "max_abs_logit": 29.625,
+   "bf16_ulp_at_max_abs_logit": 0.125,
+   "max_kl": 0.0016990167195879784,
+   "argmax_agree": 1.0,
+   "book": "3340.txt",
+   "pass": false
+  }
+ ],
+ "all_pass": false
+}
