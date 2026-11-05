@@ -2,7 +2,7 @@
 
 **Dates:** 2026-11-04 to 2026-11-05 · **Version:** 1.0
 **Governing protocol:** `AGENTS.md` v1.0, read in full before work, unchanged.
-**Contract:** `specs/G5R_real_model_benchmark_contract.md` v1.0 plus amendments A1–A5 (scope and order only; thresholds unchanged). SHA-256 and UTC times are in `results/g5r/preregistration.json`.
+**Contract:** `specs/G5R_real_model_benchmark_contract.md` v1.0 plus amendments A1–A5 (scope and order only; thresholds unchanged) and notice N1 (the platform changed mid-study). SHA-256 and UTC times are in `results/g5r/preregistration.json`.
 **Review lenses applied:** A1, A2, A3, A4, A6, A8, A10, A11. **Missing:** any independent human reviewer, GPU and energy measurement (impossible on this platform), and A5/A7/A9/A12 (not applicable to a CPU software study).
 
 This is a "signed-off-style" engineering report written by one AI-assisted session. It is **not** an independent sign-off.
@@ -27,7 +27,12 @@ This follows the pre-registered rule (contract §11): *FAIL if, on any genuine p
 
 **This is not a BLOCKED result.** Genuine weights, real data and valid measurements were obtained. The failure mechanism (§5.2) is a property of the bounds on real attention, independent of hardware: page-read fractions do not depend on the CPU. What remains unverified (§7) cannot turn this FAIL into a PASS, because the candidates do not skip KV reads on real models. A faster machine cannot make a method that reads ≥ 97.8% of the KV cache, plus metadata, ≥ 2× faster through KV savings.
 
-**Second family (IBM Granite-4.0-micro-base):** *[see §5.8; filled in as runs complete].* Under the contract a PASS needs both families; FAIL needs one. The Granite runs are confirmatory.
+**Second family (IBM Granite-4.0-micro-base, 8K, 4 books) confirms the result:**
+- NX-BOX / NX-SPH / NX-VAL read 99.9% / 99.98% / 99.9% of pages, with 0 violations; OR-SCORE is 0.572.
+- Measured speed (host B, native-GQA dense) is 0.365× (8K) and 0.163× (16K) for NX-BOX, and 0.93× / 0.89× for NX-ONE.
+- The family ceiling at 8K is 1.32×.
+
+Under the contract a PASS needs both families and FAIL needs one; both families fail.
 
 ## 2. What was tested
 
@@ -70,7 +75,8 @@ Decode: 32 teacher-forced steps after a dense prefill.
   - The float64 shadow reconstruction is within 2.2e-6 (Qwen fp32) and 2.4e-3 (Granite bf16) of the output norm.
 - **Decode consistency** (cached decode against a full forward, at 8K):
   - Qwen fp32: max logit difference 1.7e-5, KL ~1e-12.
-  - Granite bf16, after the fixes: argmax agreement 1.0, but max KL up to 0.0051, which fails the pre-set KL ≤ 1e-3 criterion on 3 of 4 books. The residual is 2–4 bf16 steps in the logits. A bf16 Qwen control is queued; see §5.8.
+  - Granite bf16, after the fixes: argmax agreement 1.0, but max KL up to 5.1e-3, which **fails** the pre-set KL ≤ 1e-3 criterion on 3 of 4 books.
+  - A bf16 control on Qwen, whose path is verified correct in fp32, gives KL up to 1.8e-3 and also fails it on 1 of 4 books. So the criterion, set with fp32 in mind, is too strict for bf16. Granite's residual is the same order as normal bf16 cached/batched differences. The criterion is not relaxed after the fact. Caveat: the control ran on host B and the Granite check on host A.
 - **Independent verification:** a separately written NumPy/mpmath checker and the archived 2026-11-03 oracle agree with the harness on all 294 real query heads checked (0 mismatches, after checker fix D3).
 
 ## 4. Defects found (all investigated, none hidden)
@@ -84,6 +90,7 @@ Decode: 32 teacher-forced steps after a dense prefill.
 | D4b | transformers 4.57.1: an **empty hybrid cache reports length = batch size** | Prefill RoPE positions offset; book 3340 perplexity 298 vs 8.3 | Cross-model comparison, then per-layer probe (keys differ 15.9%, values identical) | Fixed: subclass; standing decode-consistency check |
 | D5 | Under a custom attention name, Granite's mask builder caused the SDPA wrapper to use **`repeat_kv` copies** | Granite dense baseline 4.6× slow per layer; inflated Quest speedups and Amdahl ceilings | Implausible attention share (73–82%) | Fixed: native-GQA dense; Qwen verified unaffected |
 | D6 | The log filter (`grep -v warn`) **hid** the transformers warning for D4a | Delayed detection | Post-mortem | Later queues log unfiltered; guards make it a hard error |
+| D7 | The container restart **moved the session to a different CPU** (model 207 with AMX → model 85 without AMX/AVX512-BF16), and `g5r_timing.py` v1.0 **hard-coded** the original CPU string | Post-restart timing metadata claimed the wrong host; bf16 prefill about 7× slower | 7× prefill slowdown → `lscpu` | Host fingerprint recorded by every driver; post-hoc labelled annotation; `host_log.json`; notice N1 (no cross-host pooling) |
 | — | Two synthetic test constructions of mine were wrong (stale witness; one-head alignment) | Tests failed for the wrong reason | Unit tests | Corrected and documented |
 
 All invalid outputs are kept in `results/g5r/invalid/` with explanations. The diagnostic scripts and outputs are in `tests/g5r_diag/` and `results/g5r/diag/`.
@@ -132,7 +139,16 @@ For comparison, the spread of the true page maxima *within a head* has a median 
 | 4 | 32000 | 0.586 | 2.42× | 0.04× | — | 0.80× | 1.04× [0.94, 1.26] |
 
 Dense bootstrap self-ratio CIs (the noise floor) are about ±10–13%.
-- **Measured** on 4 vCPU (Xeon family 6 model 207, AMX-BF16), 16 steps × 5 reps, interleaved.
+- **Measured** for Qwen on host A (4 vCPU Xeon family 6 model 207, AMX-BF16), 16 steps × 5 reps, interleaved.
+- **Granite** (host B: Xeon family 6 model 85, no AMX; native-GQA dense in 320/320 calls; 8 steps × 3 reps per A4):
+
+| model | host | batch | T | f | Amdahl ceiling | NX-BOX | NX-ONE | Quest-1024 | Quest-2048 |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Granite | B | 1 | 8192 | 0.564 | 2.29× | 0.365× [0.338, 0.374] | 0.93× | 1.35× | 0.66× |
+| Granite | B | 1 | 16384 | 0.705 | 3.39× | 0.163× [0.159, 0.171] | 0.89× | 1.75× | 1.36× |
+
+  Quest-1024's speedup on Granite comes with **unmatched** quality (top-1 agreement 0.914 at 8K). Quest-4096, the budget that does meet matched quality, was not timed on Granite (A4).
+- The earlier Granite timing with a handicapped dense baseline (D5) is quarantined. Do not compare host-A and host-B speeds.
 - **Not** GPU, **not** energy (no counter), **not** llama.cpp.
 - Quest here is an unoptimised Python-gather implementation, so its speed is a **weak** comparator. Its quality numbers are unaffected.
 
@@ -145,8 +161,9 @@ For any method that must read a page fraction ≥ r while attention is a fractio
 | 1 | 4096–32000 | 1.06× → 1.31× | impossible (f ≤ 0.5) | 1.001× → 1.011× | 0.29× → 0.08× |
 | 4 | 16384 | 1.29× | ≤ 0.033 | 1.007× | 0.05× |
 | 4 | 32000 | 1.38× | ≤ 0.147 | 1.013× | 0.04× |
+| Granite, 1 (host B) | 8192 | 1.32× | ≤ 0.113 | 1.001× | 0.365× |
 
-Even with *perfect* per-page score bounds, a mass certificate at tol 0.02 needs ≥ 53% of the pages on this model, while 2× would need ≤ 15%.
+Even with *perfect* per-page score bounds, a mass certificate at tol 0.02 needs ≥ 53% of pages on Qwen and ≥ 57% on Granite (8K), while 2× would need ≤ 15% and ≤ 11% respectively.
 
 ### 5.6 Independent verification
 
@@ -162,7 +179,17 @@ Even with *perfect* per-page score bounds, a mass certificate at tol 0.02 needs 
 
 ### 5.8 Second family (Granite-4.0-micro-base) and remaining runs
 
-*[Pending — filled in as runs complete. Runs in progress under queue v7: Granite 8K traces (4 books), Granite timing with native-GQA dense, Qwen bf16 decode-consistency control, Qwen fp32 decode-consistency, passkey (Granite 8K, Qwen 32K and 8K), Granite 16K and 4K traces.]*
+**Granite 8K traces** (4 books, 204,800 head-steps, all three Granite fixes, decode-length guards passed):
+
+| T | NX-BOX | NX-SPH | NX-VAL | NX-BOX@16 | NX-BOX reads all pages | OR-SCORE | OR-MASS | violations | naive-eval false early stops (box/sph) |
+|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
+| 8192 | 0.999 | 1.000 | 0.999 | 0.993 | 95.0% | 0.572 | 0.326 | 0/0/0 | 535/9,889 |
+
+**Live quality (Granite 8K):**
+- NX-BOX: PPL ratio 1.0055 [0.998, 1.013] against bf16 SDPA dense, but **1.0002 [0.995, 1.004] against the float64 dense64 control**. So the small offset is arithmetic precision, not page selection: dense64 itself is 1.0053 against bf16 dense.
+- Quest meets matched quality only at budget 4096, reading 70% of KV pages. Quest-1024 has top-1 agreement 0.914.
+
+**Passkey, Granite 16K and 4K traces, Qwen 32K/8K passkey:** *[filled in below as each completes; see `results/g5r/summary_tables.md` for the generated tables].*
 
 ## 6. Failure analysis summary
 
@@ -178,7 +205,8 @@ Even with *perfect* per-page score bounds, a mass certificate at tol 0.02 needs 
 - No optimised (CUDA) Quest. Quest's *speed* here is a weak comparator; its quality is valid for this adaptation (GQA union, page 16, first 2 layers dense).
 - Only two model families, both small (0.5B and 3.4B); long-context instruction or retrieval benchmarks (RULER, LongBench) not run.
 - Qwen weights not cross-checked against the Hugging Face revision (host blocked). Granite's signature was checked offline against an embedded trust root, without revocation check.
-- Granite cached-decode residual (KL up to 0.0051) fails the pre-set criterion; the cause is bounded but not fully proven to be rounding.
+- Granite cached-decode residual (KL up to 0.0051) fails the pre-set criterion. A bf16 Qwen control on a verified path shows the same order (≤ 1.8e-3), which supports, but does not prove, that it is ordinary bf16 rounding. The control ran on a different host.
+- **The platform changed mid-study** (notice N1). Qwen timings are from host A (AMX), Granite timings and post-restart traces from host B (no AMX). Page-read fractions are host-independent; attention shares and speeds are not, and they are not pooled.
 - The decision covers attention-page candidates. The photonic, near-memory, codec, bitplane, temporal-delta and batching branches were **not** re-tested here; their earlier gate status stands (no G5 evidence).
 
 ## 8. Gate status after this review
