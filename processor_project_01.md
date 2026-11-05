@@ -228,6 +228,10 @@ Read `AGENTS.md` in full before work. Pre-registered `specs/G5R_real_model_bench
 - a transformers 4.57.1 empty hybrid cache reporting length = batch size (RoPE offset);
 - a handicapped Granite dense baseline (`repeat_kv`).
 
-**Decision:** G5 **FAIL** for all NX attention-page candidates under the pre-registered rule; G4 benefit FAIL; G3 conditional PASS only for the log-domain certificate; G6–G12 not authorised. Granite runs are confirmatory (8K traces, timing and passkey done; 16K/4K traces in progress at this revision). Passkey (6 trials per row): NX-BOX 6/6 everywhere (it reads ≥ 97.8% of pages); Quest-1024 3/6 and Quest-2048 5/6 at Qwen 32K.
+**Decision:** G5 **FAIL** for all NX attention-page candidates under the pre-registered rule; G4 benefit FAIL; G3 conditional PASS only for the log-domain certificate; G6–G12 not authorised. Granite runs are confirmatory and complete: 4K/8K/16K traces show NX-BOX reading 99.8–99.9% of pages, OR-SCORE 0.50–0.61 and 0 violations; the family ceiling is 1.54× at 16K although the Amdahl ceiling there is 3.39×. Passkey (6 trials per row): NX-BOX 6/6 everywhere (it reads ≥ 97.8% of pages); Quest-1024 3/6 and Quest-2048 5/6 at Qwen 32K.
 
-Report: `reviews/2026-11-04_G5R_real_model_gate_review.md`. Tables: `results/g5r/summary_tables.md`. Reproduce: `results/g5r/README.md`.
+**Post-hoc finding (2026-11-05, not pre-registered):** in bf16 models, a 1e-6 relative change to exact attention moves per-token NLL by about 0.03 nats (in fp32, < 1e-5). Exact float64 attention fails the top-1 ≥ 0.98 criterion against bf16 SDPA on Granite 4K. A top-1 threshold measured against a bf16 reference is therefore at the noise floor and needs calibration in the next contract revision. It was not changed retroactively.
+
+**Process incident (disclosed):** a diagnostic queue started early because its wait sentinel matched its own log note. The overlap affected only wall-clock fields of quality runs. The diagnostic was rerun.
+
+Report (v1.1): `reviews/2026-11-04_G5R_real_model_gate_review.md`. Tables: `results/g5r/summary_tables.md`. Reproduce: `results/g5r/README.md`.
