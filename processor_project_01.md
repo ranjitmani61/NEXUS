@@ -210,7 +210,7 @@ Read `AGENTS.md` in full before work. Pre-registered `specs/G5R_real_model_bench
 - Qwen2.5-0.5B (QwenLM): SHA-256 manifest; PG-19 perplexity 13–26 against 189,356 for random init.
 - IBM Granite-4.0-micro-base: Sigstore signature verified; 11/11 file digests and the subject digest match.
 
-**Method:** CPU only (4 vCPU, AMX-BF16); no GPU or energy counter. 8 PG-19 test books chosen by a fixed rule; real KV-cache decode. Every layer, head and step was evaluated in float64 shadow mode, plus live replacement runs, measured timing, passkey and adversarial inputs.
+**Method:** CPU only, 4 vCPU; no GPU or energy counter. Host A (Xeon with AMX-BF16) was replaced by host B (no AMX) after a container restart (contract notice N1). Timings are not pooled across hosts. 8 PG-19 test books chosen by a fixed rule; real KV-cache decode. Every layer, head and step was evaluated in float64 shadow mode, plus live replacement runs, measured timing, passkey and adversarial inputs.
 
 **Result on Qwen2.5-0.5B (4K–32K, batch 1 and 4):**
 - NX-BOX / NX-SPH / NX-VAL read 97.8–100% of KV pages. The NX-BOX KV-head union is 100% in every layer. NX-ONE admission is 0.
@@ -228,6 +228,6 @@ Read `AGENTS.md` in full before work. Pre-registered `specs/G5R_real_model_bench
 - a transformers 4.57.1 empty hybrid cache reporting length = batch size (RoPE offset);
 - a handicapped Granite dense baseline (`repeat_kv`).
 
-**Decision:** G5 **FAIL** for all NX attention-page candidates under the pre-registered rule; G4 benefit FAIL; G3 conditional PASS only for the log-domain certificate; G6–G12 not authorised. Granite runs are confirmatory and are being completed.
+**Decision:** G5 **FAIL** for all NX attention-page candidates under the pre-registered rule; G4 benefit FAIL; G3 conditional PASS only for the log-domain certificate; G6–G12 not authorised. Granite runs are confirmatory (8K traces, timing and passkey done; 16K/4K traces in progress at this revision). Passkey (6 trials per row): NX-BOX 6/6 everywhere (it reads ≥ 97.8% of pages); Quest-1024 3/6 and Quest-2048 5/6 at Qwen 32K.
 
 Report: `reviews/2026-11-04_G5R_real_model_gate_review.md`. Tables: `results/g5r/summary_tables.md`. Reproduce: `results/g5r/README.md`.
