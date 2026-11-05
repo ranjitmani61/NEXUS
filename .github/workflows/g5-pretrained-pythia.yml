@@ -16,7 +16,7 @@ jobs:
       TOKENIZERS_PARALLELISM: 'false'
       OMP_NUM_THREADS: '2'
       MKL_NUM_THREADS: '2'
-      HF_HOME: ${{ runner.temp }}/hf-pythia
+      HF_HOME: /tmp/nexus-g5-hf-pythia
     steps:
       - uses: actions/checkout@v4
         with:
