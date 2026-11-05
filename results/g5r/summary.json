@@ -3,6 +3,159 @@
  "date": "2026-11-04",
  "quality": [
   {
+   "file": "quality_granite4micro_T8192.json",
+   "model": "granite4micro",
+   "dtype": "bf16",
+   "T": 8192,
+   "input_kind": "book",
+   "n_books": 4,
+   "steps": 32,
+   "dense_ppl_decode": 11.890556080142646,
+   "head_steps": 204800,
+   "box_frac_mean": 0.9990014178650852,
+   "box_frac_mean_minbook": 0.9988662942374262,
+   "box_share_full_read": 0.9498632812500001,
+   "box_share_le1": 0.0,
+   "box_violations": 0,
+   "box_bound_violations": 0,
+   "box_naive_false_early": 535,
+   "sph_frac_mean": 0.9997687785078115,
+   "sph_frac_mean_minbook": 0.9996596147114201,
+   "sph_share_full_read": 0.99302734375,
+   "sph_share_le1": 0.0,
+   "sph_violations": 0,
+   "sph_bound_violations": 0,
+   "sph_naive_false_early": 9889,
+   "val_frac_mean": 0.9990684230225559,
+   "val_frac_mean_minbook": 0.9988923912196772,
+   "val_share_full_read": 0.9794091796875,
+   "val_share_le1": 0.0,
+   "val_violations": 0,
+   "box16_frac_mean": 0.9927843043530398,
+   "box16_frac_mean_minbook": 0.9922294708721148,
+   "box16_share_full_read": 0.6142626953125,
+   "box16_share_le1": 0.0,
+   "box16_violations": 0,
+   "box16_bound_violations": 0,
+   "box16_naive_false_early": 674,
+   "ormass_frac_mean": 0.32586823697220024,
+   "ormass_frac_median_of_books": 0.279296875,
+   "orscore_frac_mean": 0.5724969140286575,
+   "orscore_frac_median_of_books": 0.611328125,
+   "ormass16_frac_mean": 0.2976284021490016,
+   "ormass16_frac_median_of_books": 0.2475633528265107,
+   "quest512_local_err_share_gt_tol": 0.33035644531249997,
+   "quest512_local_err_p95": 0.07531432031018494,
+   "quest1024_local_err_share_gt_tol": 0.2079931640625,
+   "quest1024_local_err_p95": 0.04654109969673613,
+   "quest2048_local_err_share_gt_tol": 0.075556640625,
+   "quest2048_local_err_p95": 0.024060517115102306,
+   "quest4096_local_err_share_gt_tol": 0.006328125,
+   "quest4096_local_err_p95": 0.008737549393851067,
+   "capture_maxabs_vs_sdpa": 0.0967574372543254,
+   "live": {
+    "nx_box": {
+     "ppl_ratio": 1.0054534578666123,
+     "vs_dense64_control": {
+      "ppl_ratio_vs_dense64": 1.0001791325431064,
+      "ppl_ratio_vs_dense64_ci95": [
+       0.9952706279138726,
+       1.0039150564553707
+      ]
+     },
+     "ppl_ratio_ci95_bookboot": [
+      0.9976357031522181,
+      1.0133324747116432
+     ],
+     "delta_nll_mean": 0.0054386416074152805,
+     "kl_mean": 0.0016881196280131476,
+     "kl_max": 0.022235923754818407,
+     "top1_agree": 0.9921875,
+     "pages_frac_mean": 0.9990021807303224,
+     "live_violations": 0,
+     "matched_quality_ppl_top1": true
+    },
+    "quest:1024": {
+     "ppl_ratio": 1.0085266250245577,
+     "vs_dense64_control": {
+      "ppl_ratio_vs_dense64": 1.0032361787327089,
+      "ppl_ratio_vs_dense64_ci95": [
+       0.9436159947655962,
+       1.0504939565266898
+      ]
+     },
+     "ppl_ratio_ci95_bookboot": [
+      0.9496414483022084,
+      1.0590251894875125
+     ],
+     "delta_nll_mean": 0.008490478682932876,
+     "kl_mean": 0.022830483442196636,
+     "kl_max": 0.47540726701026237,
+     "top1_agree": 0.9140625,
+     "pages_frac_mean": 0.26313833732848607,
+     "live_violations": 0,
+     "matched_quality_ppl_top1": false
+    },
+    "quest:2048": {
+     "ppl_ratio": 1.0032217233655796,
+     "vs_dense64_control": {
+      "ppl_ratio_vs_dense64": 0.9979591050919646,
+      "ppl_ratio_vs_dense64_ci95": [
+       0.9708414190829379,
+       1.0138423207719827
+      ]
+     },
+     "ppl_ratio_ci95_bookboot": [
+      0.9801347086277484,
+      1.0197898226075555
+     ],
+     "delta_nll_mean": 0.0032165447346207575,
+     "kl_mean": 0.008770901599838947,
+     "kl_max": 0.09405246095918496,
+     "top1_agree": 0.96875,
+     "pages_frac_mean": 0.4314737828111816,
+     "live_violations": 0,
+     "matched_quality_ppl_top1": false
+    },
+    "quest:4096": {
+     "ppl_ratio": 1.0001162098218912,
+     "vs_dense64_control": {
+      "ppl_ratio_vs_dense64": 0.9948698821966377,
+      "ppl_ratio_vs_dense64_ci95": [
+       0.9872812887840295,
+       1.0043059161378387
+      ]
+     },
+     "ppl_ratio_ci95_bookboot": [
+      0.9964002396117374,
+      1.0041204953272336
+     ],
+     "delta_nll_mean": 0.00011620307005258314,
+     "kl_mean": 0.0024389482071135666,
+     "kl_max": 0.024752909876630813,
+     "top1_agree": 0.984375,
+     "pages_frac_mean": 0.695604497202021,
+     "live_violations": 0,
+     "matched_quality_ppl_top1": true
+    },
+    "dense64": {
+     "ppl_ratio": 1.0052733806894123,
+     "vs_dense64_control": null,
+     "ppl_ratio_ci95_bookboot": [
+      0.9960354774012532,
+      1.0106128673064392
+     ],
+     "delta_nll_mean": 0.005259525106627238,
+     "kl_mean": 0.0015457928158844154,
+     "kl_max": 0.025656905741339074,
+     "top1_agree": 0.9921875,
+     "pages_frac_mean": 1.0,
+     "live_violations": 0,
+     "matched_quality_ppl_top1": true
+    }
+   }
+  },
+  {
    "file": "quality_qwen05_T4096.json",
    "model": "qwen05",
    "dtype": "fp32",
@@ -56,6 +209,7 @@
    "live": {
     "nx_box": {
      "ppl_ratio": 0.9999999936856665,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.999999785994521,
       1.0000001974305355
@@ -70,6 +224,7 @@
     },
     "nx_sph": {
      "ppl_ratio": 1.0000000059283165,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9999998062025801,
       1.0000002335571907
@@ -84,6 +239,7 @@
     },
     "nx_one": {
      "ppl_ratio": 0.9999999620669697,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9999997422944089,
       1.0000001349469032
@@ -98,6 +254,7 @@
     },
     "nx_val": {
      "ppl_ratio": 1.00000020295248,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       1.0000000113597998,
       1.0000004188158453
@@ -112,6 +269,7 @@
     },
     "quest:512": {
      "ppl_ratio": 1.0165016281402617,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9880012656912951,
       1.046244322752023
@@ -126,6 +284,7 @@
     },
     "quest:1024": {
      "ppl_ratio": 1.0081654041329984,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9795619039614013,
       1.0312951848031344
@@ -140,6 +299,7 @@
     },
     "quest:2048": {
      "ppl_ratio": 0.9990394335926817,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9843327159997302,
       1.0108920368743526
@@ -154,6 +314,7 @@
     },
     "quest:4096": {
      "ppl_ratio": 0.999989987797035,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9999720889934197,
       1.0000072607972952
@@ -222,6 +383,7 @@
    "live": {
     "nx_box": {
      "ppl_ratio": 0.9999999946398126,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9999999022536876,
       1.000000101396142
@@ -236,6 +398,7 @@
     },
     "quest:1024": {
      "ppl_ratio": 1.0265039583060067,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9941153171118657,
       1.0601783418592523
@@ -250,6 +413,7 @@
     },
     "quest:2048": {
      "ppl_ratio": 1.0043690480150835,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.989553371597119,
       1.020211497715338
@@ -264,6 +428,7 @@
     },
     "quest:4096": {
      "ppl_ratio": 0.9984651013874862,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9934065337200936,
       1.003943299800475
@@ -332,6 +497,7 @@
    "live": {
     "nx_box": {
      "ppl_ratio": 1.0000000132522815,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9999996845827974,
       1.0000003419218746
@@ -346,6 +512,7 @@
     },
     "quest:1024": {
      "ppl_ratio": 1.0787918662029647,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       1.0136759856116477,
       1.1480906197885796
@@ -360,6 +527,7 @@
     },
     "quest:2048": {
      "ppl_ratio": 1.035221074075834,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       1.0058601501251971,
       1.07717635800383
@@ -374,6 +542,7 @@
     },
     "quest:4096": {
      "ppl_ratio": 1.021910613661422,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       1.003532389230334,
       1.0406254083286717
@@ -442,6 +611,7 @@
    "live": {
     "nx_box": {
      "ppl_ratio": 1.0000007039338135,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       1.0000002230514093,
       1.000001184816449
@@ -456,6 +626,7 @@
     },
     "quest:1024": {
      "ppl_ratio": 1.0618109498614037,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9719844917931947,
       1.1599387673002688
@@ -470,6 +641,7 @@
     },
     "quest:2048": {
      "ppl_ratio": 1.0238822936336145,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9574327445245862,
       1.0949436993999857
@@ -484,6 +656,7 @@
     },
     "quest:4096": {
      "ppl_ratio": 1.003042885775167,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9563140064660313,
       1.0520551031372056
@@ -552,6 +725,7 @@
    "live": {
     "nx_box": {
      "ppl_ratio": 0.9999997265094579,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9999996893367895,
       0.9999997636821266
@@ -566,6 +740,7 @@
     },
     "quest:1024": {
      "ppl_ratio": 1.1155580452122218,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       1.0820336685813314,
       1.15012109916076
@@ -580,6 +755,7 @@
     },
     "quest:2048": {
      "ppl_ratio": 1.0470257024315839,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       1.031779592918835,
       1.0624970963528109
@@ -594,6 +770,7 @@
     },
     "quest:4096": {
      "ppl_ratio": 0.9999382340524475,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9999171750205444,
       0.9999592935278694
@@ -662,6 +839,7 @@
    "live": {
     "nx_box": {
      "ppl_ratio": 1.000000001392001,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9999999987897307,
       1.0000000039942714
@@ -676,6 +854,7 @@
     },
     "quest:1024": {
      "ppl_ratio": 1.0223591030678743,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       1.021585928355282,
       1.0231328629482137
@@ -690,6 +869,7 @@
     },
     "quest:2048": {
      "ppl_ratio": 1.0004283534311584,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9999358566346462,
       1.0009210927963241
@@ -704,6 +884,7 @@
     },
     "quest:4096": {
      "ppl_ratio": 0.9999999998132669,
+     "vs_dense64_control": null,
      "ppl_ratio_ci95_bookboot": [
       0.9999999996710225,
       0.9999999999555115

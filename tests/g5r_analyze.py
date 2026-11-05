@@ -71,7 +71,14 @@ def quality_tables(files):
             m_all = np.concatenate([b["live"][m]["nll_per_token"] for b in books])
             ppl_ratio = float(np.exp(m_all.mean() - dense_all.mean()))
             ci = cluster_boot(dn)
-            live[m] = {"ppl_ratio": ppl_ratio,
+            ctrl = None
+            if "dense64" in books[0]["live"] and m != "dense64":
+                c_all = np.concatenate([b["live"]["dense64"]["nll_per_token"] for b in books])
+                dn64 = [np.array(b["live"][m]["nll_per_token"]) - np.array(b["live"]["dense64"]["nll_per_token"]) for b in books]
+                ci64 = cluster_boot(dn64)
+                ctrl = {"ppl_ratio_vs_dense64": float(np.exp(m_all.mean() - c_all.mean())),
+                        "ppl_ratio_vs_dense64_ci95": [float(np.exp(c)) for c in ci64] if ci64 else None}
+            live[m] = {"ppl_ratio": ppl_ratio, "vs_dense64_control": ctrl,
                        "ppl_ratio_ci95_bookboot": [float(np.exp(c)) for c in ci] if ci else None,
                        "delta_nll_mean": float(np.mean(np.concatenate(dn))),
                        "kl_mean": float(np.mean([b["live"][m]["kl_mean"] for b in books])),
@@ -150,12 +157,14 @@ def markdown(summary):
     for r in summary["quality"]:
         L.append(f"| {r['model']} | {r['T']} | {r['input_kind']} | {r['n_books']} | {r['head_steps']} | {fmt(r['box_frac_mean'])} | {fmt(r['sph_frac_mean'])} | {fmt(r['val_frac_mean'])} | {fmt(r['box16_frac_mean'])} | {fmt(r['box_share_full_read'])} | {fmt(r['orscore_frac_mean'])} | {fmt(r['ormass_frac_mean'])} | {r['box_violations']}/{r['sph_violations']}/{r['val_violations']} | {r.get('box_naive_false_early')}/{r.get('sph_naive_false_early')} |")
     L += ["", "## Live end-to-end quality vs dense (teacher-forced decode; book-cluster bootstrap 95% CI)", "",
-          "| model | T | input | method | PPL ratio | 95% CI | mean KL | max KL | top-1 agree | KV pages read | matched quality (PPL≤1.01, top1≥0.98) |",
-          "|---|---:|---|---|---:|---|---:|---:|---:|---:|---|"]
+          "| model | T | input | method | PPL ratio | 95% CI | PPL ratio vs dense64 control (bf16 models) | mean KL | max KL | top-1 agree | KV pages read | matched quality (PPL≤1.01, top1≥0.98) |",
+          "|---|---:|---|---|---:|---|---|---:|---:|---:|---:|---|"]
     for r in summary["quality"]:
         for m, v in r["live"].items():
             ci = v["ppl_ratio_ci95_bookboot"]
-            L.append(f"| {r['model']} | {r['T']} | {r['input_kind']} | {m} | {v['ppl_ratio']:.4f} | {('[%.4f, %.4f]' % tuple(ci)) if ci else '—'} | {v['kl_mean']:.5f} | {v['kl_max']:.4f} | {v['top1_agree']:.4f} | {v['pages_frac_mean']:.3f} | {v['matched_quality_ppl_top1']} |")
+            c = v.get("vs_dense64_control")
+            cs = "—" if not c else (f"{c['ppl_ratio_vs_dense64']:.4f}" + (f" [{c['ppl_ratio_vs_dense64_ci95'][0]:.4f}, {c['ppl_ratio_vs_dense64_ci95'][1]:.4f}]" if c["ppl_ratio_vs_dense64_ci95"] else ""))
+            L.append(f"| {r['model']} | {r['T']} | {r['input_kind']} | {m} | {v['ppl_ratio']:.4f} | {('[%.4f, %.4f]' % tuple(ci)) if ci else '—'} | {cs} | {v['kl_mean']:.5f} | {v['kl_max']:.4f} | {v['top1_agree']:.4f} | {v['pages_frac_mean']:.3f} | {v['matched_quality_ppl_top1']} |")
     L += ["", "## Quest local (per-head) error > 0.02 share (shadow)", "", "| model | T | input | B=512 | B=1024 | B=2048 | B=4096 |", "|---|---:|---|---:|---:|---:|---:|"]
     for r in summary["quality"]:
         L.append(f"| {r['model']} | {r['T']} | {r['input_kind']} | " + " | ".join(fmt(r[f'quest{B}_local_err_share_gt_tol']) for B in (512, 1024, 2048, 4096)) + " |")
