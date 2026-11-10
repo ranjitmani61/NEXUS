@@ -1,0 +1,177 @@
+{
+  "all_nonattention_scaled_beta0_2x_count": 20,
+  "component_mlp_scaled_beta0_2x_count": 17,
+  "component_mlp_scaled_scenarios": 32,
+  "date": "2026-11-10",
+  "frontier_scenarios": 64,
+  "gate": "G1 not novel; G2 sensitivity only; G5 not run on real speculative target; no G6 authorization",
+  "models": [
+    {
+      "cases": [
+        {
+          "batch_vs_serial_seed1": 0.9228073730882871,
+          "batch_vs_serial_seed2": 0.8708597869523911,
+          "fractional_difference": 0.03016497922039063,
+          "k": 1,
+          "max_numerical_error_seed1": 2.3852447794681098e-18,
+          "max_numerical_error_seed2": 1.8431436932253575e-18,
+          "n_queries": 2,
+          "rho_seed1": 1.6757623744113153,
+          "rho_seed2": 1.7263117116137452
+        },
+        {
+          "batch_vs_serial_seed1": 0.692109964734409,
+          "batch_vs_serial_seed2": 0.6614875249154636,
+          "fractional_difference": -0.04945322368587057,
+          "k": 2,
+          "max_numerical_error_seed1": 2.3852447794681098e-18,
+          "max_numerical_error_seed2": 1.8431436932253575e-18,
+          "n_queries": 3,
+          "rho_seed1": 2.1051211896913267,
+          "rho_seed2": 2.0010161606116554
+        },
+        {
+          "batch_vs_serial_seed1": 0.4524576260495653,
+          "batch_vs_serial_seed2": 0.4424090390940248,
+          "fractional_difference": -0.015734364768305698,
+          "k": 4,
+          "max_numerical_error_seed1": 2.3852447794681098e-18,
+          "max_numerical_error_seed2": 2.222614453595284e-18,
+          "n_queries": 5,
+          "rho_seed1": 2.1997203107605188,
+          "rho_seed2": 2.165109109002762
+        },
+        {
+          "batch_vs_serial_seed1": 0.3030273091741647,
+          "batch_vs_serial_seed2": 0.27832158551424746,
+          "fractional_difference": 0.11665629238658859,
+          "k": 8,
+          "max_numerical_error_seed1": 2.3852447794681098e-18,
+          "max_numerical_error_seed2": 2.222614453595284e-18,
+          "n_queries": 9,
+          "rho_seed1": 2.5498474100892525,
+          "rho_seed2": 2.84730315510181
+        }
+      ],
+      "model_shape": "Qwen2.5-0.5B"
+    },
+    {
+      "cases": [
+        {
+          "batch_vs_serial_seed1": 0.8778579402755474,
+          "batch_vs_serial_seed2": 0.8289497684944643,
+          "fractional_difference": -0.04404901484912371,
+          "k": 1,
+          "max_numerical_error_seed1": 3.0357660829594124e-18,
+          "max_numerical_error_seed2": 2.4936649967166602e-18,
+          "n_queries": 2,
+          "rho_seed1": 1.7712791701132655,
+          "rho_seed2": 1.6932560676470028
+        },
+        {
+          "batch_vs_serial_seed1": 0.6306450944050289,
+          "batch_vs_serial_seed2": 0.6576797958945724,
+          "fractional_difference": -0.006787988641476783,
+          "k": 2,
+          "max_numerical_error_seed1": 3.469446951953614e-18,
+          "max_numerical_error_seed2": 2.4936649967166602e-18,
+          "n_queries": 3,
+          "rho_seed1": 1.9554583257961213,
+          "rho_seed2": 1.942184696891736
+        },
+        {
+          "batch_vs_serial_seed1": 0.43105939600447074,
+          "batch_vs_serial_seed2": 0.43965030945173544,
+          "fractional_difference": 0.02137437195372649,
+          "k": 4,
+          "max_numerical_error_seed1": 3.469446951953614e-18,
+          "max_numerical_error_seed2": 3.848917712323541e-18,
+          "n_queries": 5,
+          "rho_seed1": 2.121147104926784,
+          "rho_seed2": 2.166485292116059
+        },
+        {
+          "batch_vs_serial_seed1": 0.27572918894156545,
+          "batch_vs_serial_seed2": 0.2769116740409672,
+          "fractional_difference": -0.016435038109255062,
+          "k": 8,
+          "max_numerical_error_seed1": 3.577867169202165e-18,
+          "max_numerical_error_seed2": 3.848917712323541e-18,
+          "n_queries": 9,
+          "rho_seed1": 2.4894525178693,
+          "rho_seed2": 2.448538270866937
+        }
+      ],
+      "model_shape": "Granite-4.0-micro-base"
+    }
+  ],
+  "rho1_idealized_beta0_2x_count": 44,
+  "selected_k4_p09": [
+    {
+      "beta_threshold_if_all_nonattention_scaled": 0.1832949597257703,
+      "beta_threshold_if_only_mlp_scaled": null,
+      "beta_threshold_old_rho1": 0.30046156410023434,
+      "host_anchor": "Granite host B / 16K / b1",
+      "k": 4,
+      "measured_attention_share_external": 0.7052066730549075,
+      "measured_mlp_share_external": null,
+      "p_assumed": 0.9,
+      "reachable_at_beta0_all_nonattention_scaled": true,
+      "reachable_at_beta0_only_mlp_scaled": null,
+      "rho_ffn_microbenchmark": 2.121147104926784,
+      "speed_beta025_only_mlp_scaled": null,
+      "speed_beta0_all_nonattention_scaled": 2.6756498615682696,
+      "speed_beta0_only_mlp_scaled": null
+    },
+    {
+      "beta_threshold_if_all_nonattention_scaled": 0.10017694856247035,
+      "beta_threshold_if_only_mlp_scaled": 0.3667550303146195,
+      "beta_threshold_old_rho1": 0.5579448089624447,
+      "host_anchor": "Granite host C / 16K / b1",
+      "k": 4,
+      "measured_attention_share_external": 0.3797642644870673,
+      "measured_mlp_share_external": 0.2590455626976019,
+      "p_assumed": 0.9,
+      "reachable_at_beta0_all_nonattention_scaled": true,
+      "reachable_at_beta0_only_mlp_scaled": true,
+      "rho_ffn_microbenchmark": 2.121147104926784,
+      "speed_beta025_only_mlp_scaled": 2.189667703043823,
+      "speed_beta0_all_nonattention_scaled": 2.1605745149901563,
+      "speed_beta0_only_mlp_scaled": 2.7475996815119195
+    },
+    {
+      "beta_threshold_if_all_nonattention_scaled": 0.14971698108969017,
+      "beta_threshold_if_only_mlp_scaled": null,
+      "beta_threshold_old_rho1": 0.36151005957534416,
+      "host_anchor": "Qwen host A / 32K / b4",
+      "k": 4,
+      "measured_attention_share_external": 0.5861178531211508,
+      "measured_mlp_share_external": null,
+      "p_assumed": 0.9,
+      "reachable_at_beta0_all_nonattention_scaled": true,
+      "reachable_at_beta0_only_mlp_scaled": null,
+      "rho_ffn_microbenchmark": 2.1997203107605188,
+      "speed_beta025_only_mlp_scaled": null,
+      "speed_beta0_all_nonattention_scaled": 2.4137911267911383,
+      "speed_beta0_only_mlp_scaled": null
+    },
+    {
+      "beta_threshold_if_all_nonattention_scaled": 0.12041003738871037,
+      "beta_threshold_if_only_mlp_scaled": 0.342593838654262,
+      "beta_threshold_old_rho1": 0.43204155917883125,
+      "host_anchor": "Qwen host C / 32K / b1",
+      "k": 4,
+      "measured_attention_share_external": 0.49043314352149003,
+      "measured_mlp_share_external": 0.14626117892390306,
+      "p_assumed": 0.9,
+      "reachable_at_beta0_all_nonattention_scaled": true,
+      "reachable_at_beta0_only_mlp_scaled": true,
+      "rho_ffn_microbenchmark": 2.1997203107605188,
+      "speed_beta025_only_mlp_scaled": 2.1946983218513347,
+      "speed_beta0_all_nonattention_scaled": 2.2608152986892796,
+      "speed_beta0_only_mlp_scaled": 2.977231445243527
+    }
+  ],
+  "source_kind": "local synthetic FP32 FFN kernel timings and external C2 timing shares",
+  "study": "G2 component-resolved verifier FFN cost sensitivity"
+}

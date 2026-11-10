@@ -1,0 +1,95 @@
+{
+  "date": "2026-11-10",
+  "files": [
+    {
+      "path": "project_log_append.md",
+      "bytes": 1436,
+      "sha256": "5e3c816a959c028d902732c36e2529c170dd03cf53c8bbcd909ade74742bb34c",
+      "git_blob_sha": "ccc47891da3881afac217a722f48e058c436b219"
+    },
+    {
+      "path": "research/G1_multitoken_ffn_priors_2026-11-10.md",
+      "bytes": 1984,
+      "sha256": "a22ef5ed8bb03924b523b26fa8f43843818277ed4d7fdf57b3f9979f62a0fc31",
+      "git_blob_sha": "2d2021306dd714144320e6f49f487e7d599f03cd"
+    },
+    {
+      "path": "results/G2_ffn_verifier_console.txt",
+      "bytes": 257,
+      "sha256": "859d9125b5183e93eafb5bc71cf42de0bced5a871104223c8987ad0c28c05e8a",
+      "git_blob_sha": "8786e0ff79808b49200e8ae816aaf71d481f45d0"
+    },
+    {
+      "path": "results/G2_ffn_verifier_cost.json",
+      "bytes": 58125,
+      "sha256": "1a72016f2f6d19ab813894737125ef2bc1547af13648a2115df8cdf7414f2754",
+      "git_blob_sha": "71c387743579e3c6896b1220583577e497ef833f"
+    },
+    {
+      "path": "results/G2_ffn_verifier_environment.txt",
+      "bytes": 248,
+      "sha256": "4c6a8fa37ebab84f745bf6df96c5dee692c9984f63aa6b099295e81a51595ce7",
+      "git_blob_sha": "cb758a1ae34d8e2cf501c32db508a98a10d4a3eb"
+    },
+    {
+      "path": "results/G2_ffn_verifier_pytest.txt",
+      "bytes": 99,
+      "sha256": "1146ae11f460190ee18d635f51b2646559f501ddc3aa51826ce99fac19ffc70b",
+      "git_blob_sha": "bdbda443876a1b6a6fe85cdb1a0ab945871504c0"
+    },
+    {
+      "path": "results/G2_ffn_verifier_scorecard.json",
+      "bytes": 7100,
+      "sha256": "38257b2ac4fa0774b7c4cb656fd2c997cf589c17450275aa9a467839004b93a7",
+      "git_blob_sha": "a21e0454ec9200e769e1919f66a3c5f47b79263a"
+    },
+    {
+      "path": "results/G2_ffn_verifier_scorecard_console.txt",
+      "bytes": 141,
+      "sha256": "2f6016fd8847078c699b1b85c211dd3947ebde5d62c1e489d1a4228eb4da559f",
+      "git_blob_sha": "58a868e7880f04f03a27c3496abf289144abdecb"
+    },
+    {
+      "path": "results/G2_ffn_verifier_seed2.json",
+      "bytes": 57046,
+      "sha256": "1f7db8bc44ef2f788be1779d7194c036a45c642baebda521b7281402060dedcf",
+      "git_blob_sha": "6cf5478a201bcfd20a2735d9d509b78c27a94e62"
+    },
+    {
+      "path": "results/G2_ffn_verifier_seed2_console.txt",
+      "bytes": 260,
+      "sha256": "b95477cd134470c2396932a46dd9e169f2fa277144d001a72597feb335cde6b2",
+      "git_blob_sha": "5a181f3bdd609b37519058baf53a398a2603ac19"
+    },
+    {
+      "path": "reviews/2026-11-10_G2_component_verifier_gate_review.md",
+      "bytes": 6511,
+      "sha256": "47ec91c09672cfff3095e87a0e4ca90f872826ca2c54bdb02ff06b29325202d3",
+      "git_blob_sha": "d76b3e57aa69eb7e0da93e6f0e09bf74e035ae8d"
+    },
+    {
+      "path": "specs/G2_component_resolved_verifier_contract.md",
+      "bytes": 7024,
+      "sha256": "9eaba54c8c8946a82a4b2b1c2f2d6ca7a38d29a5be442b3ab3e2dc931fb4b257",
+      "git_blob_sha": "bf462f4f73f980d2fb4b7965e93be8803443f9b7"
+    },
+    {
+      "path": "tests/g2_ffn_verification_cost.py",
+      "bytes": 10867,
+      "sha256": "a1515c595ffa860aed473b49451fa182457f1dd27a6c136ff3cc63acc16d465d",
+      "git_blob_sha": "77afc9bf8e3ace3d2c78c8acdd572d4894e5f515"
+    },
+    {
+      "path": "tests/g2_ffn_verifier_scorecard.py",
+      "bytes": 3318,
+      "sha256": "14070c5999190ebdf59d22bc06072b2a9d6f7b2b320e52e5803612dcfe51f699",
+      "git_blob_sha": "8406b502dd7b548967a87cb980b3bb81bf3a16f1"
+    },
+    {
+      "path": "tests/test_g2_ffn_verification_cost.py",
+      "bytes": 6827,
+      "sha256": "5e7dfb0d99c67dc43084539a74f674c8b16784b90aca40c90705a3034a64dd5a",
+      "git_blob_sha": "8116315d238a33f88e0ef66f64bcf4aba6b8b1b7"
+    }
+  ]
+}

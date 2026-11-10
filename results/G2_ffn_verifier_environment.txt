@@ -1,0 +1,6 @@
+Python: 3.13.5
+NumPy: 2.3.5
+Platform: Linux-6.18.57-x86_64-with-glibc2.41
+CPU count: 5
+OPENBLAS_NUM_THREADS=1; OMP_NUM_THREADS=1; MKL_NUM_THREADS=1 (benchmark invocation)
+No pretrained weights, GPU, energy counters, hardware or DRAM counters used.

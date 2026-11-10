@@ -1,0 +1,3 @@
+2 measured model-shaped proxies; 64 matrix cells, prior idealized beta0 >=2: 44
+all-nonattn-scaled beta0 >=2: 20
+mlp-only beta0 >=2: 17 / 32
