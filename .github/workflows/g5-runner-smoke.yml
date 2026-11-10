@@ -1,0 +1,15 @@
+name: NEXUS public runner connectivity check
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/g5-runner-smoke.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Read-only no-network smoke
+        run: echo "NEXUS GitHub-hosted standard public runner available"

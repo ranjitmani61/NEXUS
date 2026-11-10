@@ -1,0 +1,105 @@
+name: G5 public pretrained Pythia pilot
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/g5-pretrained-pythia.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pretrained-diagnostic:
+    if: ${{ github.event.repository.private == false }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      HF_HOME: /tmp/nexus-g5-hf-pythia
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install fixed CPU-only dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install 'torch==2.6.0' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install 'transformers==4.50.3' 'huggingface_hub==0.30.2' 'safetensors==0.5.3' 'numpy==1.26.4' 'pytest==8.3.5'
+      - name: Build reproducible public input fixtures
+        run: |
+          mkdir -p results/g5_public_ci
+          python - <<'PY'
+          from pathlib import Path
+          root=Path('results/g5_public_ci')
+          phrases=[
+           'The cost of inference depends on model weight traffic and cache locality.',
+           'Sparse attention must include every indexing and fallback operation.',
+           'A numerical certificate is not proof of reduced device energy.',
+           'The trained model revision is fixed before evaluating any result.',
+           'Unexpected or unfavorable observations must be preserved.',
+          ]
+          header='Original reproducible public input text for an instrumented pretrained model.\n'
+          text={
+           'heterogeneous':header+''.join(f'Observation {i:03d}: {phrases[i%len(phrases)]} Context segment {i%11}.\n' for i in range(180)),
+           'repetitive':header+('The same observation about attention memory is deliberately repeated for a control input.\n'*350),
+          }
+          for kind, value in text.items():
+           assert len(value.split()) > 2000
+           (root/f'{kind}.txt').write_text(value,encoding='utf8')
+          PY
+      - name: Test offline G5 correctness and capture real pretrained traces
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pytest -q tests/test_g5_*.py 2>&1 | tee results/g5_public_ci/pytest.log
+          python - <<'PY' > results/g5_public_ci/environment.json
+          import json,platform,torch,transformers,numpy
+          print(json.dumps({'python':platform.python_version(),'platform':platform.platform(),
+            'torch':torch.__version__,'transformers':transformers.__version__,
+            'numpy':numpy.__version__,'device':'cpu','benchmark':'ORACLE ONLY; NOT G5 PASS'},indent=2))
+          PY
+          for kind in heterogeneous repetitive; do
+            for tokens in 128 512; do
+              name="${kind}_${tokens}"
+              python tests/g5_pythia_capture.py \
+                --text-file "results/g5_public_ci/${kind}.txt" \
+                --max-tokens "$tokens" --last-queries 16 --page-size 32 --tolerance 0.02 \
+                --output "results/g5_public_ci/${name}.json" 2>&1 | tee "results/g5_public_ci/${name}.log"
+              python tests/g5_result_validator.py "results/g5_public_ci/${name}.json" \
+                2>&1 | tee "results/g5_public_ci/${name}.validation.log"
+            done
+          done
+          python - <<'PY' | tee results/g5_public_ci/matrix_summary.json
+          import sys,hashlib,json
+          from pathlib import Path
+          sys.path.insert(0,'tests')
+          from g5_result_validator import load_strict,validate
+          root=Path('results/g5_public_ci'); fingerprints=set(); out=[]
+          for kind in ('heterogeneous','repetitive'):
+           digest=hashlib.sha256((root/f'{kind}.txt').read_bytes()).hexdigest()
+           for tokens in (128,512):
+            data=load_strict(root/f'{kind}_{tokens}.json')
+            audit=validate(data); m=data['metadata']; s=data['summary']
+            assert m['version']=='1.3' and m['evaluated_length']==tokens
+            assert m['input_text_sha256']==digest and m['device']=='cpu'
+            assert m['model_weight_integrity']['checks']==2
+            fingerprints.add(m['checkpoint_manifest']['fingerprint_sha256'])
+            out.append({'input':kind,'tokens':tokens,'observations':audit['rows'],
+              'median_mass_oracle_page_fraction':s['median_oracle_mass_fraction'],
+              'median_value_oracle_page_fraction':s['median_oracle_exact_score_value_fraction']})
+          assert len(out)==4 and len(fingerprints)==1
+          print(json.dumps({'status':'PRETRAINED DIAGNOSTIC ONLY; G5 NOT PASSED',
+                'checkpoint_fingerprint':next(iter(fingerprints)),'matrix':out},indent=2))
+          PY
+      - name: Upload evidence including failure logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexus-g5-pythia-${{ github.run_id }}
+          path: results/g5_public_ci/
+          if-no-files-found: warn
+          retention-days: 7

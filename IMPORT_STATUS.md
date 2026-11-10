@@ -1,17 +1,16 @@
-# Repository import status — 2026-11-04
+# NEXUS repository import status — verified 2026-11-04
 
-Status: **PARTIAL**; do not claim all files are in GitHub yet.
+**Status of original project transfer: COMPLETE (99/99 byte-identical).**
 
-Original project inventory: **99 files**.
+The previous `IMPORT_STATUS.md` said 32 binaries were pending. That status became obsolete after subsequent commits. Independent remote-tree verification on 2026-11-04 compared each original file's path, byte length, and Git blob SHA-1 against the checksums derived from the local original files in `nexus_local_git_sha_audit.json`:
 
-Files committed individually: **67** (0 source/text files).
+- Original files: **99**
+- Original files found in `main`: **99**
+- Exact Git blob hash + byte-length matches: **99**
+- Missing originals or mismatches: **0**
+- Additional repository documents at that audit: `README.md`, `IMPORT_STATUS.md`, `nexus_file_manifest.json`.
+- The file inventory and SHA-256 reference remains `nexus_file_manifest.json`.
 
-Binary files still pending: **32** (31 ZIP archives and 1 JPEG image).
+The above is a **repository file-transfer audit**, not verification of the underlying scientific claims. Loose source files and archived ZIP contents are not interchangeable: many experiment outputs remain inside the archived ZIPs. New engineering commits may add files beyond the original 99; they are not counted as original import files.
 
-The complete source backup was verified locally as a ZIP archive and may be downloaded from the originating ChatGPT conversation. It has **not** been committed to GitHub because the direct container Git network route is blocked and the connector's text API does not read binary conversation attachments.
-
-The `nexus_file_manifest.json` contains expected relative paths, original byte counts, and SHA-256 checksums. To complete import, transfer pending binary files byte-for-byte and compare checksums. This file is an audit record, not proof of successful upload.
-
-## Pending original files
-
-- `IMG_8992.jpeg`\n- `project_01_G2_G4_weight_reuse_package.zip`\n- `project_01_G2_codec_pivot_package.zip`\n- `project_01_G2_decode_memory_traffic_package.zip`\n- `project_01_G2_engineering_package.zip`\n- `project_01_G2_near_memory_threshold_package.zip`\n- `project_01_G2_photonic_calibration_audit_package.zip`\n- `project_01_G2_photonic_drift_energy_package.zip`\n- `project_01_G2_photonic_flux_audit_package.zip`\n- `project_01_G2_photonic_power_reality_package.zip`\n- `project_01_G2_photonic_precision_package.zip`\n- `project_01_G2_progressive_bitplane_package.zip`\n- `project_01_G2_temporal_delta_package.zip`\n- `project_01_G2_trained_toy_temporal_delta_package.zip`\n- `project_01_G3_G4_engineering_package.zip`\n- `project_01_G3_G4_token_stream_package.zip`\n- `project_01_G3_guarded_mixed_precision_package.zip`\n- `project_01_G3_reduced_precision_package.zip`\n- `project_01_G3_snapshot_hypervigilance_package.zip`\n- `project_01_G3_transactional_KV_package.zip`\n- `project_01_G4_compiled_CPU_falsification_package.zip`\n- `project_01_G4_dynamic_KV_stream_package.zip`\n- `project_01_G4_executable_cpu_package.zip`\n- `project_01_G4_learned_attention_control_package.zip`\n- `project_01_G4_oracle_engineering_package.zip`\n- `project_01_G4_queue_aware_batching_package.zip`\n- `project_01_G4_value_geometry_package.zip`\n- `project_01_G5_global_quality_falsification_package.zip`\n- `project_01_G5_harness_package.zip`\n- `project_01_G5_projection_delta_readiness_package.zip`\n- `project_01_G5_runtime_logit_certificate_package.zip`\n- `project_01_engineering_gate_package.zip`
+**Latest engineering status:** G5 pretrained-model testing is still blocked; see `reviews/2026-11-04_G5_capture_hardening_review.md`. No fabricated hardware or pretrained benchmark evidence is implied.

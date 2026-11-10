@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-05",
+  "activity": "G5 in-memory checkpoint self-consistency",
+  "results": {
+    "pytest_passed": 91,
+    "pytest_failed": 0,
+    "real_pretrained_model_runs": 0,
+    "gpu_runs": 0,
+    "hardware_prototypes": 0
+  },
+  "environment": {
+    "python": "3.13.5",
+    "torch": "2.10.0+cpu",
+    "cuda_available": false,
+    "safetensors": "0.7.0",
+    "numpy": "2.3.5",
+    "pytest": "9.0.2",
+    "transformers_installed": false
+  },
+  "blocker": "No cached pretrained Pythia checkpoint; outgoing DNS unavailable; Transformers not installed",
+  "gate": "G5 BLOCKED; G6 not authorized",
+  "artifact_sha256": {
+    "tests/g5_checkpoint_snapshot.py": "3f1a73806bd2ff0b1744891d803c95f4a0357adfa581c14ad963e57c09fa1e16",
+    "tests/g5_pythia_capture.py": "3d9dbe50c430c5c9c2760ed9152e45886e24f12393bc095ddbb04e08aae562ab",
+    "tests/g5_result_validator.py": "5b4a1c25d802cf8572bdd57a7913412bec28dcdccb261302249e0f02f8704ed9",
+    "tests/test_g5_loaded_tensor_integrity.py": "6e8a40e44b413e62897052549845915d0a259cf98b2979a739e7c7d5e60a4b71",
+    "specs/G5_in_memory_weight_integrity_contract.md": "3cf245a14bcbe6c7459ac379e2b967b4e70af334218a3bcf3ba9d7d4d2b37f4a",
+    "reviews/2026-11-05_G5_in_memory_weight_review.md": "fd56c602524ffc70cd02e7e4a9b4466e61ceca31f4f41bd8b461106ac28f50c6",
+    "results/G5_in_memory_weight_pytest.txt": "4336b8ca7653b03d5f3ec01ece81bfa338ac893a6531d0b0ccf51e189847a26c",
+    "processor_project_01.md": "4690e36de66d32a804b00a4b8e4a413754896d2bf38ba57030a6d035726abe3b"
+  },
+  "caveats": [
+    "Synthetic test fixtures, not pretrained checkpoint",
+    "Self-audit cannot authenticate publisher",
+    "Does not test end-to-end task quality, speed, energy or novelty"
+  ]
+}

@@ -235,3 +235,38 @@ Read `AGENTS.md` in full before work. Pre-registered `specs/G5R_real_model_bench
 **Process incident (disclosed):** a diagnostic queue started early because its wait sentinel matched its own log note. The overlap affected only wall-clock fields of quality runs. The diagnostic was rerun.
 
 Report (v1.1): `reviews/2026-11-04_G5R_real_model_gate_review.md`. Tables: `results/g5r/summary_tables.md`. Reproduce: `results/g5r/README.md`.
+
+
+## 2026-11-05 — G5 in-memory checkpoint consistency (research support only)
+
+Read `AGENTS.md` and prior G5 provenance/trace validation code before work. Local pretrained checkpoint remains inaccessible (no cached Pythia weights; DNS resolution fails, `transformers` unavailable). Implemented per-tensor equality checking between staged `model.safetensors` and loaded `state_dict` before and after pilot capture, including tied parameters and safe dtype-promotion checks. Upgraded self-attested trace format to `1.3` with required memory-check metadata; prior v1.2 validation preserved. Combined **91/91 G5 software tests passed**, including altered in-memory parameter and malformed tied alias counterexamples. This is **synthetic verification only**, not pretrained execution or actual performance measurement. Files: `tests/g5_checkpoint_snapshot.py`, `tests/g5_pythia_capture.py`, `tests/g5_result_validator.py`, `tests/test_g5_loaded_tensor_integrity.py`, `specs/G5_in_memory_weight_integrity_contract.md`, `reviews/2026-11-05_G5_in_memory_weight_review.md`, `results/G5_in_memory_weight_*.{json,txt}`. Decision **G5 BLOCKED, G6 not authorized, no novelty/breakthrough claim**.
+
+
+## 2026-11-05 — Free public-runner G5 pretrained pilot (remote run unverified at preparation)
+
+Read `AGENTS.md` and the current G5 code. Local genuine pretrained weights remain unavailable; metered Hugging Face Jobs were not used. GitHub documents free standard runners in public repositories. Prepared read-only, CPU-only, 20-minute GitHub Actions pilot for pinned `EleutherAI/pythia-14m` at revision `cf967c0a9a04383db6f7b1108d86b2962634b4ac`, with two original deterministic input regimes at 128/512 tokens, checkpoint hashing, numerical reconstruction, strict row validation, and an artifact-on-failure policy. Found and fixed a numerical G5 oracle bug: float64 cumulative page mass can exceed 1 by roundoff and create a negative mass certificate; clamp to the valid nonnegative interval. **93/93 integrated local software tests passed**; none executed pretrained weights. See `.github/workflows/g5-pretrained-pythia.yml`, `specs/G5_free_public_actions_pilot.md`, `reviews/2026-11-05_G5_free_public_actions_review.md`. **G5 BLOCKED pending verified pretrained execution plus a genuine end-to-end strong-baseline benchmark; G6 unauthorized; no breakthrough.**
+
+## 2026-11-10 — Reconciliation of the two parallel G5 tracks (record correction, no new experiment)
+
+Read `AGENTS.md` (v1.0; main differs only by a final newline) and both tracks before work. Two G5 efforts ran in parallel without knowledge of each other.
+- **Main:** the Pythia-14M pilot via free GitHub Actions; it records G5 BLOCKED because genuine weights were inaccessible in that environment.
+- **Branch `claude/g5r-real-model-study`:** G5-R obtained genuine Qwen2.5-0.5B (SHA-256 manifest) and IBM Granite-4.0-micro-base (Sigstore-verified) and recorded **G5 FAIL**.
+
+The branch was merged with main on 2026-11-10. Neither entry above was edited.
+
+**Status correction:** for the NX attention-page candidates (NX-SPH, NX-BOX, NX-ONE, NX-VAL), **G5 is FAIL, not BLOCKED.**
+- The blocking condition (no verified pretrained execution) was resolved by G5-R.
+- A FAIL needs only that the candidates do not deliver: they read ≥ 97.8% of KV pages and ran 0.04×–0.80× of dense.
+- A PASS would additionally need the strong-baseline benchmark that main's entry calls for.
+
+**Pythia pilot result** (previously "remote run unverified"):
+- Workflow run 41989344644 **succeeded** on 2026-11-05 at 07:44–07:45 UTC, with 93 offline tests passing.
+- At 128 and 512 tokens (4 and 16 pages of 32), the median perfect-information oracle page fraction was 0.69–1.00 (mass oracle) and 0.88–1.00 (value oracle).
+- This is consistent with G5-R but uninformative for long context.
+- Values were transcribed from the job log into `results/g5_public_ci_run41989344644_summary.json`. The trace artifact (sha256 `02497d67…`, expires 2026-11-12) was **not** retrieved, because its storage host was refused by this session's network policy.
+
+**Numerical fixes:** main's clamp of the oracle certificate `2(1 − cum mass)` and G5-R defect D1 (bound-shifted `exp` underflow) are different code paths. Both fixes stand.
+
+**Tests:** after the merge, 206 tests pass (113 G5-R + 93 main G5). The G2–G4 tests remain inside the committed zip packages and were not re-run.
+
+**Gate status:** G5 FAIL for the attention-page candidates; G6–G12 not authorized; no breakthrough.

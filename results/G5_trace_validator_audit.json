@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-04",
+  "gate": "G5 BLOCKED",
+  "component": "G5 record-integrity validator",
+  "pretrained_checkpoint_executed": false,
+  "model_cached": false,
+  "external_compute_used": false,
+  "passed_tests": 58,
+  "failed_tests": 0,
+  "known_previous_summary_weakness": "summarize() sets all_value_certificates_verified_numerically=True without independently checking rows; adversarial test demonstrates false reporting",
+  "new_protection": "validator independently verifies full layer x head x query grid, values, fractions, certificate inequalities, recomputed summary, revision, reconstruction coverage and strict JSON parsing",
+  "limitations": [
+    "Checks internal consistency only; can be fooled by coordinated fabricated data",
+    "Cannot verify pretrained weight bytes or model execution without checkpoint",
+    "No real LLM, GPU, latency, energy or silicon performance measured"
+  ],
+  "environment": {
+    "python": "3.13.5",
+    "torch": "2.10.0+cpu",
+    "numpy": "2.3.5",
+    "pytest": "9.0.2"
+  },
+  "sha256": {
+    "tests/g5_result_validator.py": "455f6fd4d4914f8907b82c3e62bf28f2c79907b056e8d9f50141eed5a756aef7",
+    "tests/test_g5_result_validator.py": "335e5d778adf853bcd0a040e119d66568d926280cb100f2c6bc213fb24ee634f",
+    "tests/g5_pythia_capture.py": "6d6e70722aec5bb290062d03f8cf07f68c3460370b5e066d8d88e630343d2ebe"
+  }
+}
