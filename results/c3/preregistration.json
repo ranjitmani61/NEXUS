@@ -1,0 +1,19 @@
+{
+ "charter": {
+  "file": "specs/C3_G0_gpu_decode_bottleneck_charter.md",
+  "sha256": "da28b348000961667f70e832193850c3dfa04503b7ec30e1b3f2fd18faeb0c83",
+  "registered_utc": "2026-11-10T14:45:39Z",
+  "git_head_before_commit": "23efcbe04d7378fc6612e4a4c04ba7a540f3e9bd",
+  "note": "Registered before any C3 GPU measurement. Only the inventory probe (not a result) and CPU logic tests had run."
+ },
+ "code_under_test": {
+  "tests/c3_gpu_breakdown.py": "d7cb72b328c788e383cad41e0fbc9cecdbee7ca0eee22e1e5a8800439a1baa85",
+  "tests/c3_build_kernel.py": "8622cab6509acf630c082b60a96fdd88948e8a8f2377c8a884512da1e9eebffc",
+  "tests/c3_kaggle.py": "4fac92d74f813243cfdf1bbafb7380b0c5b2220f71ab2e4a43d7da06d77520b9"
+ },
+ "gpu_quota_at_registration": {
+  "timeUsed_s": 102684.208,
+  "totalTimeAllowed_s": 108000,
+  "refresh_utc": "2026-11-14T00:00:00Z"
+ }
+}
