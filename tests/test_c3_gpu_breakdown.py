@@ -119,3 +119,10 @@ def test_granite_capture_patch_guard():
         G.patch_granite_capture(bad)
     other = SimpleNamespace(config=SimpleNamespace(model_type="qwen2"), model=SimpleNamespace())
     assert G.patch_granite_capture(other) is False
+
+
+def test_capture_is_no_grad():
+    """C3-D4: graph capture must run without autograd (as eager timing does)."""
+    import inspect
+    src = inspect.getsource(G.Decoder.capture)
+    assert "@torch.no_grad()" in src and "assert not torch.is_grad_enabled()" in src

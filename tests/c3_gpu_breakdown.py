@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """C3: batch-1 decode cost by measured removal, on GPU (charter specs/C3_G0_gpu_decode_bottleneck_charter.md).
 
-Version 1.1, 2026-11-10 (A1: defect fixes C3-D2, C3-D3 from the GPU smoke run). Self-contained (torch, transformers 4.57.1, numpy; bitsandbytes optional).
+Version 1.2, 2026-11-10 (A1: C3-D2, C3-D3; A2: C3-D4 no-grad capture, prefill chunk 512, memory/traceback records). Self-contained (torch, transformers 4.57.1, numpy; bitsandbytes optional).
 Also runs on CPU for logic tests (graph modes are then skipped and recorded as such).
 
 Per model:
@@ -10,7 +10,7 @@ Per model:
    --ref-device-map auto is given (fp32 Granite does not fit one 15 GB T4).
 2. Precondition: static-cache decode vs full forward (KL and argmax, dtype-aware thresholds).
 3. For each weight format (fp16 dense, bnb nf4, bnb int8) and context T:
-   chunked prefill into a StaticCache (max_cache_len = T + steps), then teacher-forced decode
+   chunked prefill (512-token chunks, A2) into a StaticCache (max_cache_len = T + steps), then teacher-forced decode
    steps timed in two modes, eager and one CUDA graph per configuration (GPU only).
    Configurations: full, and with one class removed (attention core / attention projections /
    MLP Linear / lm_head), and with all four removed. Removal replaces the class's work with a
@@ -33,6 +33,7 @@ import os
 import platform
 import subprocess
 import time
+import traceback
 from pathlib import Path
 
 import numpy as np
@@ -131,7 +132,7 @@ def make_static_cache(model, max_len):
 
 
 @torch.no_grad()
-def prefill(model, cache, ids, dev, chunk=2048):
+def prefill(model, cache, ids, dev, chunk=512):
     """Chunked prefill of ids (list) into the static cache; positions 0..len-1."""
     T = len(ids)
     x = torch.tensor([ids], device=dev)
@@ -279,7 +280,12 @@ class Decoder:
     def eager(self, i):
         return self.model(input_ids=self.toks[i], past_key_values=self.cache, cache_position=self.pos[i], use_cache=True).logits
 
+    @torch.no_grad()
     def capture(self, key):
+        # Defect C3-D4 (main run 1): capture used to run with autograd enabled, so each graph's
+        # output kept its whole autograd graph (~3-4 GB of saved activations per capture) and
+        # bitsandbytes took its training path. Capture must use the inference path, as eager does.
+        assert not torch.is_grad_enabled()
         self.ids_buf.copy_(self.toks[0]); self.pos_buf.copy_(self.pos[0])
         s = torch.cuda.Stream(self.dev)
         s.wait_stream(torch.cuda.current_stream(self.dev))
@@ -306,7 +312,7 @@ def run_context(model, ab, ids, T, steps, reps, dev, modes, rng, deadline):
     t0 = time.perf_counter()
     prefill(model, cache, ids[:T], dev)
     sync(dev)
-    res = {"prefill_s": time.perf_counter() - t0, "max_cache_len": T + steps, "modes": {}}
+    res = {"prefill_s": time.perf_counter() - t0, "max_cache_len": T + steps, "modes": {}, "mem": {"after_prefill": mem_stats(dev)}}
     D = Decoder(model, cache, toks, T, dev)
     units = [("eager", a) for a in ABLATIONS]
     if "graph" in modes:
@@ -324,6 +330,7 @@ def run_context(model, ab, ids, T, steps, reps, dev, modes, rng, deadline):
                 finally:
                     ab.restore()
             res["graph_capture_errors"] = gerr
+            res["mem"]["after_captures"] = mem_stats(dev)
     # eager vs graph logits check on the full configuration
     with torch.no_grad():
         ab.set(set())
@@ -355,6 +362,7 @@ def run_context(model, ab, ids, T, steps, reps, dev, modes, rng, deadline):
                     if rep > 0:
                         times[(mode, a)].append(time.perf_counter() - ts)
                 ab.restore()
+    res["mem"]["after_timing"] = mem_stats(dev)
     for (mode, a), ts in times.items():
         if not ts:
             continue
@@ -385,6 +393,13 @@ def patch_granite_capture(model):
     assert types and all(t == "attention" for t in types), "Mamba layers present: patch not exact"
     model.model._update_mamba_mask = lambda attention_mask, cache_position: None
     return True
+
+
+def mem_stats(dev):
+    if dev.type != "cuda":
+        return {}
+    return {"allocated": torch.cuda.memory_allocated(dev), "reserved": torch.cuda.memory_reserved(dev),
+            "peak_allocated": torch.cuda.max_memory_allocated(dev)}
 
 
 def release(dev):
@@ -442,7 +457,7 @@ def main():
     dev = torch.device(a.device)
     torch.manual_seed(20261110)
     rng = np.random.default_rng(20261110)
-    out = {"meta": {"version": "1.1", "date": "2026-11-10", "label": a.label, "charter": "specs/C3_G0_gpu_decode_bottleneck_charter.md",
+    out = {"meta": {"version": "1.2", "date": "2026-11-10", "label": a.label, "charter": "specs/C3_G0_gpu_decode_bottleneck_charter.md",
                     "model": a.model_name, "args": {k: (str(v) if isinstance(v, Path) else v) for k, v in vars(a).items() if k != "books"},
                     "books": [b.name for b in a.books], "torch": torch.__version__, "cuda": torch.version.cuda,
                     "transformers": transformers.__version__, "python": platform.python_version(),
@@ -481,8 +496,8 @@ def main():
             dt = {"fp32": torch.float32, "fp16": torch.float16, "bf16": torch.bfloat16}[fmt]
             mm = M.from_pretrained(a.model_dir, config=cfg, dtype=dt, attn_implementation="c3_sdpa").to(dev).eval()
             patch_granite_capture(mm)
-            return mm
-        return load(a.model_dir, fmt, dev, device_map)
+            return mm.requires_grad_(False)
+        return load(a.model_dir, fmt, dev, device_map).requires_grad_(False)  # C3-D4: inference only
 
     # 1. fp32 reference
     t0 = time.time()
@@ -516,9 +531,11 @@ def main():
             fres["load_s"] = time.time() - t0
         except Exception as e:
             fres["error"] = f"load: {type(e).__name__}: {str(e)[:500]}"
+            fres["traceback"] = traceback.format_exc()[-3000:]
             save()
             continue
         ab = Ablator(m)
+        fres["params_requiring_grad"] = sum(1 for q in m.parameters() if q.requires_grad)  # must be 0 (C3-D4)
         fres["weight_bytes"] = weight_bytes(m)
         fres["removable_counts"] = {k: len(v) for k, v in ab.mods.items()}
         if fmt in KL_LIMIT:
@@ -540,6 +557,9 @@ def main():
                 save()
                 continue
             try:
+                release(dev)
+                if dev.type == "cuda":
+                    torch.cuda.reset_peak_memory_stats(dev)
                 r = run_context(m, ab, timing_ids, T, a.steps, a.reps, dev, a.modes, rng, deadline)
                 wb = fres["weight_bytes"]
                 kv = kv_read_bytes(m, T + a.steps, elem)
@@ -553,7 +573,8 @@ def main():
                 r["nvsmi_after"] = nvsmi()
             except Exception as e:
                 ab.restore()
-                r = {"error": f"{type(e).__name__}: {str(e)[:800]}"}
+                r = {"error": f"{type(e).__name__}: {str(e)[:800]}", "traceback": traceback.format_exc()[-3000:], "mem_at_error": mem_stats(dev)}
+                release(dev)
             fres.setdefault("contexts", {})[str(T)] = r
             save()
             print(json.dumps({"format": fmt, "T": T, "full_ms": {md: round(mr["full"]["p50_s"] * 1e3, 3) for md, mr in r.get("modes", {}).items() if "full" in mr},

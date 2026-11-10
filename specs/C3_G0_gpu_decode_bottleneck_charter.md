@@ -139,3 +139,27 @@ The smoke run (Kaggle kernel `nexus-c3-smoke` v1; T = 512/1024; outputs are not 
 **Unchanged:** thresholds, rules, configurations, contexts and budgets.
 
 **Added:** one Granite-only re-smoke (same sizes; not a result) to verify both fixes on the GPU before the main run.
+
+## Amendment A2 (2026-11-10, AFTER main run 1; a post-data defect fix, labelled as such)
+
+**Main run 1** (Kaggle `nexus-c3-main` v1, 16:17–16:34 UTC; kept unchanged in `results/c3/main_run1/`):
+- **Completed:** P1 (full hashes), P2 and quality for every format.
+- **Failed:** many timing units, with CUDA OOM. Granite fp16 failed at every context. Qwen fp16 failed at 16K/32K.
+
+**Root cause, defect C3-D4 (mine).** CUDA-graph capture ran with autograd enabled. The capture loop was outside the `no_grad` block that covered eager timing, and parameters had `requires_grad=True`.
+- Each captured output therefore kept its autograd graph alive: about 3–4 GB of saved activations per capture, which matches the measured growth.
+- bitsandbytes took its training path instead of its batch-1 inference kernel.
+
+**Consequences for run 1:**
+- Its **graph-mode timings are invalid**.
+- Its eager timings, P1, P2 and quality were computed under `no_grad` and are valid measurements.
+- Run 1 is **not used for the decision**: every C* candidate must come from one run design, as in C2 A3. Its eager timings are used only as a reproducibility comparison.
+
+**Changes in `tests/c3_gpu_breakdown.py` v1.2:**
+1. Graph capture now runs under `torch.no_grad()`, with an assertion. Every model is set to `requires_grad_(False)`, and the count of parameters requiring grad (must be 0) is recorded.
+2. The prefill chunk is reduced from 2048 to 512 tokens, to lower transient memory at 16K–32K on a 15 GB device. Prefill is not timed and does not enter any rule. The multi-chunk path passes P2 in the CPU test.
+3. Memory before and after each phase, plus tracebacks on errors, are now recorded.
+
+**Unchanged:** thresholds, rules, configurations, contexts, steps, reps and budgets.
+
+**Run 2** = the same main plan with v1.2. At this point about 3,800 s of quota remain.
