@@ -97,6 +97,7 @@ class _Wrapped(torch.nn.Module):
     def __init__(self):
         super().__init__()
         self.model = torch.nn.Module()
+        self.model.embed_tokens = torch.nn.Embedding(32, 16)  # as in HF models (caught a v1.0 bug)
         self.model.q_proj = torch.nn.Linear(16, 16)
         self.model.down_proj = torch.nn.Linear(16, 16)
         self.lm_head = torch.nn.Linear(16, 32, bias=False)
@@ -109,6 +110,7 @@ def test_quantize_variants(variant, lm_quant):
     assert C.is_linear(q.model.q_proj) and not isinstance(q.model.q_proj, torch.nn.Linear)
     assert isinstance(q.lm_head, torch.nn.Linear) != lm_quant
     assert isinstance(base.model.q_proj, torch.nn.Linear)  # base untouched
+    assert isinstance(q.model.embed_tokens, torch.nn.Embedding)  # embedding never quantized
     if variant != "int8dyn":
         assert q.model.q_proj.weight().qscheme() in (torch.per_channel_affine, torch.per_channel_symmetric)
     x = torch.randn(2, 16)

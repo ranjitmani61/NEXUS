@@ -129,14 +129,18 @@ def quantize_variant(base, variant: str):
     """B1 family (charter §4 + Amendment A1). Returns a quantized deep copy of `base`."""
     import copy
     from torch.ao.quantization import per_channel_dynamic_qconfig, quantize_dynamic
+    from torch.ao.nn.quantized.dynamic import Linear as QLinear
     m = copy.deepcopy(base)
+    # Explicit Linear-only mapping (v1.1 fix): with a module-name qconfig spec, the default
+    # mapping also tried to convert nn.Embedding (model.embed_tokens) and raised.
+    only_linear = {torch.nn.Linear: QLinear}
     if variant == "int8dyn":          # registered: per-tensor qint8, all Linear
-        return quantize_dynamic(m, {torch.nn.Linear}, dtype=torch.qint8).eval()
+        return quantize_dynamic(m, {torch.nn.Linear}, dtype=torch.qint8, mapping=only_linear).eval()
     if variant == "int8dyn_pc":       # A1: per-channel weight scales, all Linear
-        return quantize_dynamic(m, {torch.nn.Linear: per_channel_dynamic_qconfig}, dtype=torch.qint8).eval()
+        return quantize_dynamic(m, {torch.nn.Linear: per_channel_dynamic_qconfig}, dtype=torch.qint8, mapping=only_linear).eval()
     if variant == "int8dyn_pc_nolm":  # A1: per-channel, lm_head left in its original dtype
         body = [n for n, _ in m.named_children() if n != "lm_head"]
-        return quantize_dynamic(m, {n: per_channel_dynamic_qconfig for n in body}, dtype=torch.qint8).eval()
+        return quantize_dynamic(m, {n: per_channel_dynamic_qconfig for n in body}, dtype=torch.qint8, mapping=only_linear).eval()
     raise ValueError(variant)
 
 
