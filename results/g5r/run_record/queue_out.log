@@ -1,0 +1,171 @@
+{"T": 4096, "prefill_s": 3.7, "dense_attn_share": 0.145, "amdahl_ceiling": 1.169, "dense": [1.0, [0.882, 1.133], 1.0], "quest:1024": [0.592, [0.466, 0.671], 0.312], "quest:2048": [0.376, [0.338, 0.426], 0.542], "quest:4096": [0.898, [0.855, 1.018], 1.0], "nx_box": [0.287, [0.259, 0.325], 1.0], "nx_sph": [0.271, [0.269, 0.308], 1.0], "nx_one": [0.648, [0.499, 0.748], 1.0]}
+{"T": 8192, "prefill_s": 9.0, "dense_attn_share": 0.243, "amdahl_ceiling": 1.322, "dense": [1.0, [0.923, 1.084], 1.0], "quest:1024": [0.68, [0.613, 0.737], 0.198], "quest:2048": [0.488, [0.444, 0.568], 0.312], "quest:4096": [0.336, [0.273, 0.364], 0.542], "nx_box": [0.239, [0.217, 0.259], 1.0], "nx_sph": [0.233, [0.204, 0.253], 1.0], "nx_one": [0.76, [0.681, 0.823], 1.0]}
+{"T": 16384, "prefill_s": 25.0, "dense_attn_share": 0.373, "amdahl_ceiling": 1.595, "dense": [1.0, [0.904, 1.106], 1.0], "quest:1024": [0.758, [0.686, 0.848], 0.141], "quest:2048": [0.584, [0.505, 0.625], 0.198], "quest:4096": [0.363, [0.317, 0.41], 0.312], "nx_box": [0.176, [0.159, 0.188], 1.0], "nx_sph": [0.172, [0.156, 0.189], 1.0], "nx_one": [0.705, [0.638, 0.762], 1.0]}
+{"T": 32000, "prefill_s": 67.6, "dense_attn_share": 0.494, "amdahl_ceiling": 1.977, "dense": [1.0, [0.888, 1.126], 1.0], "quest:1024": [1.024, [0.932, 1.154], 0.113], "quest:2048": [0.743, [0.676, 0.893], 0.142], "quest:4096": [0.535, [0.487, 0.605], 0.201], "nx_box": [0.08, [0.073, 0.092], 0.998], "nx_sph": [0.093, [0.085, 0.107], 1.0], "nx_one": [0.689, [0.627, 0.784], 1.0]}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 15.32it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 15.27it/s]
+860.txt ppl 14.159
+2544.txt ppl 15.938
+3247.txt ppl 13.501
+3340.txt ppl 12.173
+3608.txt ppl 9.125
+3754.txt ppl 12.778
+4047.txt ppl 8.45
+5396.txt ppl 15.307
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 97.99it/s]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 26.45it/s]
+GraniteMoeHybrid requires an initialized `HybridMambaAttentionDynamicCache` to return a cache. Because one was not provided, no cache will be returned.
+{
+ "model": "granite4micro",
+ "dtype": "bf16",
+ "tokens": 2048,
+ "g5r_dense_vs_sdpa_logits_maxabs": 0.0,
+ "control_random_init_ppl_512": 116415.65777468246,
+ "pretrained_ppl_512_same_tokens": 18.503268642571555,
+ "vocab_size": 100352,
+ "shadow_reconstruction_max_abs": 0.0,
+ "shadow_reconstruction_max_rel_to_outnorm": 0.0,
+ "shadow_layers_seen": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28,
+  29,
+  30,
+  31,
+  32,
+  33,
+  34,
+  35,
+  36,
+  37,
+  38,
+  39
+ ]
+}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 64.01it/s]
+GraniteMoeHybrid requires an initialized `HybridMambaAttentionDynamicCache` to return a cache. Because one was not provided, no cache will be returned.
+{"book": "860.txt", "prefill_s": 81.8, "shadow_s": 11.5, "dense_ppl": 2967.354, "box_frac_med": 0.0, "ormass_frac_med": 0.0, "orscore_frac_med": 0.0, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.0, "quest:1024": 0.0, "quest:2048": 0.0, "quest:4096": 0.0}}
+{"book": "860.txt", "prefill_s": 24.5, "shadow_s": 183.1, "dense_ppl": 9.223, "box_frac_med": 1.0, "ormass_frac_med": 0.37109375, "orscore_frac_med": 0.71875, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.0, "quest:1024": 0.06917, "quest:2048": 0.02712, "quest:4096": -7e-05}}
+{"book": "2544.txt", "prefill_s": 23.5, "shadow_s": 29.5, "dense_ppl": 19.851, "box_frac_med": 1.0, "ormass_frac_med": 0.3671875, "orscore_frac_med": 0.72265625, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.0, "quest:1024": -0.04039, "quest:2048": -0.02288, "quest:4096": -0.00966}}
+{"book": "3247.txt", "prefill_s": 24.1, "shadow_s": 31.0, "dense_ppl": 35.278, "box_frac_med": 1.0, "ormass_frac_med": 0.27485104571984437, "orscore_frac_med": 0.6335268725680934, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.0, "quest:1024": 0.00594, "quest:2048": -0.01032, "quest:4096": -0.00574}}
+{"book": "3340.txt", "prefill_s": 23.2, "shadow_s": 30.2, "dense_ppl": 15.338, "box_frac_med": 1.0, "ormass_frac_med": 0.34765625, "orscore_frac_med": 0.65625, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.0, "quest:1024": 0.08127, "quest:2048": -0.00539, "quest:4096": 0.005}}
+Token indices sequence length is longer than the specified maximum sequence length for this model (339441 > 131072). Running this sequence through the model will result in indexing errors
+{"book": "3608.txt", "prefill_s": 22.8, "shadow_s": 28.1, "dense_ppl": 10.771, "box_frac_med": 1.0, "ormass_frac_med": 0.37890625, "orscore_frac_med": 0.71484375, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.0, "quest:1024": -0.01859, "quest:2048": -0.00915, "quest:4096": -0.0048}}
+{"book": "3754.txt", "prefill_s": 21.7, "shadow_s": 30.4, "dense_ppl": 19.862, "box_frac_med": 1.0, "ormass_frac_med": 0.38671875, "orscore_frac_med": 0.71484375, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.0, "quest:1024": 0.04806, "quest:2048": 0.04314, "quest:4096": 0.00434}}
+{"book": "4047.txt", "prefill_s": 26.2, "shadow_s": 31.6, "dense_ppl": 37.078, "box_frac_med": 1.0, "ormass_frac_med": 0.296875, "orscore_frac_med": 0.65234375, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.0, "quest:1024": 0.08474, "quest:2048": 0.02761, "quest:4096": 0.01183}}
+{"book": "5396.txt", "prefill_s": 23.9, "shadow_s": 32.6, "dense_ppl": 29.045, "box_frac_med": 1.0, "ormass_frac_med": 0.3515625, "orscore_frac_med": 0.69140625, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.0, "quest:1024": -0.02092, "quest:2048": -0.01526, "quest:4096": -0.0132}}
+{"T": 8192, "prefill_s": 39.7, "dense_attn_share": 0.382, "amdahl_ceiling": 1.618, "dense": [1.0, [0.88, 1.137], 1.0], "quest:1024": [0.537, [0.484, 0.611], 0.198], "quest:2048": [0.198, [0.174, 0.225], 0.312], "nx_box": [0.102, [0.092, 0.116], 1.0], "nx_one": [0.758, [0.678, 0.862], 1.0]}
+{"T": 16384, "prefill_s": 99.4, "dense_attn_share": 0.517, "amdahl_ceiling": 2.07, "dense": [1.0, [0.892, 1.121], 1.0], "quest:1024": [0.856, [0.764, 0.904], 0.141], "quest:2048": [0.56, [0.486, 0.591], 0.198], "nx_box": [0.051, [0.045, 0.053], 1.0], "nx_one": [0.746, [0.665, 0.787], 1.0]}
+{"T": 32000, "prefill_s": 315.5, "dense_attn_share": 0.586, "amdahl_ceiling": 2.416, "dense": [1.0, [0.911, 1.098], 1.0], "quest:1024": [1.038, [0.938, 1.261], 0.113], "quest:2048": [0.787, [0.695, 0.868], 0.142], "nx_box": [0.04, [0.034, 0.041], 0.999], "nx_one": [0.796, [0.728, 0.852], 1.0]}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 23.89it/s]
+{"book": "860.txt", "prefill_s": 75.0, "shadow_s": 206.0, "dense_ppl": 5.839, "box_frac_med": 1.0, "ormass_frac_med": 0.26953125, "orscore_frac_med": 0.609375, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.00486, "quest:1024": 0.08268, "quest:2048": 0.02316, "quest:4096": 0.02666}}
+{"book": "2544.txt", "prefill_s": 84.1, "shadow_s": 152.1, "dense_ppl": 18.736, "box_frac_med": 1.0, "ormass_frac_med": 0.26953125, "orscore_frac_med": 0.6328125, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.00081, "quest:1024": 0.02067, "quest:2048": -0.02426, "quest:4096": -0.00569}}
+{"book": "3247.txt", "prefill_s": 80.4, "shadow_s": 177.5, "dense_ppl": 25.55, "box_frac_med": 1.0, "ormass_frac_med": 0.19140625, "orscore_frac_med": 0.53515625, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.00557, "quest:1024": 0.03494, "quest:2048": 0.00102, "quest:4096": -0.00158}}
+{"book": "3340.txt", "prefill_s": 67.3, "shadow_s": 148.0, "dense_ppl": 289.969, "box_frac_med": 1.0, "ormass_frac_med": 0.08203125, "orscore_frac_med": 0.265625, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.00831, "quest:1024": 0.06899, "quest:2048": 0.03136, "quest:4096": -0.03583}}
+{"book": "860.txt", "prefill_s": 76.2, "shadow_s": 691.5, "dense_ppl": 13.594, "box_frac_med": 1.0, "ormass_frac_med": 0.26953125, "orscore_frac_med": 0.625, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.0, "quest:1024": 0.1399, "quest:2048": 0.03052, "quest:4096": 0.04179}}
+{"book": "2544.txt", "prefill_s": 258.5, "shadow_s": 668.5, "dense_ppl": 14.898, "box_frac_med": 1.0, "ormass_frac_med": 0.205078125, "orscore_frac_med": 0.568359375, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.0, "quest:1024": 0.02403, "quest:2048": 0.0086, "quest:4096": 0.00074}}
+{"book": "3247.txt", "prefill_s": 201.2, "shadow_s": 631.8, "dense_ppl": 20.056, "box_frac_med": 1.0, "ormass_frac_med": 0.236328125, "orscore_frac_med": 0.59375, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.0, "quest:1024": 0.1363, "quest:2048": 0.09626, "quest:4096": 0.03786}}
+{"book": "3340.txt", "prefill_s": 285.1, "shadow_s": 119.6, "dense_ppl": 14.027, "box_frac_med": 1.0, "ormass_frac_med": 0.2265625, "orscore_frac_med": 0.583984375, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.0, "quest:1024": 0.00314, "quest:2048": 0.00309, "quest:4096": 0.00631}}
+{"book": "860.txt", "prefill_s": 174.4, "shadow_s": 110.8, "dense_ppl": 19.089, "box_frac_med": 1.0, "ormass_frac_med": 0.211, "orscore_frac_med": 0.527, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.0, "quest:1024": 0.14837, "quest:2048": 0.0907, "quest:4096": 0.05075}}
+{"book": "2544.txt", "prefill_s": 174.1, "shadow_s": 104.0, "dense_ppl": 43.277, "box_frac_med": 1.0, "ormass_frac_med": 0.17491258741258742, "orscore_frac_med": 0.5017492507492507, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.0, "quest:1024": -0.02842, "quest:2048": -0.0435, "quest:4096": -0.04467}}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 43.17it/s]
+{"T": 8192, "prefill_s": 74.6, "dense_attn_share": 0.727, "amdahl_ceiling": 3.658, "dense": [1.0, [0.871, 1.149], 1.0], "quest:1024": [2.132, [1.79, 2.208], 0.169], "quest:2048": [1.031, [0.791, 1.052], 0.287], "nx_box": [0.428, [0.344, 0.446], 1.0], "nx_one": [1.008, [0.749, 1.076], 1.0]}
+{"T": 16384, "prefill_s": 189.6, "dense_attn_share": 0.824, "amdahl_ceiling": 5.686, "dense": [1.0, [0.952, 1.051], 1.0], "quest:1024": [2.781, [2.62, 3.035], 0.109], "quest:2048": [2.293, [2.075, 2.378], 0.169], "nx_box": [0.243, [0.22, 0.256], 1.0], "nx_one": [0.922, [0.884, 1.014], 1.0]}
+{"book": "860.txt", "prefill_s": 9.1, "shadow_s": 17.6, "dense_ppl": 775127.98, "box_frac_med": 1.0, "ormass_frac_med": 0.6328125, "orscore_frac_med": 0.8515625, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.0, "quest:1024": 0.13987, "quest:2048": 0.06062, "quest:4096": -4e-05}}
+{"book": "2544.txt", "prefill_s": 9.1, "shadow_s": 16.7, "dense_ppl": 537249.544, "box_frac_med": 1.0, "ormass_frac_med": 0.609375, "orscore_frac_med": 0.8359375, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.0, "quest:1024": 0.07884, "quest:2048": 0.03129, "quest:4096": -8e-05}}
+{"book": "860.txt", "prefill_s": 8.8, "shadow_s": 26.9, "dense_ppl": 1.001, "box_frac_med": 1.0, "ormass_frac_med": 0.3984375, "orscore_frac_med": 0.7421875, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.0, "quest:1024": 0.02287, "quest:2048": 0.00092, "quest:4096": -0.0}}
+{"book": "2544.txt", "prefill_s": 8.7, "shadow_s": 16.9, "dense_ppl": 1.002, "box_frac_med": 1.0, "ormass_frac_med": 0.34375, "orscore_frac_med": 0.65625, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.0, "quest:1024": 0.02136, "quest:2048": -6e-05, "quest:4096": -0.0}}
+{"T": 16384, "depth": 0.1, "key": 98292, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 16384, "depth": 0.1, "key": 79260, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 16384, "depth": 0.5, "key": 82531, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 16384, "depth": 0.5, "key": 60896, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+Token indices sequence length is longer than the specified maximum sequence length for this model (339441 > 131072). Running this sequence through the model will result in indexing errors
+{"T": 16384, "depth": 0.9, "key": 15579, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 16384, "depth": 0.9, "key": 21116, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 104.85it/s]
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 0.25, "max_abs_logit": 29.25, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 0.0016125927123539084, "argmax_agree": 1.0, "book": "860.txt", "pass": false}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 0.25, "max_abs_logit": 26.0, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 0.00027067295260218465, "argmax_agree": 1.0, "book": "2544.txt", "pass": true}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 0.25, "max_abs_logit": 25.75, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 0.0051339982564301365, "argmax_agree": 1.0, "book": "3247.txt", "pass": false}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 0.5390625, "max_abs_logit": 29.625, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 0.0016990167195879784, "argmax_agree": 1.0, "book": "3340.txt", "pass": false}
+FAIL
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 103.04it/s]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:30<00:30, 30.17s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:42<00:00, 19.76s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:42<00:00, 21.32s/it]
+{"book": "860.txt", "prefill_s": 1027.4, "shadow_s": 273.4, "dense_ppl": 5.796, "box_frac_med": 1.0, "ormass_frac_med": 0.30078125, "orscore_frac_med": 0.6484375, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.00139, "quest:1024": 0.07061, "quest:2048": 0.01858, "quest:4096": -0.00331, "dense64": 0.00853}}
+{"book": "2544.txt", "prefill_s": 565.1, "shadow_s": 232.4, "dense_ppl": 16.901, "box_frac_med": 1.0, "ormass_frac_med": 0.3125, "orscore_frac_med": 0.67578125, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.01151, "quest:1024": 0.02203, "quest:2048": 0.02061, "quest:4096": 0.00659, "dense64": 0.01123}}
+{"book": "3247.txt", "prefill_s": 553.5, "shadow_s": 246.9, "dense_ppl": 24.869, "box_frac_med": 1.0, "ormass_frac_med": 0.19921875, "orscore_frac_med": 0.546875, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.00612, "quest:1024": 0.01756, "quest:2048": 0.00662, "quest:4096": 0.00109, "dense64": -0.00858}}
+{"book": "3340.txt", "prefill_s": 551.3, "shadow_s": 215.0, "dense_ppl": 8.205, "box_frac_med": 1.0, "ormass_frac_med": 0.2578125, "orscore_frac_med": 0.57421875, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.01498, "quest:1024": -0.07624, "quest:2048": -0.03295, "quest:4096": -0.0039, "dense64": 0.00986}}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 71.71it/s]
+{"T": 8192, "prefill_s": 563.5, "dense_attn_share": 0.564, "amdahl_ceiling": 2.293, "dense": [1.0, [0.941, 1.063], 1.0], "quest:1024": [1.345, [1.193, 1.399], 0.169], "quest:2048": [0.661, [0.619, 0.745], 0.287], "nx_box": [0.365, [0.338, 0.374], 1.0], "nx_one": [0.929, [0.886, 0.998], 1.0]}
+{"T": 16384, "prefill_s": 1302.6, "dense_attn_share": 0.705, "amdahl_ceiling": 3.392, "dense": [1.0, [0.982, 1.018], 1.0], "quest:1024": [1.748, [1.668, 1.787], 0.109], "quest:2048": [1.356, [1.252, 1.395], 0.169], "nx_box": [0.163, [0.159, 0.171], 1.0], "nx_one": [0.887, [0.866, 0.943], 1.0]}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 0.265625, "max_abs_logit": 21.75, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 0.0017593748447219991, "argmax_agree": 1.0, "book": "860.txt", "pass": false}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 0.21875, "max_abs_logit": 20.375, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 0.0007072890866617106, "argmax_agree": 1.0, "book": "2544.txt", "pass": true}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 0.25, "max_abs_logit": 22.75, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 0.000941556731574175, "argmax_agree": 1.0, "book": "3247.txt", "pass": true}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 0.21875, "max_abs_logit": 23.625, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 0.0006583539335218396, "argmax_agree": 1.0, "book": "3340.txt", "pass": true}
+FAIL
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 1.5735626220703125e-05, "max_abs_logit": 21.78963851928711, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 2.757067354017216e-12, "argmax_agree": 1.0, "book": "860.txt", "pass": true}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 1.9788742065429688e-05, "max_abs_logit": 20.311054229736328, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 2.409232549140565e-12, "argmax_agree": 1.0, "book": "2544.txt", "pass": true}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 1.621246337890625e-05, "max_abs_logit": 22.738357543945312, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 4.681765446634448e-12, "argmax_agree": 1.0, "book": "3247.txt", "pass": true}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 1.8596649169921875e-05, "max_abs_logit": 23.54315948486328, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 2.8491588789872837e-12, "argmax_agree": 1.0, "book": "3340.txt", "pass": true}
+ALL PASS
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 71.35it/s]
+{"T": 8192, "depth": 0.1, "key": 40656, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 8192, "depth": 0.1, "key": 43621, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 8192, "depth": 0.5, "key": 53492, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 8192, "depth": 0.5, "key": 77894, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 8192, "depth": 0.9, "key": 16996, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 8192, "depth": 0.9, "key": 56087, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 32000, "depth": 0.1, "key": 80671, "dense": true, "nx_box": true, "quest:1024": false, "quest:2048": false, "quest:4096": true}
+{"T": 32000, "depth": 0.1, "key": 59466, "dense": true, "nx_box": true, "quest:1024": false, "quest:2048": true, "quest:4096": true}
+{"T": 32000, "depth": 0.5, "key": 18604, "dense": true, "nx_box": true, "quest:1024": false, "quest:2048": true, "quest:4096": true}
+{"T": 32000, "depth": 0.5, "key": 56829, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+Token indices sequence length is longer than the specified maximum sequence length for this model (339441 > 131072). Running this sequence through the model will result in indexing errors
+{"T": 32000, "depth": 0.9, "key": 99572, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 32000, "depth": 0.9, "key": 13136, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 44.05it/s]
+{"book": "860.txt", "prefill_s": 1303.7, "shadow_s": 485.2, "dense_ppl": 9.495, "box_frac_med": 1.0, "ormass_frac_med": 0.1953125, "orscore_frac_med": 0.546875, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.00052, "quest:1024": 0.0294, "quest:2048": -0.00659, "quest:4096": -0.01775, "dense64": -0.01356}}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 38.87it/s]
+{"book": "2544.txt", "prefill_s": 1332.6, "shadow_s": 1047.1, "dense_ppl": 9.374, "box_frac_med": 1.0, "ormass_frac_med": 0.1171875, "orscore_frac_med": 0.447265625, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.00374, "quest:1024": 0.06224, "quest:2048": 0.01309, "quest:4096": 0.01442, "dense64": 0.00595}}
+{"T": 8192, "depth": 0.1, "key": 40656, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 8192, "depth": 0.1, "key": 43621, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 8192, "depth": 0.5, "key": 53492, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 8192, "depth": 0.5, "key": 77894, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+Token indices sequence length is longer than the specified maximum sequence length for this model (339441 > 131072). Running this sequence through the model will result in indexing errors
+{"T": 8192, "depth": 0.9, "key": 16996, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+{"T": 8192, "depth": 0.9, "key": 56087, "dense": true, "nx_box": true, "quest:1024": true, "quest:2048": true, "quest:4096": true}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 71.72it/s]
+{"book": "860.txt", "prefill_s": 263.1, "shadow_s": 137.9, "dense_ppl": 10.032, "box_frac_med": 1.0, "ormass_frac_med": 0.3046875, "orscore_frac_med": 0.6875, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.00143, "quest:1024": 0.00344, "quest:2048": -0.00531, "quest:4096": 0.01033, "dense64": 0.00923}}
+{"book": "2544.txt", "prefill_s": 262.8, "shadow_s": 129.9, "dense_ppl": 14.502, "box_frac_med": 1.0, "ormass_frac_med": 0.46875, "orscore_frac_med": 0.7890625, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.00032, "quest:1024": 0.03365, "quest:2048": -0.02291, "quest:4096": -0.00412, "dense64": -0.00561}}
+{"book": "3247.txt", "prefill_s": 267.2, "shadow_s": 138.5, "dense_ppl": 8.918, "box_frac_med": 1.0, "ormass_frac_med": 0.2890625, "orscore_frac_med": 0.65625, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.00238, "quest:1024": 0.00868, "quest:2048": -0.00756, "quest:4096": -0.00443, "dense64": 0.00182}}
+{"book": "3340.txt", "prefill_s": 274.5, "shadow_s": 145.1, "dense_ppl": 25.763, "box_frac_med": 1.0, "ormass_frac_med": 0.15625, "orscore_frac_med": 0.515625, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.00751, "quest:1024": 0.02218, "quest:2048": 0.00973, "quest:4096": -0.00473, "dense64": -0.01192}}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 60.56it/s]
+{"book": "860.txt", "prefill_s": 270.0, "shadow_s": 142.2, "dense_ppl": 10.032, "box_frac_med": 1.0, "ormass_frac_med": 0.3046875, "orscore_frac_med": 0.6875, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.00143, "dense64p:1e-12": 0.00923, "dense64p:1e-9": 0.00923, "dense64p:1e-6": -0.00236, "dense64": 0.00923}}
+{"book": "2544.txt", "prefill_s": 259.8, "shadow_s": 124.4, "dense_ppl": 14.502, "box_frac_med": 1.0, "ormass_frac_med": 0.46875, "orscore_frac_med": 0.7890625, "viol": [0, 0, 0], "live_dnll": {"nx_box": -0.00032, "dense64p:1e-12": -0.00561, "dense64p:1e-9": -0.00561, "dense64p:1e-6": 0.00096, "dense64": -0.00561}}
+{"book": "860.txt", "prefill_s": 12.8, "shadow_s": 29.5, "dense_ppl": 11.608, "box_frac_med": 1.0, "ormass_frac_med": 0.3828125, "orscore_frac_med": 0.7578125, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.0, "dense64": 0.0, "dense64p:1e-6": 0.0}}
+{"book": "2544.txt", "prefill_s": 13.4, "shadow_s": 31.0, "dense_ppl": 35.331, "box_frac_med": 1.0, "ormass_frac_med": 0.5546875, "orscore_frac_med": 0.8359375, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.0, "dense64": 0.0, "dense64p:1e-6": 0.0}}
+{"book": "860.txt", "prefill_s": 30.9, "shadow_s": 28.1, "dense_ppl": 11.631, "box_frac_med": 1.0, "ormass_frac_med": 0.390625, "orscore_frac_med": 0.7578125, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.00075, "dense64p:1e-9": -0.00327, "dense64p:1e-6": 0.00136, "dense64": -0.00327}}
+{"book": "2544.txt", "prefill_s": 30.1, "shadow_s": 29.4, "dense_ppl": 35.271, "box_frac_med": 1.0, "ormass_frac_med": 0.5546875, "orscore_frac_med": 0.8359375, "viol": [0, 0, 0], "live_dnll": {"nx_box": 0.00509, "dense64p:1e-9": 0.00509, "dense64p:1e-6": 0.00748, "dense64": 0.00509}}

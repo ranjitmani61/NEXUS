@@ -202,6 +202,39 @@ Read the complete `AGENTS.md` before experiment, read previous G2 photonic revie
 ## 2026-11-04 — G2 detector photon-flux and current stress audit
 
 Read full `AGENTS.md` and latest photonic review, then predeclared 24 Poisson/shot-noise throughput cases. For the **specified** independent-Poisson two-channel direct-difference estimator, relative RMS is `kappa/sqrt(N)`. At `kappa=1000` and target 1% RMS, this requires N=10 billion **detected** photons per reduction; for **assumed** 1550nm, 10% link/detector and 20% wall-plug efficiency, electrical photon cost is **64.0789 nJ/reduction**. At an assumed **100M reductions/s**, detector current sum-equivalent is **0.160218 A** and source electric optical power **6.40789 W**; neither is hardware-measured. At κ=1,100 with same target costs are much lower; workload cancellation distribution not measured. Against an entirely **hypothetical** 30nJ matched digital baseline, the κ=1000/1% case loses even before static/control cost, but not a universal optical no-go. **28 new tests passed**; results repeat byte-for-byte; 120,000 simulated Poisson count pairs cross-check exact variance. G2 mathematical audit PASS under assumptions; G2 physical feasibility HOLD, G1 novelty unproven, G5 BLOCKED and G6 NOT AUTHORIZED. Photonic branch suspended pending actual device and workload data or new mechanism. Source/reproduction and all limitations in `reviews/2026-11-04_G2_photonic_flux_gate_review.md`.
+## 2026-11-04/05 — G5-R: NEXUS candidates on genuine pretrained models (G5 FAIL)
+
+Read `AGENTS.md` in full before work. Pre-registered `specs/G5R_real_model_benchmark_contract.md` (hash recorded before any data) with dated scope/order amendments A1–A5; no threshold was changed.
+
+**Weights:** huggingface.co was blocked, so they came from Kaggle official publishers.
+- Qwen2.5-0.5B (QwenLM): SHA-256 manifest; PG-19 perplexity 13–26 against 189,356 for random init.
+- IBM Granite-4.0-micro-base: Sigstore signature verified; 11/11 file digests and the subject digest match.
+
+**Method:** CPU only, 4 vCPU; no GPU or energy counter. Host A (Xeon with AMX-BF16) was replaced by host B (no AMX) after a container restart (contract notice N1). Timings are not pooled across hosts. 8 PG-19 test books chosen by a fixed rule; real KV-cache decode. Every layer, head and step was evaluated in float64 shadow mode, plus live replacement runs, measured timing, passkey and adversarial inputs.
+
+**Result on Qwen2.5-0.5B (4K–32K, batch 1 and 4):**
+- NX-BOX / NX-SPH / NX-VAL read 97.8–100% of KV pages. The NX-BOX KV-head union is 100% in every layer. NX-ONE admission is 0.
+- 0 certificate violations (log-domain evaluation).
+- Measured end-to-end decode speed 0.04×–0.80× of dense.
+- Even the exact-max-score oracle needs 53–64% of pages (mechanism: median bound slack 16 nats, larger than the 14-nat spread of true page maxima).
+- The derived zero-overhead ceiling for the whole valid-bound family is ≤ 1.38×.
+- Batch-1 Amdahl ceiling < 2× up to 32K.
+- Quest (comparator) meets matched quality only with large budgets (78% of KV at 4K/8K), and at no tested budget at 16K/32K.
+
+**Defects found and fixed (outputs quarantined in `results/g5r/invalid/`):**
+- archived-pattern float64 underflow and subtract-from-total cancellation (false certificates);
+- a zipped Kaggle file;
+- Granite returning no cache;
+- a transformers 4.57.1 empty hybrid cache reporting length = batch size (RoPE offset);
+- a handicapped Granite dense baseline (`repeat_kv`).
+
+**Decision:** G5 **FAIL** for all NX attention-page candidates under the pre-registered rule; G4 benefit FAIL; G3 conditional PASS only for the log-domain certificate; G6–G12 not authorised. Granite runs are confirmatory and complete: 4K/8K/16K traces show NX-BOX reading 99.8–99.9% of pages, OR-SCORE 0.50–0.61 and 0 violations; the family ceiling is 1.54× at 16K although the Amdahl ceiling there is 3.39×. Passkey (6 trials per row): NX-BOX 6/6 everywhere (it reads ≥ 97.8% of pages); Quest-1024 3/6 and Quest-2048 5/6 at Qwen 32K.
+
+**Post-hoc finding (2026-11-05, not pre-registered):** in bf16 models, a 1e-6 relative change to exact attention moves per-token NLL by about 0.03 nats (in fp32, < 1e-5). Exact float64 attention fails the top-1 ≥ 0.98 criterion against bf16 SDPA on Granite 4K. A top-1 threshold measured against a bf16 reference is therefore at the noise floor and needs calibration in the next contract revision. It was not changed retroactively.
+
+**Process incident (disclosed):** a diagnostic queue started early because its wait sentinel matched its own log note. The overlap affected only wall-clock fields of quality runs. The diagnostic was rerun.
+
+Report (v1.1): `reviews/2026-11-04_G5R_real_model_gate_review.md`. Tables: `results/g5r/summary_tables.md`. Reproduce: `results/g5r/README.md`.
 
 
 ## 2026-11-05 — G5 in-memory checkpoint consistency (research support only)
@@ -212,3 +245,107 @@ Read `AGENTS.md` and prior G5 provenance/trace validation code before work. Loca
 ## 2026-11-05 — Free public-runner G5 pretrained pilot (remote run unverified at preparation)
 
 Read `AGENTS.md` and the current G5 code. Local genuine pretrained weights remain unavailable; metered Hugging Face Jobs were not used. GitHub documents free standard runners in public repositories. Prepared read-only, CPU-only, 20-minute GitHub Actions pilot for pinned `EleutherAI/pythia-14m` at revision `cf967c0a9a04383db6f7b1108d86b2962634b4ac`, with two original deterministic input regimes at 128/512 tokens, checkpoint hashing, numerical reconstruction, strict row validation, and an artifact-on-failure policy. Found and fixed a numerical G5 oracle bug: float64 cumulative page mass can exceed 1 by roundoff and create a negative mass certificate; clamp to the valid nonnegative interval. **93/93 integrated local software tests passed**; none executed pretrained weights. See `.github/workflows/g5-pretrained-pythia.yml`, `specs/G5_free_public_actions_pilot.md`, `reviews/2026-11-05_G5_free_public_actions_review.md`. **G5 BLOCKED pending verified pretrained execution plus a genuine end-to-end strong-baseline benchmark; G6 unauthorized; no breakthrough.**
+
+## 2026-11-10 — Reconciliation of the two parallel G5 tracks (record correction, no new experiment)
+
+Read `AGENTS.md` (v1.0; main differs only by a final newline) and both tracks before work. Two G5 efforts ran in parallel without knowledge of each other.
+- **Main:** the Pythia-14M pilot via free GitHub Actions; it records G5 BLOCKED because genuine weights were inaccessible in that environment.
+- **Branch `claude/g5r-real-model-study`:** G5-R obtained genuine Qwen2.5-0.5B (SHA-256 manifest) and IBM Granite-4.0-micro-base (Sigstore-verified) and recorded **G5 FAIL**.
+
+The branch was merged with main on 2026-11-10. Neither entry above was edited.
+
+**Status correction:** for the NX attention-page candidates (NX-SPH, NX-BOX, NX-ONE, NX-VAL), **G5 is FAIL, not BLOCKED.**
+- The blocking condition (no verified pretrained execution) was resolved by G5-R.
+- A FAIL needs only that the candidates do not deliver: they read ≥ 97.8% of KV pages and ran 0.04×–0.80× of dense.
+- A PASS would additionally need the strong-baseline benchmark that main's entry calls for.
+
+**Pythia pilot result** (previously "remote run unverified"):
+- Workflow run 41989344644 **succeeded** on 2026-11-05 at 07:44–07:45 UTC, with 93 offline tests passing.
+- At 128 and 512 tokens (4 and 16 pages of 32), the median perfect-information oracle page fraction was 0.69–1.00 (mass oracle) and 0.88–1.00 (value oracle).
+- This is consistent with G5-R but uninformative for long context.
+- Values were transcribed from the job log into `results/g5_public_ci_run41989344644_summary.json`. The trace artifact (sha256 `02497d67…`, expires 2026-11-12) was **not** retrieved, because its storage host was refused by this session's network policy.
+
+**Numerical fixes:** main's clamp of the oracle certificate `2(1 − cum mass)` and G5-R defect D1 (bound-shifted `exp` underflow) are different code paths. Both fixes stand.
+
+**Tests:** after the merge, 206 tests pass (113 G5-R + 93 main G5). The G2–G4 tests remain inside the committed zip packages and were not re-run.
+
+**Gate status:** G5 FAIL for the attention-page candidates; G6–G12 not authorized; no breakthrough.
+
+## 2026-11-10 — Cycle 2, G0: batch-1 decode bottleneck re-selection (C2-G0 HOLD)
+
+Read `AGENTS.md` v1.0 before work.
+- **Charter:** `specs/C2_G0_batch1_decode_bottleneck_charter.md`, pre-registered at 09:02:15Z with amendments A1–A3, each registered before the data it governs (`results/c2/preregistration.json`).
+- **Review:** `reviews/2026-11-10_C2_G0_bottleneck_review.md`.
+- **Data and reproduction commands:** `results/c2/`.
+- **Platform:** host C, a 4-vCPU Xeon VM (model 207, AMX), CPU only. It is not pooled with G5-R hosts A and B.
+
+**Measured, on genuine Qwen2.5-0.5B and Granite-4.0-micro-base at batch 1:**
+- C* (the fastest configuration at matched quality) is dense bf16 at every context.
+  - The torch.ao int8 variants are W8A8 and fail quality (PPL ratio 2.7–3.6, top-1 0.40–0.54).
+  - torchao int8 weight-only is slower than dense (0.17–0.61×).
+- At C*, no cost class reaches a 0.5 time share in both families, under any pairing of the repeated runs.
+  - Attention core reaches 0.516 only at Qwen 32K. Granite's maximum is 0.386.
+  - MLP Linear time reaches at most 0.463, so its Amdahl ceiling is 1.86×.
+- Effective bandwidth is 24–72% of the measured triad, so this CPU is not bandwidth-bound at decode.
+- **[Derived]** MLP weights are ≥ 0.5 of the bytes per step at 4K–16K for both models. KV is ≤ 28.5% of the bytes, even at Qwen 32K.
+- B2 prompt lookup on typical text is 0.46× of plain greedy, and its tokens are not identical. On the repeated-text control it is 4.39×. Granite B2 was refused by the library.
+
+**Decision: C2-G0 HOLD.**
+- The pre-registered rule prints "MLP byte-eligible".
+- However, Granite fails the charter's own decode-consistency precondition as written (KL > 1e-3 on 3 of 4 books; argmax 1.0). That makes Granite inadmissible, and under that reading rule 5 applies.
+- A post-hoc diagnostic on genuine Granite layers 0–11 gives fp32 KL ≤ 1.3e-11, while the same network in bf16 also fails. This supports bf16 rounding over a cache defect, but it does not change admissibility.
+- The charter's missing bf16 provision is my design error (C2-D8). It is recorded and not amended after the data.
+
+**Prompt-lookup divergence (task 13):**
+- In bf16 the divergence occurs at an exact logit tie (tokens 1513 and 2776, both 17.0). Exact ties occur at 4 of 64 positions.
+- In fp32 there are no ties, and lookup output is identical to greedy.
+- A defect in diagnostic v1.0 (`topk` tie order; C2-D7) was fixed in v1.1, and v1.0 is kept.
+
+**Tests:** the full suite has 224 passing tests (synthetic instrumentation and math only; no hardware claim).
+
+**Not shown:** any new mechanism, any novelty, GPU or energy behaviour, models above about 3.4B parameters, or contexts above 32K.
+
+**Next step:** a user decision. My recommendation is a dated C3 charter on hardware closer to bandwidth-bound decode (for example a free Kaggle GPU, with explicit approval), with weight-only int8/int4 baselines and a bf16 consistency criterion pre-registered before any data.
+
+**Gate status:** C2-G0 HOLD; G5 FAIL stands for the NX candidates; G6–G12 not authorized; no breakthrough.
+
+## 2026-11-10 — Cycle 3, G0: batch-1 decode bottleneck on a Kaggle T4 GPU (C3-G0 PASS, target selection only)
+
+**Setup:**
+- The user chose option 1 of the C2 review: a charter change with GPU re-measurement.
+- Read `AGENTS.md` v1.0 before work.
+- **Charter:** `specs/C3_G0_gpu_decode_bottleneck_charter.md`, pre-registered at 14:45:39Z. A1 (defect fixes after the smoke runs) and A2 (post-data defect fix after main run 1) are each registered before the data they govern.
+- **Review:** `reviews/2026-11-10_C3_G0_gpu_bottleneck_review.md`. **Data:** `results/c3/`.
+
+**Method:**
+- Measured removal: s_X = 1 − t(without X)/t(full), in eager and CUDA-graph modes.
+- Dense fp32 quality reference; P1 provenance hashes, P2 decode consistency and P3 graph = eager.
+- Platform: one T4 (sm_75), torch 2.11, transformers 4.57.1, bitsandbytes 0.50.2.
+
+**Result (run 2):**
+- C* is fp16 with a CUDA graph (Granite 16K: eager, tied within CI).
+- **Attention core is time-eligible in both families:** 0.58–0.92 of the Qwen step at 4K–32K, and 0.47–0.76 of the Granite step at 4K–16K.
+- **MLP weights are byte-eligible in both families:** 0.60/0.71 of bytes at 4K.
+- The near-tie check is unchanged.
+
+**Interpretation (exploratory, labelled):**
+- At C*, attention moves K/V at 1.8–4.6% of the measured copy bandwidth (241 GB/s). Every stock PyTorch SDPA variant tested on this T4 stays at 2–15 GB/s.
+- On a bandwidth-efficient implementation, attention would be ≤ 0.285 of the step and MLP weights ≥ 0.5.
+- So the attention target is most likely a decode-kernel software problem (prior art: FlashAttention, Flash-Decoding, PagedAttention; not tested on sm_75 here). MLP weight streaming is the classic memory-traffic problem.
+- NF4 weight-only quantization fails matched quality on both models. LLM.int8 passes on Granite but is 3.3× slower.
+
+**Defects (all fixed and disclosed):**
+- C3-D1: no attention mask for a custom attention name with a static cache.
+- C3-D2: a Granite host sync blocking graph capture.
+- C3-D3: models not released between formats.
+- C3-D4: graph capture ran with autograd enabled, so main run 1's graph timings are invalid; run 1 is kept and the decision is fully re-run.
+- C3-D5: the KV layer count missed Qwen's `full_attention` label; derived bytes recomputed, conclusion unchanged.
+- The feasibility probe's hashing filter bug cost 913 s of quota.
+
+**GPU quota used this cycle:** 4,501 s including the probe, from 101,771 s to 106,272 s (the weekly limit is 108,000 s; 1,728 s remain until 2026-11-14).
+
+**Tests:** 236 pass (logic and math only).
+
+**Not shown:** any mechanism, any novelty, energy, newer GPUs, serving-grade kernels, speculative decoding, models above about 3.4B parameters, or contexts above 32K.
+
+**Gate status:** C3-G0 PASS (target selection only). G1 for both targets is next, under their own contracts; the expected outcome is strong prior art. G5 FAIL stands for the NX candidates. G6–G12 are not authorized. No breakthrough.

@@ -1,0 +1,125 @@
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 1.5735626220703125e-05, "max_abs_logit": 21.78963851928711, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 2.757067354017216e-12, "argmax_agree": 1.0, "book": "860.txt", "pass": true}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 1.9788742065429688e-05, "max_abs_logit": 20.311054229736328, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 2.409232549140565e-12, "argmax_agree": 1.0, "book": "2544.txt", "pass": true}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 1.621246337890625e-05, "max_abs_logit": 22.738357543945312, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 4.681765446634448e-12, "argmax_agree": 1.0, "book": "3247.txt", "pass": true}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 1.8596649169921875e-05, "max_abs_logit": 23.54315948486328, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 2.8491588789872837e-12, "argmax_agree": 1.0, "book": "3340.txt", "pass": true}
+ALL PASS
+{"T": 4096, "dense": {"step_ms": 48.44, "hook_ovh": 0.05, "shares": {"attn_core": 0.135, "attn_proj": 0.142, "mlp": 0.334, "lm_head": 0.116, "linear_other": 0.0, "other": 0.268}, "kv_byte_share": 0.048, "eff_GBps": 21.4}}
+{"T": 8192, "dense": {"step_ms": 60.51, "hook_ovh": 0.032, "shares": {"attn_core": 0.239, "attn_proj": 0.121, "mlp": 0.276, "lm_head": 0.096, "linear_other": 0.0, "other": 0.263}, "kv_byte_share": 0.092, "eff_GBps": 18.0}}
+{"T": 16384, "dense": {"step_ms": 82.72, "hook_ovh": 0.029, "shares": {"attn_core": 0.372, "attn_proj": 0.093, "mlp": 0.207, "lm_head": 0.072, "linear_other": 0.0, "other": 0.25}, "kv_byte_share": 0.169, "eff_GBps": 14.4}}
+{"T": 32000, "dense": {"step_ms": 117.74, "hook_ovh": 0.051, "shares": {"attn_core": 0.49, "attn_proj": 0.066, "mlp": 0.146, "lm_head": 0.05, "linear_other": 0.0, "other": 0.245}, "kv_byte_share": 0.285, "eff_GBps": 11.7}}
+/tmp/claude-0/-home-user-NEXUS/892e3559-3d4b-5e4a-b712-9dfee2b2d122/scratchpad/venv/lib/python3.13/site-packages/torch/ao/nn/quantized/modules/utils.py:72: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:111.)
+  qweight = torch.quantize_per_tensor(
+Traceback (most recent call last):
+  File "/home/user/NEXUS/tests/c2_breakdown.py", line 227, in <module>
+    main()
+    ~~~~^^
+  File "/home/user/NEXUS/tests/c2_breakdown.py", line 115, in main
+    models[v] = C.quantize_variant(base, v)
+                ~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/user/NEXUS/tests/c2_common.py", line 139, in quantize_variant
+    return quantize_dynamic(m, {n: per_channel_dynamic_qconfig for n in body}, dtype=torch.qint8).eval()
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/warnings.py", line 637, in wrapper
+    return arg(*args, **kwargs)
+  File "/tmp/claude-0/-home-user-NEXUS/892e3559-3d4b-5e4a-b712-9dfee2b2d122/scratchpad/venv/lib/python3.13/site-packages/torch/ao/quantization/quantize.py", line 570, in quantize_dynamic
+    convert(model, mapping, inplace=True)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/warnings.py", line 637, in wrapper
+    return arg(*args, **kwargs)
+  File "/tmp/claude-0/-home-user-NEXUS/892e3559-3d4b-5e4a-b712-9dfee2b2d122/scratchpad/venv/lib/python3.13/site-packages/torch/ao/quantization/quantize.py", line 669, in convert
+    _convert(
+    ~~~~~~~~^
+        module,
+        ^^^^^^^
+    ...<4 lines>...
+        use_precomputed_fake_quant=use_precomputed_fake_quant,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/claude-0/-home-user-NEXUS/892e3559-3d4b-5e4a-b712-9dfee2b2d122/scratchpad/venv/lib/python3.13/site-packages/torch/ao/quantization/quantize.py", line 726, in _convert
+    _convert(
+    ~~~~~~~~^
+        mod,
+        ^^^^
+    ...<4 lines>...
+        use_precomputed_fake_quant=use_precomputed_fake_quant,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/claude-0/-home-user-NEXUS/892e3559-3d4b-5e4a-b712-9dfee2b2d122/scratchpad/venv/lib/python3.13/site-packages/torch/ao/quantization/quantize.py", line 734, in _convert
+    reassign[name] = swap_module(
+                     ~~~~~~~~~~~^
+        mod, mapping, custom_module_class_mapping, use_precomputed_fake_quant
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/claude-0/-home-user-NEXUS/892e3559-3d4b-5e4a-b712-9dfee2b2d122/scratchpad/venv/lib/python3.13/site-packages/torch/ao/quantization/quantize.py", line 779, in swap_module
+    new_mod = qmod.from_float(
+        mod, use_precomputed_fake_quant=use_precomputed_fake_quant
+    )
+  File "/tmp/claude-0/-home-user-NEXUS/892e3559-3d4b-5e4a-b712-9dfee2b2d122/scratchpad/venv/lib/python3.13/site-packages/torch/ao/nn/quantized/modules/embedding_ops.py", line 235, in from_float
+    raise AssertionError(
+        "Embedding quantization is only supported with float_qparams_weight_only_qconfig."
+    )
+AssertionError: Embedding quantization is only supported with float_qparams_weight_only_qconfig.
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 30.23it/s]
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 0.25, "max_abs_logit": 29.25, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 0.0016125927123539084, "argmax_agree": 1.0, "book": "860.txt", "pass": false}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 0.25, "max_abs_logit": 26.0, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 0.00027067295260218465, "argmax_agree": 1.0, "book": "2544.txt", "pass": true}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 0.25, "max_abs_logit": 25.75, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 0.0051339982564301365, "argmax_agree": 1.0, "book": "3247.txt", "pass": false}
+{"T": 8192, "steps": 3, "max_abs_logit_diff": 0.5390625, "max_abs_logit": 29.625, "bf16_ulp_at_max_abs_logit": 0.125, "max_kl": 0.0016990167195879784, "argmax_agree": 1.0, "book": "3340.txt", "pass": false}
+FAIL
+W1110 09:33:31.210000 2086 torch/utils/_pytree.py:646] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1110 09:33:31.240000 2086 torch/utils/_pytree.py:646] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 90.18it/s]
+{"T": 4096, "dense": {"step_ms": 217.97, "hook_ovh": -0.001, "shares": {"attn_core": 0.142, "attn_proj": 0.167, "mlp": 0.463, "lm_head": 0.043, "linear_other": 0.0, "other": 0.183}, "kv_byte_share": 0.047, "eff_GBps": 32.8}}
+{"T": 8192, "dense": {"step_ms": 276.05, "hook_ovh": 0.048, "shares": {"attn_core": 0.266, "attn_proj": 0.131, "mlp": 0.361, "lm_head": 0.033, "linear_other": 0.0, "other": 0.205}, "kv_byte_share": 0.09, "eff_GBps": 27.1}}
+{"T": 16384, "dense": {"step_ms": 406.5, "hook_ovh": 0.013, "shares": {"attn_core": 0.38, "attn_proj": 0.094, "mlp": 0.259, "lm_head": 0.023, "linear_other": 0.0, "other": 0.239}, "kv_byte_share": 0.165, "eff_GBps": 20.0}}
+W1110 09:41:14.576000 2214 torch/utils/_pytree.py:646] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1110 09:41:14.607000 2214 torch/utils/_pytree.py:646] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+{"kind": "typical", "prefill_s": 8.2, "plain_tok_s": 15.111493181080304, "lookup_tok_s": 6.913277388606844, "speedup": 0.45748473071227114, "identical": false, "plain_consistent": true, "fwd_calls": [64.0, 55.0], "errors": []}
+{"kind": "favorable", "prefill_s": 8.1, "plain_tok_s": 15.192731196903653, "lookup_tok_s": 66.7365101089144, "speedup": 4.392660492967559, "identical": true, "plain_consistent": true, "fwd_calls": [64.0, 6.0], "errors": []}
+W1110 09:42:59.049000 2252 torch/utils/_pytree.py:646] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1110 09:42:59.080000 2252 torch/utils/_pytree.py:646] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 46.89it/s]
+{"kind": "typical", "prefill_s": 50.3, "plain_tok_s": 3.0439882100815985, "lookup_tok_s": null, "speedup": null, "identical": null, "plain_consistent": true, "fwd_calls": [64.0, null], "errors": ["ValueError: assisted generation is not supported with stateful models, such as GraniteMoeHybridForCausalLM"]}
+{"kind": "favorable", "prefill_s": 37.5, "plain_tok_s": 3.461942530441191, "lookup_tok_s": null, "speedup": null, "identical": null, "plain_consistent": true, "fwd_calls": [64.0, null], "errors": ["ValueError: assisted generation is not supported with stateful models, such as GraniteMoeHybridForCausalLM"]}
+W1110 09:46:44.231000 2324 torch/utils/_pytree.py:646] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1110 09:46:44.262000 2324 torch/utils/_pytree.py:646] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+/tmp/claude-0/-home-user-NEXUS/892e3559-3d4b-5e4a-b712-9dfee2b2d122/scratchpad/venv/lib/python3.13/site-packages/torch/ao/nn/quantized/modules/utils.py:72: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:111.)
+  qweight = torch.quantize_per_tensor(
+{"T": 4096, "dense": {"step_ms": 72.04, "hook_ovh": 0.04, "shares": {"attn_core": 0.164, "attn_proj": 0.08, "mlp": 0.374, "lm_head": 0.145, "linear_other": 0.0, "other": 0.232}, "kv_byte_share": 0.048, "eff_GBps": 28.8}, "int8dyn": {"step_ms": 46.15, "hook_ovh": 0.028, "shares": {"attn_core": 0.251, "attn_proj": 0.134, "mlp": 0.223, "lm_head": 0.061, "linear_other": 0.0, "other": 0.329}, "kv_byte_share": 0.169, "eff_GBps": 12.9}, "int8dyn_pc": {"step_ms": 46.46, "hook_ovh": 0.038, "shares": {"attn_core": 0.249, "attn_proj": 0.136, "mlp": 0.219, "lm_head": 0.059, "linear_other": 0.0, "other": 0.332}, "kv_byte_share": 0.168, "eff_GBps": 12.9}, "int8dyn_pc_nolm": {"step_ms": 54.68, "hook_ovh": -0.008, "shares": {"attn_core": 0.212, "attn_proj": 0.118, "mlp": 0.189, "lm_head": 0.193, "linear_other": 0.0, "other": 0.284}, "kv_byte_share": 0.1, "eff_GBps": 18.4}, "int8wo": {"step_ms": 183.58, "hook_ovh": 0.015, "shares": {"attn_core": 0.065, "attn_proj": 0.069, "mlp": 0.227, "lm_head": 0.547, "linear_other": 0.0, "other": 0.088}, "kv_byte_share": 0.169, "eff_GBps": 3.2}, "int8dyn_speedup": 1.561, "int8dyn_pc_speedup": 1.551, "int8dyn_pc_nolm_speedup": 1.317, "int8wo_speedup": 0.392}
+{"T": 16384, "dense": {"step_ms": 124.78, "hook_ovh": -0.01, "shares": {"attn_core": 0.403, "attn_proj": 0.049, "mlp": 0.22, "lm_head": 0.085, "linear_other": 0.0, "other": 0.234}, "kv_byte_share": 0.169, "eff_GBps": 19.1}, "int8dyn": {"step_ms": 98.32, "hook_ovh": 0.038, "shares": {"attn_core": 0.506, "attn_proj": 0.069, "mlp": 0.108, "lm_head": 0.029, "linear_other": 0.0, "other": 0.282}, "kv_byte_share": 0.449, "eff_GBps": 9.1}, "int8dyn_pc": {"step_ms": 97.36, "hook_ovh": 0.014, "shares": {"attn_core": 0.51, "attn_proj": 0.069, "mlp": 0.108, "lm_head": 0.029, "linear_other": 0.0, "other": 0.283}, "kv_byte_share": 0.447, "eff_GBps": 9.2}, "int8dyn_pc_nolm": {"step_ms": 103.08, "hook_ovh": 0.051, "shares": {"attn_core": 0.471, "attn_proj": 0.063, "mlp": 0.099, "lm_head": 0.101, "linear_other": 0.0, "other": 0.258}, "kv_byte_share": 0.308, "eff_GBps": 12.7}, "int8wo": {"step_ms": 228.76, "hook_ovh": 0.033, "shares": {"attn_core": 0.219, "attn_proj": 0.047, "mlp": 0.192, "lm_head": 0.405, "linear_other": 0.0, "other": 0.124}, "kv_byte_share": 0.448, "eff_GBps": 3.9}, "int8dyn_speedup": 1.269, "int8dyn_pc_speedup": 1.282, "int8dyn_pc_nolm_speedup": 1.211, "int8wo_speedup": 0.545}
+W1110 10:06:32.143000 2676 torch/utils/_pytree.py:646] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1110 10:06:32.188000 2676 torch/utils/_pytree.py:646] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+{"T": 4096, "dense": {"step_ms": 50.87, "hook_ovh": 0.026, "shares": {"attn_core": 0.137, "attn_proj": 0.138, "mlp": 0.333, "lm_head": 0.116, "linear_other": 0.0, "other": 0.266}, "kv_byte_share": 0.048, "eff_GBps": 20.4}, "int8wo": {"step_ms": 127.17, "hook_ovh": 0.016, "shares": {"attn_core": 0.057, "attn_proj": 0.105, "mlp": 0.295, "lm_head": 0.438, "linear_other": 0.0, "other": 0.104}, "kv_byte_share": 0.092, "eff_GBps": 4.3}, "int8wo_speedup": 0.4}
+{"T": 16384, "dense": {"step_ms": 85.56, "hook_ovh": -0.003, "shares": {"attn_core": 0.366, "attn_proj": 0.096, "mlp": 0.209, "lm_head": 0.072, "linear_other": 0.0, "other": 0.252}, "kv_byte_share": 0.169, "eff_GBps": 13.9}, "int8wo": {"step_ms": 158.91, "hook_ovh": 0.022, "shares": {"attn_core": 0.197, "attn_proj": 0.09, "mlp": 0.244, "lm_head": 0.336, "linear_other": 0.0, "other": 0.129}, "kv_byte_share": 0.289, "eff_GBps": 4.4}, "int8wo_speedup": 0.538}
+{"T": 32000, "dense": {"step_ms": 132.91, "hook_ovh": 0.013, "shares": {"attn_core": 0.501, "attn_proj": 0.065, "mlp": 0.146, "lm_head": 0.049, "linear_other": 0.0, "other": 0.234}, "kv_byte_share": 0.285, "eff_GBps": 10.4}, "int8wo": {"step_ms": 217.28, "hook_ovh": -0.048, "shares": {"attn_core": 0.31, "attn_proj": 0.072, "mlp": 0.211, "lm_head": 0.264, "linear_other": 0.0, "other": 0.137}, "kv_byte_share": 0.442, "eff_GBps": 4.1}, "int8wo_speedup": 0.612}
+{"quality_T": 4096, "skipped": ["int8wo"]}
+{"quality_T": 16384, "skipped": ["int8wo"]}
+{"quality_T": 32000, "skipped": ["int8wo"]}
+W1110 10:12:20.703000 2754 torch/utils/_pytree.py:646] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1110 10:12:20.733000 2754 torch/utils/_pytree.py:646] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 20.01it/s]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 63.19it/s]
+{"T": 4096, "dense": {"step_ms": 228.99, "hook_ovh": 0.011, "shares": {"attn_core": 0.151, "attn_proj": 0.163, "mlp": 0.457, "lm_head": 0.042, "linear_other": 0.0, "other": 0.184}, "kv_byte_share": 0.047, "eff_GBps": 31.2}, "int8wo": {"step_ms": 1330.18, "hook_ovh": -0.01, "shares": {"attn_core": 0.029, "attn_proj": 0.07, "mlp": 0.752, "lm_head": 0.11, "linear_other": 0.0, "other": 0.043}, "kv_byte_share": 0.09, "eff_GBps": 2.8}, "int8wo_speedup": 0.172}
+{"T": 8192, "dense": {"step_ms": 291.27, "hook_ovh": 0.03, "shares": {"attn_core": 0.268, "attn_proj": 0.129, "mlp": 0.358, "lm_head": 0.033, "linear_other": 0.0, "other": 0.206}, "kv_byte_share": 0.09, "eff_GBps": 25.7}, "int8wo": {"step_ms": 1335.57, "hook_ovh": 0.002, "shares": {"attn_core": 0.056, "attn_proj": 0.072, "mlp": 0.697, "lm_head": 0.124, "linear_other": 0.0, "other": 0.058}, "kv_byte_share": 0.165, "eff_GBps": 3.1}, "int8wo_speedup": 0.218}
+{"T": 16384, "dense": {"step_ms": 389.42, "hook_ovh": -0.002, "shares": {"attn_core": 0.386, "attn_proj": 0.092, "mlp": 0.26, "lm_head": 0.024, "linear_other": 0.0, "other": 0.235}, "kv_byte_share": 0.165, "eff_GBps": 20.9}, "int8wo": {"step_ms": 1349.3, "hook_ovh": 0.002, "shares": {"attn_core": 0.117, "attn_proj": 0.065, "mlp": 0.676, "lm_head": 0.07, "linear_other": 0.0, "other": 0.071}, "kv_byte_share": 0.283, "eff_GBps": 3.5}, "int8wo_speedup": 0.289}
+{"quality_T": 4096, "skipped": ["int8wo"]}
+{"quality_T": 8192, "skipped": ["int8wo"]}
+{"quality_T": 16384, "skipped": ["int8wo"]}
+W1110 10:38:04.255000 3134 torch/utils/_pytree.py:646] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1110 10:38:04.316000 3134 torch/utils/_pytree.py:646] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+/tmp/claude-0/-home-user-NEXUS/892e3559-3d4b-5e4a-b712-9dfee2b2d122/scratchpad/venv/lib/python3.13/site-packages/torch/ao/nn/quantized/modules/utils.py:72: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:111.)
+  qweight = torch.quantize_per_tensor(
+{"T": 4096, "dense": {"step_ms": 71.86, "hook_ovh": 0.063, "shares": {"attn_core": 0.164, "attn_proj": 0.081, "mlp": 0.371, "lm_head": 0.143, "linear_other": 0.0, "other": 0.234}, "kv_byte_share": 0.048, "eff_GBps": 28.9}, "int8dyn": {"step_ms": 46.74, "hook_ovh": -0.002, "shares": {"attn_core": 0.251, "attn_proj": 0.136, "mlp": 0.215, "lm_head": 0.057, "linear_other": 0.0, "other": 0.336}, "kv_byte_share": 0.169, "eff_GBps": 12.7}, "int8dyn_pc": {"step_ms": 48.09, "hook_ovh": -0.0, "shares": {"attn_core": 0.247, "attn_proj": 0.137, "mlp": 0.22, "lm_head": 0.059, "linear_other": 0.0, "other": 0.336}, "kv_byte_share": 0.168, "eff_GBps": 12.4}, "int8dyn_pc_nolm": {"step_ms": 54.71, "hook_ovh": 0.022, "shares": {"attn_core": 0.217, "attn_proj": 0.118, "mlp": 0.187, "lm_head": 0.186, "linear_other": 0.0, "other": 0.287}, "kv_byte_share": 0.1, "eff_GBps": 18.4}, "int8dyn_speedup": 1.538, "int8dyn_pc_speedup": 1.494, "int8dyn_pc_nolm_speedup": 1.313}
+{"T": 16384, "dense": {"step_ms": 127.59, "hook_ovh": 0.023, "shares": {"attn_core": 0.401, "attn_proj": 0.05, "mlp": 0.222, "lm_head": 0.085, "linear_other": 0.0, "other": 0.239}, "kv_byte_share": 0.169, "eff_GBps": 18.6}, "int8dyn": {"step_ms": 90.66, "hook_ovh": 0.05, "shares": {"attn_core": 0.51, "attn_proj": 0.07, "mlp": 0.107, "lm_head": 0.029, "linear_other": 0.0, "other": 0.282}, "kv_byte_share": 0.449, "eff_GBps": 9.9}, "int8dyn_pc": {"step_ms": 91.43, "hook_ovh": 0.026, "shares": {"attn_core": 0.509, "attn_proj": 0.07, "mlp": 0.107, "lm_head": 0.029, "linear_other": 0.0, "other": 0.28}, "kv_byte_share": 0.447, "eff_GBps": 9.8}, "int8dyn_pc_nolm": {"step_ms": 104.08, "hook_ovh": -0.011, "shares": {"attn_core": 0.464, "attn_proj": 0.065, "mlp": 0.101, "lm_head": 0.101, "linear_other": 0.0, "other": 0.264}, "kv_byte_share": 0.308, "eff_GBps": 12.6}, "int8dyn_speedup": 1.407, "int8dyn_pc_speedup": 1.395, "int8dyn_pc_nolm_speedup": 1.226}
+{"T": 32000, "dense": {"step_ms": 172.79, "hook_ovh": 0.05, "shares": {"attn_core": 0.512, "attn_proj": 0.034, "mlp": 0.149, "lm_head": 0.056, "linear_other": 0.0, "other": 0.248}, "kv_byte_share": 0.285, "eff_GBps": 16.0}, "int8dyn": {"step_ms": 160.37, "hook_ovh": 0.056, "shares": {"attn_core": 0.57, "attn_proj": 0.042, "mlp": 0.063, "lm_head": 0.016, "linear_other": 0.0, "other": 0.306}, "kv_byte_share": 0.614, "eff_GBps": 8.0}, "int8dyn_pc": {"step_ms": 167.67, "hook_ovh": 0.05, "shares": {"attn_core": 0.571, "attn_proj": 0.041, "mlp": 0.064, "lm_head": 0.017, "linear_other": 0.0, "other": 0.304}, "kv_byte_share": 0.612, "eff_GBps": 7.7}, "int8dyn_pc_nolm": {"step_ms": 175.14, "hook_ovh": -0.02, "shares": {"attn_core": 0.55, "attn_proj": 0.04, "mlp": 0.06, "lm_head": 0.059, "linear_other": 0.0, "other": 0.289}, "kv_byte_share": 0.465, "eff_GBps": 9.7}, "int8dyn_speedup": 1.077, "int8dyn_pc_speedup": 1.031, "int8dyn_pc_nolm_speedup": 0.987}
+{"quality_T": 4096, "skipped": [], "dense": {"ppl_ratio": 1.0, "top1_agree": 1.0, "matched_quality": true}, "int8dyn": {"ppl_ratio": 2.6800604985033356, "top1_agree": 0.5390625, "matched_quality": false}, "int8dyn_pc": {"ppl_ratio": 2.698223431005907, "top1_agree": 0.5, "matched_quality": false}, "int8dyn_pc_nolm": {"ppl_ratio": 2.667666558206878, "top1_agree": 0.4765625, "matched_quality": false}}
+{"quality_T": 16384, "skipped": [], "dense": {"ppl_ratio": 1.0, "top1_agree": 1.0, "matched_quality": true}, "int8dyn": {"ppl_ratio": 3.5555868370299057, "top1_agree": 0.4375, "matched_quality": false}, "int8dyn_pc": {"ppl_ratio": 3.536335499590354, "top1_agree": 0.421875, "matched_quality": false}, "int8dyn_pc_nolm": {"ppl_ratio": 3.527463593180652, "top1_agree": 0.4453125, "matched_quality": false}}
+{"quality_T": 32000, "skipped": ["int8dyn_pc_nolm"], "dense": {"ppl_ratio": 1.0, "top1_agree": 1.0, "matched_quality": true}, "int8dyn": {"ppl_ratio": 3.6195818251353233, "top1_agree": 0.4140625, "matched_quality": false}, "int8dyn_pc": {"ppl_ratio": 3.618312693162036, "top1_agree": 0.3984375, "matched_quality": false}}
+W1110 11:42:43.091000 4203 torch/utils/_pytree.py:646] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1110 11:42:43.140000 4203 torch/utils/_pytree.py:646] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+{"dtype": "bf16", "first_divergence": 14, "margin_at_div": 0.0, "bf16_ulp": 0.125, "margin_median": 0.625, "margin_min": 0.0, "rank": 2}
+{"dtype": "fp32", "first_divergence": null, "margin_at_div": null, "bf16_ulp": null, "margin_median": 0.7836952209472656, "margin_min": 0.004444122314453125, "rank": null}

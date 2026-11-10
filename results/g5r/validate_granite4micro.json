@@ -1,0 +1,84 @@
+{
+ "model": "granite4micro",
+ "dtype": "bf16",
+ "tokens": 2048,
+ "books": {
+  "860.txt": {
+   "ppl_pretrained": 14.159199109344124
+  },
+  "2544.txt": {
+   "ppl_pretrained": 15.93773831357636
+  },
+  "3247.txt": {
+   "ppl_pretrained": 13.500777249890877
+  },
+  "3340.txt": {
+   "ppl_pretrained": 12.173162898116253
+  },
+  "3608.txt": {
+   "ppl_pretrained": 9.12534575137315
+  },
+  "3754.txt": {
+   "ppl_pretrained": 12.777597736929648
+  },
+  "4047.txt": {
+   "ppl_pretrained": 8.449985647116254
+  },
+  "5396.txt": {
+   "ppl_pretrained": 15.30716371226243
+  }
+ },
+ "g5r_dense_vs_sdpa_logits_maxabs": 0.0,
+ "control_random_init_ppl_512": 116415.65777468246,
+ "pretrained_ppl_512_same_tokens": 18.503268642571555,
+ "vocab_size": 100352,
+ "shadow_decode_T_values": [
+  1001,
+  1002,
+  1003
+ ],
+ "shadow_reconstruction_max_abs": 0.11748331455176952,
+ "shadow_reconstruction_max_rel_to_outnorm": 0.0024078576118096535,
+ "shadow_layers_seen": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28,
+  29,
+  30,
+  31,
+  32,
+  33,
+  34,
+  35,
+  36,
+  37,
+  38,
+  39
+ ]
+}

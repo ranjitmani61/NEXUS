@@ -1,0 +1,107 @@
+{
+  "source": "kaggle_models",
+  "owner": "ibm-research",
+  "model": "granite-4.0",
+  "instance": "granite-4.0-micro-base",
+  "framework": "transformers",
+  "version": 1,
+  "publisher_author": "IBM Research",
+  "title": "Granite 4.0",
+  "license": "Apache 2.0",
+  "instance_url": "https://www.kaggle.com/models/ibm-research/granite-4.0/Transformers/granite-4.0-micro-base",
+  "skipped_git_directory_entries": 65,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 1519,
+      "listed_bytes": 1519,
+      "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    },
+    {
+      "path": "README.md",
+      "bytes": 26704,
+      "listed_bytes": 26704,
+      "sha256": "1f4d440e6b6b62e81c756766047fcd2b415b27fdf2aacfd299523fc08b03ad5c",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    },
+    {
+      "path": "config.json",
+      "bytes": 1945,
+      "listed_bytes": 1945,
+      "sha256": "e11a24434769f1926c2b73ea4b6bf7115533e3644d553d5a347797082e65c0f2",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    },
+    {
+      "path": "generation_config.json",
+      "bytes": 147,
+      "listed_bytes": 147,
+      "sha256": "7c04cb9d2ba771f7528fba5a7104999cdaf7566d02b5fbd58472829f62716177",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    },
+    {
+      "path": "merges.txt",
+      "bytes": 916646,
+      "listed_bytes": 916646,
+      "sha256": "b6fe424e334903f7fb84d3a106d9730455f4744b9fe3c21ee136d97a00e72502",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    },
+    {
+      "path": "model-00001-of-00002.safetensors",
+      "bytes": 4918145376,
+      "listed_bytes": 4918145376,
+      "sha256": "75418829cdcadec6a9a4cab2ee0e420bedffdc97f2da1875e9f6f836a1defd36",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    },
+    {
+      "path": "model-00002-of-00002.safetensors",
+      "bytes": 1887565800,
+      "listed_bytes": 1887565800,
+      "sha256": "9d0e185ab087789816189a907861ad609e2c1be814f682c75ccd14703229dba6",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    },
+    {
+      "path": "model.safetensors.index.json",
+      "bytes": 27601,
+      "listed_bytes": 27601,
+      "sha256": "ab7da764b6c72d67b8691eed0786364f7231f7791ffef92cc016b0687d89efad",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    },
+    {
+      "path": "model.sig",
+      "bytes": 8182,
+      "listed_bytes": 8182,
+      "sha256": "89a426f6a2658216925523d6f415e32c3c1fbef8db316605d54b31628b1d612c",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    },
+    {
+      "path": "special_tokens_map.json",
+      "bytes": 579,
+      "listed_bytes": 579,
+      "sha256": "c08676c49fd7969a3130f72be6d4bf34da66aa484a6e21dffe359893a1bd5f2e",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    },
+    {
+      "path": "tokenizer.json",
+      "bytes": 7153421,
+      "listed_bytes": 7153421,
+      "sha256": "e2bad66439538cb4d5a7580680932432ed9ece9d3b8577e675512bdf11599253",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    },
+    {
+      "path": "tokenizer_config.json",
+      "bytes": 17659,
+      "listed_bytes": 17659,
+      "sha256": "a5ec5daab12ba090a90f3dd169c8f9c275557013a87b9c1258dc7cb497a35c86",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    },
+    {
+      "path": "vocab.json",
+      "bytes": 1612704,
+      "listed_bytes": 1612704,
+      "sha256": "8af71076de8b0b626eed0f4c984faf0a7c062479164b2a31308a948524d4f69c",
+      "kaggle_creation_date": "2025-10-01T06:28:16.095932700Z"
+    }
+  ],
+  "fetched_utc": "2026-11-04T20:01:29Z"
+}

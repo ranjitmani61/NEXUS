@@ -1,0 +1,466 @@
+{
+ "meta": {
+  "version": "1.0",
+  "date": "2026-11-10",
+  "label": "SMOKE: not a result",
+  "charter": "specs/C3_G0_gpu_decode_bottleneck_charter.md",
+  "model": "granite4micro",
+  "args": {
+   "model_dir": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1",
+   "model_name": "granite4micro",
+   "contexts": [
+    512
+   ],
+   "formats": [
+    "fp16",
+    "nf4",
+    "int8"
+   ],
+   "modes": [
+    "eager",
+    "graph"
+   ],
+   "steps": 4,
+   "reps": 1,
+   "quality_T": 512,
+   "quality_steps": 8,
+   "consistency_T": 512,
+   "consistency_steps": 3,
+   "ref_device_map": "auto",
+   "device": "cuda:0",
+   "budget_s": 420.0,
+   "layers": null,
+   "label": "SMOKE: not a result",
+   "output": "/kaggle/working/c3_smoke_granite4micro.json"
+  },
+  "books": [
+   "860.txt",
+   "2544.txt",
+   "3247.txt",
+   "3340.txt"
+  ],
+  "torch": "2.11.0+cu130",
+  "cuda": "13.0",
+  "transformers": "4.57.1",
+  "python": "3.13.16",
+  "device_name": "Tesla T4",
+  "energy": "NOT MEASURED",
+  "test_truncated_layers": null,
+  "finished_utc": "2026-11-10T14:52:50Z"
+ },
+ "nvsmi": {
+  "start": "0, 300 MHz, 405 MHz, 51, 14.51 W, 0 %\n1, 300 MHz, 405 MHz, 40, 9.76 W, 0 %",
+  "after_reference": "0, 1590 MHz, 5000 MHz, 58, 37.22 W, 0 %\n1, 1410 MHz, 5000 MHz, 51, 68.93 W, 99 %",
+  "end": "0, 690 MHz, 5000 MHz, 61, 30.25 W, 23 %\n1, 585 MHz, 5000 MHz, 51, 27.52 W, 0 %"
+ },
+ "formats": {
+  "fp16": {
+   "load_s": 6.393229961395264,
+   "weight_bytes": {
+    "mlp": 5033164800,
+    "attn_proj": 1258291200,
+    "lm_head": 513802240
+   },
+   "removable_counts": {
+    "attn_proj": 160,
+    "mlp": 80,
+    "lm_head": 1
+   },
+   "consistency": {
+    "T": 512,
+    "steps": 3,
+    "kl_limit": 0.001,
+    "rows": [
+     {
+      "book": "860.txt",
+      "max_kl": 9.133458193334807e-05,
+      "argmax_agree": 1.0,
+      "max_abs_logit_diff": 0.0703125
+     },
+     {
+      "book": "2544.txt",
+      "max_kl": 5.814575588131417e-05,
+      "argmax_agree": 1.0,
+      "max_abs_logit_diff": 0.046875
+     },
+     {
+      "book": "3247.txt",
+      "max_kl": 3.460108790700198e-05,
+      "argmax_agree": 1.0,
+      "max_abs_logit_diff": 0.03125
+     },
+     {
+      "book": "3340.txt",
+      "max_kl": 0.0002914789283997429,
+      "argmax_agree": 1.0,
+      "max_abs_logit_diff": 0.0546875
+     }
+    ],
+    "pass": true
+   },
+   "quality_vs_fp32": {
+    "ppl_ratio": 1.0008865946514103,
+    "ppl_ratio_ci95_book_bootstrap": [
+     0.9996028735228193,
+     1.0021717254382505
+    ],
+    "top1_agree": 1.0,
+    "kl_mean": 1.861655528045958e-05,
+    "per_book_delta_nll": [
+     0.0020644664764404297,
+     0.0022745132446289062,
+     -0.0006778240203857422,
+     -0.00011706352233886719
+    ],
+    "per_book_top1": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "matched_quality": true
+   },
+   "contexts": {
+    "512": {
+     "prefill_s": 0.18688590400006433,
+     "max_cache_len": 516,
+     "modes": {
+      "eager": {
+       "full": {
+        "p50_s": 0.051512102500055335,
+        "p95_s": 0.05215804495003908,
+        "ci95_p50": [
+         0.0496129780000274,
+         0.052196521000041685
+        ],
+        "n": 4,
+        "raw": [
+         0.05108419100008632,
+         0.0496129780000274,
+         0.052196521000041685,
+         0.05194001400002435
+        ]
+       },
+       "no_attn_core": {
+        "p50_s": 0.044954736999955,
+        "p95_s": 0.04604036670001506,
+        "ci95_p50": [
+         0.04390754200005631,
+         0.046091841000020395
+        ],
+        "n": 4,
+        "raw": [
+         0.046091841000020395,
+         0.04390754200005631,
+         0.0441607949999252,
+         0.045748678999984804
+        ]
+       },
+       "no_attn_proj": {
+        "p50_s": 0.04858422000000928,
+        "p95_s": 0.049331414349978786,
+        "ci95_p50": [
+         0.047078317000000425,
+         0.04936255899997377
+        ],
+        "n": 4,
+        "raw": [
+         0.04801351200001136,
+         0.0491549280000072,
+         0.04936255899997377,
+         0.047078317000000425
+        ]
+       },
+       "no_mlp": {
+        "p50_s": 0.049047094999991714,
+        "p95_s": 0.04954247535000604,
+        "ci95_p50": [
+         0.048429407999947216,
+         0.04958261100000527
+        ],
+        "n": 4,
+        "raw": [
+         0.048429407999947216,
+         0.048779149999973015,
+         0.04958261100000527,
+         0.04931504000001041
+        ]
+       },
+       "no_lm_head": {
+        "p50_s": 0.04969545099993411,
+        "p95_s": 0.05030314864996512,
+        "ci95_p50": [
+         0.04905271899997388,
+         0.050382433999971
+        ],
+        "n": 4,
+        "raw": [
+         0.04905271899997388,
+         0.050382433999971,
+         0.04985386499993183,
+         0.04953703699993639
+        ]
+       },
+       "no_all": {
+        "p50_s": 0.03599167350000698,
+        "p95_s": 0.03672821855008692,
+        "ci95_p50": [
+         0.034934851999992134,
+         0.036744818000101986
+        ],
+        "n": 4,
+        "raw": [
+         0.03534919200001241,
+         0.034934851999992134,
+         0.036744818000101986,
+         0.036634155000001556
+        ]
+       },
+       "share_removed": {
+        "attn_core": 0.12729757050963486,
+        "attn_proj": 0.056838730277858684,
+        "mlp": 0.047852977852359535,
+        "lm_head": 0.03526649878286903
+       },
+       "share_other_floor": 0.6987032513372623,
+       "additivity_sum_of_shares_plus_floor": 0.9659590287599844,
+       "effective_gbps_derived": 132.93048871365025
+      }
+     },
+     "graph_capture_errors": {
+      "full": "AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stack",
+      "no_attn_core": "AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stack",
+      "no_attn_proj": "AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stack",
+      "no_mlp": "AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stack",
+      "no_lm_head": "AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stack",
+      "no_all": "AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stack"
+     },
+     "bytes_derived": {
+      "weights_by_class": {
+       "mlp": 5033164800,
+       "attn_proj": 1258291200,
+       "lm_head": 513802240
+      },
+      "kv_read": 42270720,
+      "total": 6847528960,
+      "shares": {
+       "attn_core": 0.006173134899746375,
+       "attn_proj": 0.18375843422500837,
+       "mlp": 0.7350337369000335,
+       "lm_head": 0.07503469397521176
+      }
+     },
+     "nvsmi_after": "0, 1590 MHz, 5000 MHz, 61, 37.90 W, 0 %\n1, 585 MHz, 5000 MHz, 49, 27.32 W, 0 %"
+    }
+   }
+  },
+  "nf4": {
+   "load_s": 8.977303743362427,
+   "weight_bytes": {
+    "mlp": 1415577600,
+    "attn_proj": 353894400,
+    "lm_head": 513802240
+   },
+   "removable_counts": {
+    "attn_proj": 160,
+    "mlp": 80,
+    "lm_head": 1
+   },
+   "quality_vs_fp32": {
+    "ppl_ratio": 1.1967474174963975,
+    "ppl_ratio_ci95_book_bootstrap": [
+     0.9649411520348309,
+     1.419822432817587
+    ],
+    "top1_agree": 0.84375,
+    "kl_mean": 0.07328710425645113,
+    "per_book_delta_nll": [
+     0.17871904373168945,
+     0.3597564697265625,
+     -0.16135382652282715,
+     0.3413074016571045
+    ],
+    "per_book_top1": [
+     1.0,
+     0.875,
+     0.875,
+     0.625
+    ],
+    "matched_quality": false
+   },
+   "contexts": {
+    "512": {
+     "prefill_s": 0.24352585700000873,
+     "max_cache_len": 516,
+     "modes": {
+      "eager": {
+       "full": {
+        "p50_s": 0.06525073150004346,
+        "p95_s": 0.06670102170000405,
+        "ci95_p50": [
+         0.06499729400002252,
+         0.06694652999999562
+        ],
+        "n": 4,
+        "raw": [
+         0.06499729400002252,
+         0.06530980800005182,
+         0.06694652999999562,
+         0.0651916550000351
+        ]
+       },
+       "no_attn_core": {
+        "p50_s": 0.06633744300000899,
+        "p95_s": 0.07697217889998455,
+        "ci95_p50": [
+         0.060072924999985844,
+         0.07795448299998498
+        ],
+        "n": 4,
+        "raw": [
+         0.060072924999985844,
+         0.07795448299998498,
+         0.07140578899998218,
+         0.0612690970000358
+        ]
+       },
+       "no_attn_proj": {
+        "p50_s": 0.05419510799998761,
+        "p95_s": 0.055446248950033805,
+        "ci95_p50": [
+         0.05325732899996183,
+         0.055548043000044345
+        ],
+        "n": 4,
+        "raw": [
+         0.055548043000044345,
+         0.05325732899996183,
+         0.053520800000001145,
+         0.05486941599997408
+        ]
+       },
+       "no_mlp": {
+        "p50_s": 0.0598504199999752,
+        "p95_s": 0.06022522914995534,
+        "ci95_p50": [
+         0.05900119599994014,
+         0.06026993499995115
+        ],
+        "n": 4,
+        "raw": [
+         0.06026993499995115,
+         0.0599718959999791,
+         0.05972894399997131,
+         0.05900119599994014
+        ]
+       },
+       "no_lm_head": {
+        "p50_s": 0.06460917599997629,
+        "p95_s": 0.06471584034995317,
+        "ci95_p50": [
+         0.06395380500009651,
+         0.06471694899994418
+        ],
+        "n": 4,
+        "raw": [
+         0.06471694899994418,
+         0.06395380500009651,
+         0.06450879399994847,
+         0.06470955800000411
+        ]
+       },
+       "no_all": {
+        "p50_s": 0.03486534600000368,
+        "p95_s": 0.03516664754999397,
+        "ci95_p50": [
+         0.0346514280000747,
+         0.035201088000007985
+        ],
+        "n": 4,
+        "raw": [
+         0.035201088000007985,
+         0.0346514280000747,
+         0.03475920700009283,
+         0.03497148499991454
+        ]
+       },
+       "share_removed": {
+        "attn_core": -0.01665439566704019,
+        "attn_proj": 0.16943294344598236,
+        "mlp": 0.08276246680950483,
+        "lm_head": 0.009832157974608235
+       },
+       "share_other_floor": 0.5343288143824175,
+       "additivity_sum_of_shares_plus_floor": 0.7797019869454728,
+       "effective_gbps_derived": 35.640136233544766
+      }
+     },
+     "graph_capture_errors": {
+      "full": "AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stack",
+      "no_attn_core": "AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stack",
+      "no_attn_proj": "AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stack",
+      "no_mlp": "AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stack",
+      "no_lm_head": "AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stack",
+      "no_all": "AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stack"
+     },
+     "bytes_derived": {
+      "weights_by_class": {
+       "mlp": 1415577600,
+       "attn_proj": 353894400,
+       "lm_head": 513802240
+      },
+      "kv_read": 42270720,
+      "total": 2325544960,
+      "shares": {
+       "attn_core": 0.018176694377906158,
+       "attn_proj": 0.1521769761871213,
+       "mlp": 0.6087079047484852,
+       "lm_head": 0.22093842468648725
+      }
+     },
+     "nvsmi_after": "0, 1350 MHz, 5000 MHz, 62, 33.78 W, 0 %\n1, 585 MHz, 5000 MHz, 50, 27.42 W, 0 %"
+    }
+   }
+  },
+  "int8": {
+   "error": "load: OutOfMemoryError: CUDA out of memory. Tried to allocate 80.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 78.81 MiB is free. Including non-PyTorch memory, this process has 14.48 GiB memory in use. Of the allocated memory 3.53 GiB is allocated by PyTorch, with 24.00 MiB allocated in private pools (e.g., CUDA Graphs), and 10.80 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See do"
+  }
+ },
+ "book_tokens": {
+  "860.txt": 67042,
+  "2544.txt": 85100,
+  "3247.txt": 127592,
+  "3340.txt": 94481
+ },
+ "bandwidth": {
+  "copy": {
+   "gbps_median": 240.54641449787408,
+   "gbps_best": 240.89939089873872,
+   "seconds": [
+    0.00897463000001153,
+    0.008930636000002323,
+    0.008927523000011206,
+    0.008924836000005598,
+    0.00891444199999114
+   ]
+  },
+  "triad": {
+   "gbps_median": 245.27520197643224,
+   "gbps_best": 246.20565041065285,
+   "seconds": [
+    0.013133106999987376,
+    0.013083474999973532,
+    0.013083608999977514,
+    0.013137230999973326,
+    0.013155277000009846
+   ]
+  },
+  "check_ok": true
+ },
+ "reference": {
+  "format": "fp32",
+  "device_map": "auto",
+  "load_s": 43.77672028541565,
+  "nll_mean": 2.646930456161499
+ }
+}

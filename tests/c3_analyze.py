@@ -1,0 +1,198 @@
+#!/usr/bin/env python3
+"""C3 decision analysis: applies the pre-registered rule (charter §5). Version 1.2, 2026-11-10 (v1.1: BLOCKED contexts per charter §6, before run-2 data; v1.2: derived KV bytes recomputed from the verified configs, defect C3-D5, after run-2 data).
+
+  python tests/c3_analyze.py --dir results/c3/main [--out-prefix results/c3/]
+
+Admissibility per model: P1 (provenance hashes, from c3_run_record.json) and P2 for the fp16
+path (static-cache decode consistency). Candidates per context: formats with matched quality
+against fp32; eager mode always, graph mode only if P3 holds (graph logits == eager logits).
+C* = lowest p50 full-step time. Near-tie rule: every candidate whose p50 CI overlaps C*'s CI
+is also evaluated; if the eligibility conclusion differs between them, the decision is HOLD.
+"""
+from __future__ import annotations
+
+import argparse
+import itertools
+import json
+from pathlib import Path
+
+CLASSES = ("attn_core", "attn_proj", "mlp", "lm_head")
+MODELS = ("qwen05", "granite4micro")
+
+
+def overlap(a, b):
+    return a[0] <= b[1] and b[0] <= a[1]
+
+
+def kv_bytes_per_slot(cfg: dict, elem: int = 2) -> int:
+    """K+V bytes per cache slot for one token, all attention layers (fp16 = 2 bytes).
+    C3-D5: count every layer type containing 'attention' (Qwen2: 'full_attention')."""
+    L = cfg["num_hidden_layers"]
+    lt = cfg.get("layer_types")
+    if lt:
+        L = sum(1 for t in lt if "attention" in str(t))
+    hd = cfg.get("head_dim") or cfg["hidden_size"] // cfg["num_attention_heads"]
+    return 2 * L * cfg["num_key_value_heads"] * hd * elem
+
+
+def recompute_bytes(d, per_slot):
+    """Replaces bytes_derived using the corrected KV count (derived quantity only)."""
+    for fmt, f in d.get("formats", {}).items():
+        for T, c in f.get("contexts", {}).items():
+            b = c.get("bytes_derived")
+            if not b:
+                continue
+            kv = per_slot * c["max_cache_len"]
+            wb = b["weights_by_class"]
+            tot = sum(wb.values()) + kv
+            c["bytes_derived_as_recorded"] = dict(b)
+            c["bytes_derived"] = {"weights_by_class": wb, "kv_read": kv, "total": tot, "kv_source": "recomputed (C3-D5)",
+                                  "shares": {"attn_core": kv / tot, "attn_proj": wb.get("attn_proj", 0) / tot,
+                                             "mlp": wb.get("mlp", 0) / tot, "lm_head": wb.get("lm_head", 0) / tot}}
+            for mode, mres in c.get("modes", {}).items():
+                if "full" in mres:
+                    mres["effective_gbps_derived"] = tot / mres["full"]["p50_s"] / 1e9
+
+
+def blocked_units(d):
+    """Charter §6: a unit not completed is BLOCKED. For each context, the quality-passing formats
+    whose unit errored, was skipped, or was truncated by the budget. A C* chosen without them
+    would not be the fastest matched-quality configuration, so such a context is BLOCKED."""
+    out = {}
+    for fmt, f in d.get("formats", {}).items():
+        if not (f.get("quality_vs_fp32") or {}).get("matched_quality"):
+            continue
+        for T, c in f.get("contexts", {}).items():
+            why = c.get("error") or c.get("skipped") or (f"truncated at rep {c['truncated_by_budget_at_rep']}" if c.get("truncated_by_budget_at_rep") is not None else None)
+            if why is None and "full" not in c.get("modes", {}).get("eager", {}):
+                why = "eager full missing"
+            if why:
+                out.setdefault(int(T), []).append(f"{fmt}: {str(why)[:120]}")
+    return out
+
+
+def candidates(d):
+    """Yield candidate dicts per context."""
+    out = {}
+    for fmt, f in d.get("formats", {}).items():
+        q = f.get("quality_vs_fp32") or {}
+        qok = bool(q.get("matched_quality"))
+        for T, c in f.get("contexts", {}).items():
+            for mode, mres in c.get("modes", {}).items():
+                if "full" not in mres:
+                    continue
+                valid = mode == "eager" or bool((c.get("graph_vs_eager") or {}).get("valid"))
+                out.setdefault(int(T), []).append({
+                    "config": f"{fmt}/{mode}", "p50_s": mres["full"]["p50_s"], "ci95": mres["full"]["ci95_p50"],
+                    "quality_ok": qok, "quality": {k: q.get(k) for k in ("ppl_ratio", "ppl_ratio_ci95_book_bootstrap", "top1_agree", "kl_mean")},
+                    "P3_ok": valid, "eligible_candidate": qok and valid,
+                    "s": mres.get("share_removed", {}), "other_floor": mres.get("share_other_floor"),
+                    "additivity": mres.get("additivity_sum_of_shares_plus_floor"),
+                    "b": c.get("bytes_derived", {}).get("shares", {}), "eff_gbps": mres.get("effective_gbps_derived")})
+    return out
+
+
+def eligibility(choice):
+    """choice: {model: {T: candidate}} -> per class time/byte eligibility."""
+    res = {}
+    for c in CLASSES:
+        t = {m: any((cand["s"].get(c, 0) or 0) >= 0.5 for cand in per.values()) for m, per in choice.items()}
+        b = {m: any((cand["b"].get(c, 0) or 0) >= 0.5 for cand in per.values()) for m, per in choice.items()}
+        both = len(choice) == len(MODELS)
+        res[c] = {"time_per_family": t, "byte_per_family": b, "time_eligible": both and all(t.values()),
+                  "byte_eligible": both and all(b.values())}
+    elig = sorted(c for c, e in res.items() if e["time_eligible"] or e["byte_eligible"])
+    return res, elig
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dir", type=Path, required=True); ap.add_argument("--out-prefix", type=Path, default=None)
+    ap.add_argument("--configs", type=Path, default=Path(__file__).resolve().parent.parent / "results" / "c3" / "model_configs")
+    a = ap.parse_args()
+    rec = json.loads((a.dir / "c3_run_record.json").read_text())
+    out = {"rule": "C3 charter §5", "models": {}, "admissible": {}}
+    lines = ["# C3 decision tables (generated by tests/c3_analyze.py)", ""]
+    cstar_choice, near = {}, {}
+    for m in MODELS:
+        p = a.dir / f"c3_main_{m}.json"
+        if not p.exists():
+            out["admissible"][m] = {"admissible": False, "why": "no output file"}
+            continue
+        d = json.loads(p.read_text())
+        cfgp = a.configs / m / "config.json"
+        if cfgp.exists():
+            recompute_bytes(d, kv_bytes_per_slot(json.loads(cfgp.read_text())))
+            out.setdefault("bytes_recomputed_from", {})[m] = str(cfgp)
+        p1 = bool(rec.get("P1", {}).get(m, {}).get("pass")) and bool(rec.get("P1", {}).get("pg19", {}).get("pass"))
+        p2 = bool((d.get("formats", {}).get("fp16", {}).get("consistency") or {}).get("pass"))
+        p2_fp32 = (d.get("reference", {}).get("consistency_fp32") or {}).get("pass")
+        out["admissible"][m] = {"P1": p1, "P2_fp16": p2, "P2_fp32_reported": p2_fp32, "admissible": p1 and p2}
+        cands = candidates(d)
+        blocked = blocked_units(d)
+        mres = {"contexts": {}, "blocked_units": {str(k): v for k, v in blocked.items()}}
+        lines += [f"## {m} (admissible: {p1 and p2}; P1 {p1}, P2 fp16 {p2}, P2 fp32 {p2_fp32})", "",
+                  "| T | config | full p50 ms (CI) | quality | P3 | " + " | ".join(f"s {c}" for c in CLASSES) + " | other floor | bytes MLP | bytes KV | eff GB/s |",
+                  "|---:|---|---|---|---|" + "---:|" * len(CLASSES) + "---:|---:|---:|---:|"]
+        for T in sorted(set(cands) | set(blocked)):
+            cs = cands.get(T, [])
+            ok = [c for c in cs if c["eligible_candidate"]]
+            cstar = min(ok, key=lambda c: c["p50_s"]) if ok and T not in blocked else None
+            ties = [c for c in ok if cstar and c is not cstar and overlap(c["ci95"], cstar["ci95"])]
+            mres["contexts"][str(T)] = {"candidates": cs, "C_star": cstar["config"] if cstar else ("BLOCKED" if T in blocked else None),
+                                        "blocked_because": blocked.get(T), "near_ties": [c["config"] for c in ties]}
+            if p1 and p2 and cstar:
+                cstar_choice.setdefault(m, {})[T] = cstar
+                near.setdefault(m, {})[T] = [cstar] + ties
+            for c in cs:
+                q = c["quality"]
+                lines.append(f"| {T} | {c['config']}{' **C***' if cstar is c else ''} | {c['p50_s']*1e3:.3f} ({c['ci95'][0]*1e3:.3f}–{c['ci95'][1]*1e3:.3f}) | "
+                             f"{'ok' if c['quality_ok'] else 'FAIL'} (PPL {q['ppl_ratio'] if q['ppl_ratio'] is None else round(q['ppl_ratio'], 4)}, top-1 {q['top1_agree']}) | {c['P3_ok']} | "
+                             + " | ".join(f"{c['s'].get(k, float('nan')):.3f}" for k in CLASSES)
+                             + f" | {c['other_floor'] if c['other_floor'] is None else round(c['other_floor'], 3)} | {c['b'].get('mlp', 0):.3f} | {c['b'].get('attn_core', 0):.3f} | "
+                             + (f"{c['eff_gbps']:.1f} |" if c["eff_gbps"] else "– |"))
+        for T, why in sorted(blocked.items()):
+            lines.append(f"| {T} | **BLOCKED** | {'; '.join(why)} | | | | | | | | | | |")
+        lines.append("")
+        out["models"][m] = mres
+    elig_table, elig = eligibility(cstar_choice) if len(cstar_choice) == len(MODELS) else ({}, [])
+    out["eligibility_at_C_star"] = elig_table
+    # near-tie robustness: every combination of near-tie choices
+    conclusions = set()
+    if len(near) == len(MODELS):
+        keys = [(m, T) for m in near for T in near[m]]
+        opts = [near[m][T] for m, T in keys]
+        n_comb = 1
+        for o in opts:
+            n_comb *= len(o)
+        if n_comb <= 4096:
+            for combo in itertools.product(*opts):
+                ch = {}
+                for (m, T), c in zip(keys, combo):
+                    ch.setdefault(m, {})[T] = c
+                conclusions.add(tuple(eligibility(ch)[1]))
+        else:
+            conclusions.add(("too many near-tie combinations; not evaluated",))
+    out["near_tie_conclusions"] = sorted(list(map(list, conclusions)))
+    if len(cstar_choice) < len(MODELS):
+        decision = "HOLD/BLOCKED: fewer than two admissible families with a C*"
+    elif len(conclusions) > 1:
+        decision = "HOLD: conclusion depends on near-tied C* choices"
+    elif elig:
+        decision = "eligible: " + ", ".join(elig)
+    else:
+        decision = "no single-bottleneck target reaches 2x on this workload (rule 5): charter change required"
+    out["eligible"] = elig
+    out["decision"] = decision
+    lines += ["## Eligibility at C* (both families required)", "", "| class | time (per family) | bytes (per family) |", "|---|---|---|"]
+    for c, e in elig_table.items():
+        lines.append(f"| {c} | {e['time_eligible']} {e['time_per_family']} | {e['byte_eligible']} {e['byte_per_family']} |")
+    lines += ["", f"Near-tie conclusions: {out['near_tie_conclusions']}", "", f"**Decision (pre-registered rule):** {decision}", ""]
+    pre = a.out_prefix or a.dir
+    Path(f"{pre}/decision.json" if pre.is_dir() else f"{pre}decision.json").write_text(json.dumps(out, indent=1) + "\n")
+    Path(f"{pre}/summary_tables.md" if pre.is_dir() else f"{pre}summary_tables.md").write_text("\n".join(lines) + "\n")
+    print(decision)
+
+
+if __name__ == "__main__":
+    main()
