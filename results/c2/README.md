@@ -18,14 +18,14 @@
 | `preregistration.json` | Charter and A1–A3 hashes and UTC times | record |
 | `decode_consistency_qwen05_fp32_T8192_hostC.json` | Cached decode vs full forward, Qwen fp32: passes (max KL ≤ 4.7e-12) | [Measured] |
 | `decode_consistency_granite4micro_T8192_hostC.json` | Same for Granite bf16: argmax 1.0, but max KL 1.6e-3–5.1e-3 on 3 of 4 books, so it **fails the charter §3 precondition as written** (see review §3) | [Measured] |
-| `diag_granite_trunc12_consistency_T8192.json` | (pending: running at commit time) Post-hoc: same check on genuine Granite layers 0–11 in fp32 and bf16 | [Measured], exploratory |
+| `diag_granite_trunc12_consistency_T8192.json` | Post-hoc: same check on genuine Granite layers 0–11 in fp32 and bf16 | [Measured], exploratory |
 | `breakdown_qwen05_bf16.json`, `breakdown_granite4micro_bf16.json` | M1 time breakdown, M2 derived bytes, M3 triad, dense bf16 | [Measured] time; [Derived] bytes |
 | `breakdown_b1_qwen05_fp32.json` | B1 (A3 rerun, sequential variants): dense fp32 plus three torch.ao dynamic-int8 (W8A8) variants; timing and quality | [Measured] |
 | `breakdown_b1_qwen05_fp32_run1_oomkilled.json` | B1 run 1 (interleaved), OOM-killed at 32K; kept unchanged; no quality, no 32K | [Measured], partial |
 | `breakdown_b1_qwen05_bf16.json`, `breakdown_b1_granite4micro_bf16.json` | B1 (A2): dense bf16 plus torchao int8 weight-only; the latter was slower than dense everywhere, so its quality was not evaluated (A2 item 3) | [Measured] |
 | `b2_prompt_lookup_*_T8192.json` | B2 prompt-lookup decoding vs plain greedy; Granite refused by the library | [Measured] |
 | `diag_lookup_divergence_qwen05_T8192.json` | v1.0 divergence diagnostic. Its reference used `topk` tie order (defect, review §6); kept unchanged | [Measured], exploratory |
-| `diag_lookup_divergence_qwen05_T8192_v1.1.json` | (pending: queued at commit time) v1.1: argmax reference as in `generate`, exact ties recorded | [Measured], exploratory |
+| `diag_lookup_divergence_qwen05_T8192_v1.1.json` | v1.1: argmax reference as in `generate`, exact ties recorded | [Measured], exploratory |
 | `decision.json`, `summary_tables.md` | Output of the pre-registered rule (`tests/c2_analyze.py`) | [Derived] |
 | `sensitivity_exploratory.json` | Run-choice pairings, Amdahl ceilings, derived weight-only-quantization byte shares, fp32 interleaved vs sequential, hook overhead, bandwidth vs triad | [Derived], exploratory |
 | `run_record/` | The queue scripts actually executed, plus their logs | record |

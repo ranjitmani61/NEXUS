@@ -270,3 +270,41 @@ The branch was merged with main on 2026-11-10. Neither entry above was edited.
 **Tests:** after the merge, 206 tests pass (113 G5-R + 93 main G5). The G2–G4 tests remain inside the committed zip packages and were not re-run.
 
 **Gate status:** G5 FAIL for the attention-page candidates; G6–G12 not authorized; no breakthrough.
+
+## 2026-11-10 — Cycle 2, G0: batch-1 decode bottleneck re-selection (C2-G0 HOLD)
+
+Read `AGENTS.md` v1.0 before work.
+- **Charter:** `specs/C2_G0_batch1_decode_bottleneck_charter.md`, pre-registered at 09:02:15Z with amendments A1–A3, each registered before the data it governs (`results/c2/preregistration.json`).
+- **Review:** `reviews/2026-11-10_C2_G0_bottleneck_review.md`.
+- **Data and reproduction commands:** `results/c2/`.
+- **Platform:** host C, a 4-vCPU Xeon VM (model 207, AMX), CPU only. It is not pooled with G5-R hosts A and B.
+
+**Measured, on genuine Qwen2.5-0.5B and Granite-4.0-micro-base at batch 1:**
+- C* (the fastest configuration at matched quality) is dense bf16 at every context.
+  - The torch.ao int8 variants are W8A8 and fail quality (PPL ratio 2.7–3.6, top-1 0.40–0.54).
+  - torchao int8 weight-only is slower than dense (0.17–0.61×).
+- At C*, no cost class reaches a 0.5 time share in both families, under any pairing of the repeated runs.
+  - Attention core reaches 0.516 only at Qwen 32K. Granite's maximum is 0.386.
+  - MLP Linear time reaches at most 0.463, so its Amdahl ceiling is 1.86×.
+- Effective bandwidth is 24–72% of the measured triad, so this CPU is not bandwidth-bound at decode.
+- **[Derived]** MLP weights are ≥ 0.5 of the bytes per step at 4K–16K for both models. KV is ≤ 28.5% of the bytes, even at Qwen 32K.
+- B2 prompt lookup on typical text is 0.46× of plain greedy, and its tokens are not identical. On the repeated-text control it is 4.39×. Granite B2 was refused by the library.
+
+**Decision: C2-G0 HOLD.**
+- The pre-registered rule prints "MLP byte-eligible".
+- However, Granite fails the charter's own decode-consistency precondition as written (KL > 1e-3 on 3 of 4 books; argmax 1.0). That makes Granite inadmissible, and under that reading rule 5 applies.
+- A post-hoc diagnostic on genuine Granite layers 0–11 gives fp32 KL ≤ 1.3e-11, while the same network in bf16 also fails. This supports bf16 rounding over a cache defect, but it does not change admissibility.
+- The charter's missing bf16 provision is my design error (C2-D8). It is recorded and not amended after the data.
+
+**Prompt-lookup divergence (task 13):**
+- In bf16 the divergence occurs at an exact logit tie (tokens 1513 and 2776, both 17.0). Exact ties occur at 4 of 64 positions.
+- In fp32 there are no ties, and lookup output is identical to greedy.
+- A defect in diagnostic v1.0 (`topk` tie order; C2-D7) was fixed in v1.1, and v1.0 is kept.
+
+**Tests:** the full suite has 224 passing tests (synthetic instrumentation and math only; no hardware claim).
+
+**Not shown:** any new mechanism, any novelty, GPU or energy behaviour, models above about 3.4B parameters, or contexts above 32K.
+
+**Next step:** a user decision. My recommendation is a dated C3 charter on hardware closer to bandwidth-bound decode (for example a free Kaggle GPU, with explicit approval), with weight-only int8/int4 baselines and a bf16 consistency criterion pre-registered before any data.
+
+**Gate status:** C2-G0 HOLD; G5 FAIL stands for the NX candidates; G6–G12 not authorized; no breakthrough.

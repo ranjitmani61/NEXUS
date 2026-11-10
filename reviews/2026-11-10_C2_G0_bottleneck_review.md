@@ -1,6 +1,6 @@
 # C2-G0 review — Batch-1 decode bottleneck re-selection (cycle 2)
 
-**Version/date:** 1.0-draft / 2026-11-10 (DRAFT: §3 and §6 are pending running diagnostics)
+**Version/date:** 1.0 / 2026-11-10
 **Charter:** `specs/C2_G0_batch1_decode_bottleneck_charter.md`, pre-registered with amendments A1–A3 (`results/c2/preregistration.json`).
 **Data:** `results/c2/` (index and reproduction commands in `results/c2/README.md`).
 **Lenses applied:** A1, A3, A4, A6, A8, A10, A11 (prior art named only; no new search in this cycle).
@@ -11,12 +11,12 @@
 
 **Decision: C2-G0 = HOLD. Not PASS.**
 
-**What the pre-registered rule printed.** `tests/c2_analyze.py` printed "eligible: mlp". MLP is eligible only under rule 2, the byte view. Two things stop that output from being accepted as the gate decision:
+**What the pre-registered rule printed.** `tests/c2_analyze.py` printed "eligible: mlp". MLP is eligible only under rule 2, the byte view. One thing stops that output from being accepted as the gate decision (item 1). A second limits what it would mean even if accepted (item 2):
 
 1. **The charter §3 precondition for Granite is not met as written.** The standing decode-consistency check (KL ≤ 1e-3 and argmax 1.0) fails for Granite bf16 on 3 of 4 books on this host. This is the same residual G5-R recorded.
    - Under the charter text, Granite results are not admissible.
    - Without Granite, no class meets the two-family condition of rules 1 and 2, and rule 5 applies.
-   - A post-hoc fp32 diagnostic on genuine truncated Granite (§3) bears on the *cause* of the residual. It cannot retroactively satisfy the precondition.
+   - A post-hoc fp32 diagnostic on genuine truncated Granite (§3) bears on the *cause* of the residual. It shows the cache logic exact to fp32 rounding (KL ≤ 1.3e-11), while the same network in bf16 also fails the criterion. This supports bf16 rounding, not a cache defect, as the cause. It cannot retroactively satisfy the precondition.
 2. **Even if Granite is admitted, the only eligible class is a byte-share class whose eligibility depends on the baseline.**
    - No class is time-eligible in both families, under any pairing of the repeated dense runs (§2, §5).
    - The measured time ceilings for MLP are 1.86× (Granite 4K) and 1.54× (Qwen 4K).
@@ -29,12 +29,12 @@
 - PG-19 text, contexts 4K–32K, batch 1.
 
 **Unresolved risks:**
-- CPU kernel efficiency dominates the time breakdown. Effective bandwidth is only 24–72% of the measured triad (§2.3), so time shares here are not those of a bandwidth-bound accelerator.
+- CPU kernel efficiency dominates the time breakdown. Effective bandwidth is only 24–72% of the measured triad (§2.1–2.2), so time shares here are not those of a bandwidth-bound accelerator.
 - B1 is weak on CPU: W8A8 fails quality, and weight-only int8 is slow.
 - Granite admissibility (§3).
 - Two small models.
 
-**Next gate:** a decision for the user (§8). My recommendation is a dated charter change (a C3 charter) rather than G1 for "MLP weight traffic".
+**Next gate:** a decision for the user (§9). My recommendation is a dated charter change (a C3 charter) rather than G1 for "MLP weight traffic".
 
 ## 2. Results under the pre-registered rule
 
@@ -96,7 +96,24 @@ These values are identical to the G5-R host-A values (`results/g5r/decode_consis
 - Loaded tensors were checked bit-equal to the checkpoint, and there were no missing keys.
 - The unchanged standing check was run at 8K on the same 4 books.
 
-**[Pending]** This diagnostic was still running when this draft was committed. Its result will be filled in from the output file; it is not stated here.
+| Network (genuine weights) | dtype | max KL per book (4 books) | argmax agreement | max \|Δlogit\| |
+|---|---|---|---|---|
+| Full, 40 layers (standing check) | bf16 | 1.6e-3, 2.7e-4, 5.1e-3, 1.7e-3 (3 fail) | 1.0 | 0.25–0.54 |
+| Layers 0–11 | **fp32** | 1.3e-11, 6.3e-12, 8.5e-12, 6.9e-12 (all pass) | 1.0 | 1.4e-5–1.7e-5 |
+| Layers 0–11 | bf16 | 1.9e-3, 1.7e-3, 8.1e-4, 1.1e-3 (3 fail) | 1.0 | 0.16–0.22 |
+
+Integrity checks on the truncated model:
+- 224 checkpoint tensors (layers 12–39, 8 each) were unused, as expected;
+- no missing keys;
+- 5 sampled tensors were bit-equal to the safetensors checkpoint in both dtypes.
+
+**[Supported hypothesis]** The cached-decode path for this model class is exact to fp32 rounding on the genuine truncated network. The same network in bf16 exceeds the criterion on 3 of 4 books. So the full-model failure is consistent with bf16 rounding and not with a cache-logic defect of the D4b kind, which would also appear in fp32.
+
+Limits of this evidence:
+- Layers 12–39 are not exercised in fp32. They use the same code and layer type.
+- This is post-hoc evidence, run after the precondition failed.
+- **It does not change admissibility under the charter as written.**
+- Admitting Granite would take a dated amendment that is explicitly labelled post-hoc. That is a decision for review, not for this session to take silently.
 
 ## 4. Baselines
 
@@ -158,9 +175,23 @@ So MLP byte-eligibility survives a stronger weight baseline for Granite. For Qwe
 
 ## 6. Prompt-lookup divergence (task #13; exploratory)
 
-`diag_lookup_divergence_qwen05_T8192.json` (v1.0) and `_v1.1.json`:
+`results/c2/diag_lookup_divergence_qwen05_T8192.json` (v1.0) and `results/c2/diag_lookup_divergence_qwen05_T8192_v1.1.json`:
 
-**[Pending]** The v1.1 rerun is queued after the Granite diagnostic. Its result will be filled in from the output file.
+**[Measured]** v1.1 reproduces B2 token for token. Its argmax reference equals B2's verified manual-greedy path (64 of 64 tokens), and its prompt-lookup output equals B2's lookup output.
+
+**bf16:**
+- **First divergence at position 5,** where the top-2 margin is **exactly 0**.
+- Tokens 1513 and 2776 have the same bf16 logit (17.0; one bf16 ulp there is 0.125). `argmax` returns 1513, the first index. Prompt lookup emitted 2776, the other tied token.
+- Exact ties occur at 4 of 64 positions (5, 21, 25, 55). 11 of 64 positions have a margin of ≤ 0.125.
+
+**fp32:** no exact ties (minimum margin 4.4e-3), and prompt lookup is **identical** to greedy over all 64 tokens.
+
+**[Untested hypothesis]** The multi-token verification forward produces logits that differ in their last bits from one-token decode, so the tie resolves the other way. The verification logits were not captured.
+
+**Implications:**
+- On bf16 text inputs, "identical tokens to plain greedy" can fail at exact ties even when the lookup logic is correct.
+- This does not affect rule 4 here, because lookup is slower on typical text anyway.
+- Scope: one book and 64 tokens.
 
 **Defect C2-D7.** v1.0 took its reference token from `torch.topk`, whose order among exactly tied values differs from `torch.argmax` (first maximal index). HF greedy uses `argmax`. At a bf16 tie, v1.0's reference was therefore not plain greedy: its first divergence (14) was measured against a different path from B2's (5). v1.1 uses `argmax`. The v1.0 file is kept unchanged.
 
