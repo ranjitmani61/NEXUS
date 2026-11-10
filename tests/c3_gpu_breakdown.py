@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """C3: batch-1 decode cost by measured removal, on GPU (charter specs/C3_G0_gpu_decode_bottleneck_charter.md).
 
-Version 1.0, 2026-11-10. Self-contained (torch, transformers 4.57.1, numpy; bitsandbytes optional).
+Version 1.1, 2026-11-10 (A1: defect fixes C3-D2, C3-D3 from the GPU smoke run). Self-contained (torch, transformers 4.57.1, numpy; bitsandbytes optional).
 Also runs on CPU for logic tests (graph modes are then skipped and recorded as such).
 
 Per model:
@@ -26,6 +26,7 @@ the device before timing.
 from __future__ import annotations
 
 import argparse
+import gc
 import json
 import math
 import os
@@ -369,9 +370,31 @@ def run_context(model, ab, ids, T, steps, reps, dev, modes, rng, deadline):
             mres["additivity_sum_of_shares_plus_floor"] = sum(mres["share_removed"].values()) + mres["share_other_floor"]
     D.graphs.clear()
     del D, cache
+    release(dev)
+    return res
+
+
+def patch_granite_capture(model):
+    """Defect C3-D2 (found by the GPU smoke run): GraniteMoeHybridModel._update_mamba_mask runs
+    `if cache_position[0] > 0`, a host sync that invalidates CUDA-graph capture. Its result is
+    used only by Mamba layers (layer_mask = mamba_mask if layer_type == "mamba" else causal_mask).
+    Granite-4.0-micro has none, so returning None is exact. Asserted, never assumed."""
+    if getattr(model.config, "model_type", "") != "granitemoehybrid":
+        return False
+    types = list(getattr(model.config, "layer_types", []) or [])
+    assert types and all(t == "attention" for t in types), "Mamba layers present: patch not exact"
+    model.model._update_mamba_mask = lambda attention_mask, cache_position: None
+    return True
+
+
+def release(dev):
+    """Defect C3-D3 (smoke run): models were not freed between formats (Granite int8 OOM with
+    14.48 GiB held). Collect reference cycles before emptying the cache; report what remains."""
+    gc.collect()
     if dev.type == "cuda":
         torch.cuda.empty_cache()
-    return res
+        return {f"cuda:{i}": torch.cuda.memory_allocated(i) for i in range(torch.cuda.device_count())}
+    return {}
 
 
 def load(model_dir, fmt, dev, device_map=None):
@@ -380,8 +403,11 @@ def load(model_dir, fmt, dev, device_map=None):
     if fmt in ("fp32", "fp16", "bf16"):
         dt = {"fp32": torch.float32, "fp16": torch.float16, "bf16": torch.bfloat16}[fmt]
         if device_map:
-            return AutoModelForCausalLM.from_pretrained(model_dir, dtype=dt, device_map=device_map, **kw).eval()
-        return AutoModelForCausalLM.from_pretrained(model_dir, dtype=dt, **kw).to(dev).eval()
+            m = AutoModelForCausalLM.from_pretrained(model_dir, dtype=dt, device_map=device_map, **kw).eval()
+        else:
+            m = AutoModelForCausalLM.from_pretrained(model_dir, dtype=dt, **kw).to(dev).eval()
+        patch_granite_capture(m)
+        return m
     from transformers import BitsAndBytesConfig
     if fmt == "nf4":
         q = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.float16)
@@ -389,7 +415,9 @@ def load(model_dir, fmt, dev, device_map=None):
         q = BitsAndBytesConfig(load_in_8bit=True)
     else:
         raise ValueError(fmt)
-    return AutoModelForCausalLM.from_pretrained(model_dir, dtype=torch.float16, quantization_config=q, device_map={"": dev.index or 0}, **kw).eval()
+    m = AutoModelForCausalLM.from_pretrained(model_dir, dtype=torch.float16, quantization_config=q, device_map={"": dev.index or 0}, **kw).eval()
+    patch_granite_capture(m)
+    return m
 
 
 def main():
@@ -414,7 +442,7 @@ def main():
     dev = torch.device(a.device)
     torch.manual_seed(20261110)
     rng = np.random.default_rng(20261110)
-    out = {"meta": {"version": "1.0", "date": "2026-11-10", "label": a.label, "charter": "specs/C3_G0_gpu_decode_bottleneck_charter.md",
+    out = {"meta": {"version": "1.1", "date": "2026-11-10", "label": a.label, "charter": "specs/C3_G0_gpu_decode_bottleneck_charter.md",
                     "model": a.model_name, "args": {k: (str(v) if isinstance(v, Path) else v) for k, v in vars(a).items() if k != "books"},
                     "books": [b.name for b in a.books], "torch": torch.__version__, "cuda": torch.version.cuda,
                     "transformers": transformers.__version__, "python": platform.python_version(),
@@ -451,7 +479,9 @@ def main():
             from transformers import AutoConfig, AutoModelForCausalLM as M
             cfg = AutoConfig.from_pretrained(a.output.parent / f"_trunc_cfg_{a.model_name}")
             dt = {"fp32": torch.float32, "fp16": torch.float16, "bf16": torch.bfloat16}[fmt]
-            return M.from_pretrained(a.model_dir, config=cfg, dtype=dt, attn_implementation="c3_sdpa").to(dev).eval()
+            mm = M.from_pretrained(a.model_dir, config=cfg, dtype=dt, attn_implementation="c3_sdpa").to(dev).eval()
+            patch_granite_capture(mm)
+            return mm
         return load(a.model_dir, fmt, dev, device_map)
 
     # 1. fp32 reference
@@ -469,8 +499,7 @@ def main():
     except Exception as e:
         refq = None
         out["reference"] = {"error": f"{type(e).__name__}: {str(e)[:500]}"}
-    if dev.type == "cuda":
-        torch.cuda.empty_cache()
+    out["mem_after_reference"] = release(dev)
     out["nvsmi"]["after_reference"] = nvsmi()
     save()
 
@@ -531,8 +560,8 @@ def main():
                               "shares": {md: {k: round(v, 3) for k, v in mr.get("share_removed", {}).items()} for md, mr in r.get("modes", {}).items()},
                               "graph_vs_eager": r.get("graph_vs_eager"), "error": r.get("error")}), flush=True)
         del m, ab
-        if dev.type == "cuda":
-            torch.cuda.empty_cache()
+        fres["mem_after_release"] = release(dev)
+        save()
     out["nvsmi"]["end"] = nvsmi()
     out["meta"]["finished_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     save()

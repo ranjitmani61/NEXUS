@@ -33,6 +33,11 @@ PLANS = {
         {"model": "granite4micro", "tag": "granite", "budget": 420,
          "args": ["--contexts", "512", "--formats", "fp16", "nf4", "int8", "--steps", "4", "--reps", "1",
                   "--quality-T", "512", "--quality-steps", "8", "--consistency-T", "512", "--ref-device-map", "auto"]}]},
+    # smoke2 (Amendment A1): Granite only, to verify fixes C3-D2/C3-D3 on the GPU. NOT a result.
+    "smoke2": {"label": "SMOKE: not a result", "hash_max_bytes": 100_000_000, "runs": [
+        {"model": "granite4micro", "tag": "granite", "budget": 420,
+         "args": ["--contexts", "512", "--formats", "fp16", "nf4", "int8", "--steps", "4", "--reps", "1",
+                  "--quality-T", "512", "--quality-steps", "8", "--consistency-T", "512", "--ref-device-map", "auto"]}]},
     # main: the pre-registered C3 measurement (charter §4).
     "main": {"label": "result", "hash_max_bytes": None, "runs": [
         {"model": "qwen05", "tag": "qwen2.5", "budget": 1000,

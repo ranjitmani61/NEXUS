@@ -117,3 +117,25 @@ python -I tests/c3_kaggle.py push kernel_main.py --title nexus-c3-main --gpu --i
   --dataset tunguz/the-pg19-language-modeling-benchmark-dataset
 python -I tests/c3_kaggle.py output <user>/nexus-c3-main --dest results/c3/main
 ```
+
+## Amendment A1 (2026-11-10, after the GPU smoke run; before any main-run data)
+
+The smoke run (Kaggle kernel `nexus-c3-smoke` v1; T = 512/1024; outputs are not results) exercised every path.
+
+**What worked:**
+- pip pin (transformers 4.57.1, bitsandbytes 0.50.2).
+- P1 path matching on the real Kaggle mounts.
+- Qwen: the fp32 reference, P2 for fp16 (KL ≤ 4.5e-5), and CUDA graphs for fp16 and nf4, whose graph logits were identical to eager (KL 0).
+- The Granite fp32 reference split over two GPUs, and Granite P2 for fp16 (KL ≤ 2.9e-4).
+
+**Two defects, fixed in `tests/c3_gpu_breakdown.py` v1.1:**
+- **C3-D2.** Granite graph capture failed in every configuration. `GraniteMoeHybridModel._update_mamba_mask` evaluates `if cache_position[0] > 0`, a host sync that invalidates capture. Its result is used only by Mamba layers, and Granite-4.0-micro has none. The method is replaced by one that returns None, under an assertion that every layer is attention. On CPU the patched and unpatched consistency values are identical. P3 still gates every graph configuration.
+- **C3-D3.** Models were not released between formats: Granite int8 OOM'd at load with 14.48 GiB held. `gc.collect()` now runs before `empty_cache()`, and the memory still allocated after each release is recorded.
+
+**Also seen** (smoke, tiny samples, not results):
+- bitsandbytes int8 (LLM.int8) cannot be graph-captured; eager only, as allowed by §4.
+- nf4 quality looked poor (Qwen PPL ratio 1.39 on 4 × 8 tokens).
+
+**Unchanged:** thresholds, rules, configurations, contexts and budgets.
+
+**Added:** one Granite-only re-smoke (same sizes; not a result) to verify both fixes on the GPU before the main run.

@@ -104,3 +104,18 @@ def test_mask_registered_for_custom_attention():
     G.register_attention()
     from transformers.masking_utils import ALL_MASK_ATTENTION_FUNCTIONS
     assert "c3_sdpa" in ALL_MASK_ATTENTION_FUNCTIONS._global_mapping
+
+
+def test_granite_capture_patch_guard():
+    """C3-D2: the mamba-mask patch is applied only when the model has no Mamba layers."""
+    from types import SimpleNamespace
+    inner = SimpleNamespace(_update_mamba_mask=lambda am, cp: "orig")
+    ok = SimpleNamespace(config=SimpleNamespace(model_type="granitemoehybrid", layer_types=["attention"] * 3), model=inner)
+    assert G.patch_granite_capture(ok) is True
+    assert ok.model._update_mamba_mask(None, None) is None
+    bad = SimpleNamespace(config=SimpleNamespace(model_type="granitemoehybrid", layer_types=["attention", "mamba"]),
+                          model=SimpleNamespace(_update_mamba_mask=lambda am, cp: "orig"))
+    with pytest.raises(AssertionError):
+        G.patch_granite_capture(bad)
+    other = SimpleNamespace(config=SimpleNamespace(model_type="qwen2"), model=SimpleNamespace())
+    assert G.patch_granite_capture(other) is False

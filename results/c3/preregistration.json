@@ -15,5 +15,16 @@
   "timeUsed_s": 102684.208,
   "totalTimeAllowed_s": 108000,
   "refresh_utc": "2026-11-14T00:00:00Z"
+ },
+ "amendment_A1": {
+  "file": "specs/C3_G0_gpu_decode_bottleneck_charter.md",
+  "sha256_after_A1": "b22d02d485b52ed532c568689c1d13638dc2be3f058dd34078fe87aeba816865",
+  "registered_utc": "2026-11-10T14:55:45Z",
+  "code_under_test_after_A1": {
+   "tests/c3_gpu_breakdown.py": "d080dc39665a13d4fa3dafae3eb569e4049301fea6abe3d2699e3fea3a1e550d",
+   "tests/c3_build_kernel.py": "17829020e0d7ce380a4b27caac02528549c46464dbf362754fda6fc125880295",
+   "tests/c3_analyze.py": "31f0364b5a960df1a22f80d2783fa3a2ff5cd599f163891cea86a6fefe04d54f"
+  },
+  "note": "After the GPU smoke run (not a result); before any main-run data. Defect fixes C3-D2, C3-D3 only. Builder updated at 14:56:02Z to add the 'smoke2' plan named in A1 (still before any main-run data)."
  }
 }
