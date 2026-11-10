@@ -35,8 +35,8 @@ def load(name):
 
 def configs(model):
     """Yield (T, config_name, entry, quality_ok, host) for one model."""
-    files = {"qwen05": ["breakdown_qwen05_bf16.json", "breakdown_b1_qwen05_fp32.json"],
-             "granite4micro": ["breakdown_granite4micro_bf16.json"]}[model]
+    files = {"qwen05": ["breakdown_qwen05_bf16.json", "breakdown_b1_qwen05_fp32.json", "breakdown_b1_qwen05_bf16.json"],
+             "granite4micro": ["breakdown_granite4micro_bf16.json", "breakdown_b1_granite4micro_bf16.json"]}[model]
     for f in files:
         d = load(f)
         if d is None:
@@ -49,9 +49,15 @@ def configs(model):
                 if v == "dense":
                     ok, why = True, "reference precision"
                 else:
-                    q = d.get("quality", {}).get(T, {}).get(v)
+                    qT = d.get("quality", {}).get(T, {})
+                    q = qT.get(v)
                     ok = bool(q and q["matched_quality"])
-                    why = (f"PPL {q['ppl_ratio']:.4f}, top-1 {q['top1_agree']:.4f}" if q else "no quality data")
+                    if q:
+                        why = f"PPL {q['ppl_ratio']:.4f}, top-1 {q['top1_agree']:.4f}"
+                    elif v in qT.get("skipped_slower_than_dense", []):
+                        why = "not evaluated: slower than dense (cannot be C*)"
+                    else:
+                        why = "no quality data"
                 yield int(T), name, ve, ok, why, host, f
 
 

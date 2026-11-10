@@ -118,3 +118,25 @@ def test_quantize_variants(variant, lm_quant):
         ref = base.lm_head(base.model.down_proj(base.model.q_proj(x)))
         out = q.lm_head(q.model.down_proj(q.model.q_proj(x)))
     assert torch.allclose(ref, out, atol=0.1)
+
+
+def test_int8wo_bytes_and_no_false_dedupe():
+    m = torch.nn.Module()
+    m.a = torch.nn.Linear(64, 32, bias=False).to(torch.bfloat16)
+    m.down_proj = torch.nn.Linear(64, 32, bias=False).to(torch.bfloat16)
+    C.quantize_int8wo_(m)
+    b = C.linear_weight_bytes(m)
+    # int8 qdata (32x64) + fp32 per-row scale (32x1), counted separately for each module
+    assert b["linear_other"] == 32 * 64 + 32 * 4
+    assert b["mlp"] == 32 * 64 + 32 * 4
+
+
+def test_int8wo_keeps_embedding_and_hooks_work():
+    base = _Wrapped().to(torch.bfloat16)
+    C.quantize_int8wo_(base)
+    assert isinstance(base.model.embed_tokens, torch.nn.Embedding)
+    t = C.LinearTimer(base)
+    with torch.no_grad():
+        base.lm_head(base.model.down_proj(base.model.q_proj(torch.randn(2, 16, dtype=torch.bfloat16))))
+    assert set(t.calls) == {"attn_proj", "mlp", "lm_head"}
+    t.remove()

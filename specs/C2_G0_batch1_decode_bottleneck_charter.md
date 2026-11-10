@@ -113,3 +113,20 @@ Changes, which make the "no eligible target" conclusion **harder** to reach, nev
 2. **Rule 1 uses an upper bound on each class's share** of the un-instrumented step: s_X^up = min(1, s_X^hooked · (1 + o)), where o is the measured hook overhead. This assumes the hooks never make a class's own work faster. A class is rejected only if even s_X^up < 0.5. The hooked shares and o are reported alongside.
 
 Nothing else changes.
+
+## Amendment A2 (2026-11-10, after B1 v1.0 crashed without producing data; before any B1 data)
+
+**Context:**
+- The B1 step crashed at quantization (an Embedding mapping bug, now fixed) and produced no data. Its log line read rc=0 because of an exit-code masking bug (G5-R defect D8).
+- A real-model check showed that `torch.ao` dynamic quantization is W8A8: it also quantizes activations, per tensor. It changes Qwen's argmax even on a 4-token prompt. It is therefore a weaker stand-in for weight-only quantization (GPTQ/AWQ) than §4 implied.
+
+**Changes, all of which strengthen or preserve the baseline:**
+1. **A weight-only variant is added to the B1 family:** `int8wo` = torchao 0.18.0 `Int8WeightOnlyConfig` (int8 weights with per-output-channel scales; activations stay in the model dtype) on every nn.Linear.
+   - It runs on Qwen fp32, on Qwen bf16 (a new B1 arm), and on Granite bf16. Granite was previously out of B1's scope.
+   - Quality is judged against same-dtype dense with the unchanged G5-R rule.
+   - For bf16 arms, the known bf16 top-1 noise floor (G5-R §5.9) is reported alongside and does **not** relax the rule.
+2. **Granite B1 uses `--sequential-variants`:** variants are timed one after another within each context, not interleaved, because both 16K caches plus both models exceed the 15 GB RAM. This is disclosed as a weaker design than interleaving.
+3. **Quality is evaluated only for a B1 variant measured faster than dense** (median step ratio > 1) at that context. A slower variant cannot be C* under §5, so its quality cannot affect the decision. Every variant's speed is reported regardless.
+4. **Queue exit codes are captured before any other expansion** (`rc=$?` first). Every step's output is checked for completeness regardless of its exit code.
+
+The thresholds and rules in §5 are unchanged.

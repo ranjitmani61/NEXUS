@@ -11,5 +11,12 @@
   "sha256_after_A1": "4df29220f3e962c02aa63c86a3195ca743722983535167b9f346d2b9f0fed80e",
   "registered_utc": "2026-11-10T09:06:49Z",
   "note": "After the pipeline smoke test only (scratchpad, not a result); before any recorded cycle-2 run."
+ },
+ "amendment_A2": {
+  "file": "specs/C2_G0_batch1_decode_bottleneck_charter.md",
+  "sha256_after_A2": "21d8ace9fa47851bcff8b78ee177cbaf36c124e72ddaff1c282a1c3007960138",
+  "registered_utc": "2026-11-10T09:30:15Z",
+  "note": "After the B1 v1.0 crash (no data) and an int8wo smoke test under CPU contention (scratchpad, not a result); before any B1 data.",
+  "torchao_version": "0.18.0"
  }
 }

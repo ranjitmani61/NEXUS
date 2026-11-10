@@ -51,11 +51,18 @@ def linear_weight_bytes(model) -> dict:
     for n, m in linear_modules(model):
         if isinstance(m, torch.nn.Linear):
             w = m.weight
-            key = w.data_ptr()
+            names = getattr(w, "tensor_data_names", None)
+            if names:  # torchao tensor subclass (e.g. Int8Tensor): count the inner storage.
+                # Its element_size() reports the outer dtype and data_ptr() is 0, so neither is usable.
+                inner = [getattr(w, k) for k in names]
+                key = inner[0].data_ptr()
+                nb = sum(t.numel() * t.element_size() for t in inner)
+            else:
+                key = w.data_ptr()
+                nb = w.numel() * w.element_size()
             if key in seen:
                 continue
             seen.add(key)
-            nb = w.numel() * w.element_size()
             if m.bias is not None:
                 nb += m.bias.numel() * m.bias.element_size()
         else:  # torch.ao dynamic quantized Linear: int8 weight + fp32 bias/scales
@@ -142,6 +149,14 @@ def quantize_variant(base, variant: str):
         body = [n for n, _ in m.named_children() if n != "lm_head"]
         return quantize_dynamic(m, {n: per_channel_dynamic_qconfig for n in body}, dtype=torch.qint8, mapping=only_linear).eval()
     raise ValueError(variant)
+
+
+def quantize_int8wo_(model):
+    """Amendment A2: torchao Int8WeightOnlyConfig (weight-only int8, per-output-channel scales)
+    on every nn.Linear, in place. Activations stay in the model dtype."""
+    from torchao.quantization import Int8WeightOnlyConfig, quantize_
+    quantize_(model, Int8WeightOnlyConfig())
+    return model.eval()
 
 
 def boot_ratio(a, b, n=2000, seed=0):
