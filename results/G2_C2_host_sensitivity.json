@@ -1,0 +1,29 @@
+{
+  "update": "v1.1 external C2 host sensitivity, explicitly post-hoc",
+  "source_c2": "https://github.com/ranjitmani61/NEXUS/tree/922dc8f3b5639f4d5c6297da8f698f9b4580a149/results/c2",
+  "source_g5r": "https://github.com/ranjitmani61/NEXUS/blob/8510d89980816e06a511ab0d665188cbe7da3d6c/results/g5r/summary.json",
+  "config": {
+    "k": 4,
+    "p_assumed": 0.9,
+    "draft_delta_assumed": 0.05,
+    "h_assumed": 0
+  },
+  "cases": [
+    {
+      "name": "Granite host B",
+      "f": 0.7052066730549075,
+      "beta_max_for_2x": 0.30046156410023434
+    },
+    {
+      "name": "Granite host C",
+      "f": 0.3797642644870673,
+      "beta_max_for_2x": 0.5579448089624447
+    },
+    {
+      "name": "Qwen host C batch1",
+      "f": 0.49043314352149003,
+      "beta_max_for_2x": 0.43204155917883125
+    }
+  ],
+  "warning": "different host and instrumented definitions; not directly comparable; not a measured target-verification speedup"
+}
