@@ -1,0 +1,9 @@
+{
+ "charter": {
+  "file": "specs/C2_G0_batch1_decode_bottleneck_charter.md",
+  "sha256": "03eeb36c85ae6f27ab999811fc6f6ec63ce70036b23077c52c182d7b16e5faba",
+  "registered_utc": "2026-11-10T09:02:15Z",
+  "git_head_before_commit": "4c5cf0a8ae0380038526f4e05324d0f2c3ebeb18",
+  "note": "Registered before any cycle-2 measurement. Results directories results/c2/ contained no data files at registration."
+ }
+}
