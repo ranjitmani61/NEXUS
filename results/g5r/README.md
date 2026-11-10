@@ -57,6 +57,7 @@ $V tests/g5r_run_quality.py --model-dir $M/granite-4.0-micro-base --model-name g
 The exact queue scripts actually executed (v1–v9) and the queue log are in `run_record/`. Their paths refer to the session scratchpad. They are a record, not a portable script.
 - `queue_out.log` holds the stdout of every queue. Queues v1–v4 piped it through a warning filter (`filt`, defect D6); v5 onward is unfiltered. It includes lines from runs later quarantined in `invalid/`, e.g. the Granite book-860 PPL 2967 line (defect D4a).
 - `queue8.sh` is the faulty diagnostic queue: its sentinel matched its own log note (gate review §5.8).
+- **Exit codes in queues v5–v9 are not reliable.** Their `step()` logs `rc=$?` after a `$(date …)` substitution, so every step reads rc=0 (gate review defect D8). Each step was instead audited by the completeness of its output on 2026-11-10; all are complete.
 
 Raw per-record traces and captured q/K/V samples (hundreds of MB) are **not** committed. They are regenerated deterministically by steps 3 and 5.
 
