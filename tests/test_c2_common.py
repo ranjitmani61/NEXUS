@@ -11,6 +11,16 @@ import torch
 import c2_common as C
 
 
+@pytest.fixture(autouse=True)
+def _float32_default():
+    """tests/test_g5r_core.py sets torch's global default dtype to float64 at import time,
+    which leaks into later modules in a full-suite run. These tests need float32 modules."""
+    old = torch.get_default_dtype()
+    torch.set_default_dtype(torch.float32)
+    yield
+    torch.set_default_dtype(old)
+
+
 @pytest.mark.parametrize("name,cls", [
     ("model.layers.0.self_attn.q_proj", "attn_proj"), ("model.layers.3.self_attn.o_proj", "attn_proj"),
     ("model.layers.0.mlp.gate_proj", "mlp"), ("model.layers.0.mlp.down_proj", "mlp"),
