@@ -1,0 +1,1315 @@
+{
+ "rule": "charter \u00a75 + A1",
+ "models": {
+  "qwen05": {
+   "hosts": [
+    "('207', '6.18.44-fc-v338')"
+   ],
+   "contexts": {
+    "4096": {
+     "candidates": [
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_qwen05_bf16.json",
+       "step_s_p50": 0.048444272999859095,
+       "tokens_per_s": 20.642274887743874,
+       "hook_overhead": 0.04980815792413873,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.13530272219027173,
+        "attn_proj": 0.14179918786575157,
+        "mlp": 0.33409312875728386,
+        "lm_head": 0.1163238995850009,
+        "linear_other": 0.0,
+        "other": 0.26803637046097245
+       },
+       "s_up": {
+        "attn_core": 0.14204190154469065,
+        "attn_proj": 0.14886194420848353,
+        "mlp": 0.3507336920757963,
+        "lm_head": 0.12211777874588228,
+        "other": 0.2813867683303055
+       },
+       "byte_share": {
+        "attn_core": 0.048474615719929705,
+        "attn_proj": 0.08488383331328023,
+        "mlp": 0.6044178647578735,
+        "lm_head": 0.2622236862089166
+       },
+       "effective_gbps": 21.433067557913812,
+       "exploratory_all_weights_time_share_up": 0.6217134150301621,
+       "exploratory_all_weights_byte_share": 0.9515253842800703
+      },
+      {
+       "config": "dense_fp32",
+       "file": "breakdown_b1_qwen05_fp32.json",
+       "step_s_p50": 0.07186068699957104,
+       "tokens_per_s": 13.915814637368682,
+       "hook_overhead": 0.06299751907546702,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.1638548013577223,
+        "attn_proj": 0.08095118029584239,
+        "mlp": 0.37055130090933996,
+        "lm_head": 0.14271627124772923,
+        "linear_other": 0.0,
+        "other": 0.23392502605630527
+       },
+       "s_up": {
+        "attn_core": 0.17417724733186227,
+        "attn_proj": 0.08605090382071129,
+        "mlp": 0.3938951135568152,
+        "lm_head": 0.15170704226803758,
+        "other": 0.2486617223475165
+       },
+       "byte_share": {
+        "attn_core": 0.048474615719929705,
+        "attn_proj": 0.08488383331328023,
+        "mlp": 0.6044178647578735,
+        "lm_head": 0.2622236862089166
+       },
+       "effective_gbps": 28.897841625315884,
+       "exploratory_all_weights_time_share_up": 0.6316530596455641,
+       "exploratory_all_weights_byte_share": 0.9515253842800703
+      },
+      {
+       "config": "int8dyn_fp32",
+       "file": "breakdown_b1_qwen05_fp32.json",
+       "step_s_p50": 0.04673743800049124,
+       "tokens_per_s": 21.396123595595665,
+       "hook_overhead": -0.002051545935901844,
+       "quality_ok": false,
+       "quality": "PPL 2.6801, top-1 0.5391",
+       "s_hooked": {
+        "attn_core": 0.25143034876938475,
+        "attn_proj": 0.1358236766289143,
+        "mlp": 0.21517668424271574,
+        "lm_head": 0.05708441508215194,
+        "linear_other": 0.0,
+        "other": 0.3355406921463523
+       },
+       "s_up": {
+        "attn_core": 0.25143034876938475,
+        "attn_proj": 0.1358236766289143,
+        "mlp": 0.21517668424271574,
+        "lm_head": 0.05708441508215194,
+        "other": 0.3355406921463523
+       },
+       "byte_share": {
+        "attn_core": 0.1692573640314327,
+        "attn_proj": 0.074236048457634,
+        "mlp": 0.5276069394417316,
+        "lm_head": 0.22889964806920157
+       },
+       "effective_gbps": 12.725025791823441,
+       "exploratory_all_weights_time_share_up": 0.408084775953782,
+       "exploratory_all_weights_byte_share": 0.8307426359685672
+      },
+      {
+       "config": "int8dyn_pc_fp32",
+       "file": "breakdown_b1_qwen05_fp32.json",
+       "step_s_p50": 0.04809017500065238,
+       "tokens_per_s": 20.794268267612548,
+       "hook_overhead": -0.000425180417392812,
+       "quality_ok": false,
+       "quality": "PPL 2.6982, top-1 0.5000",
+       "s_hooked": {
+        "attn_core": 0.2473646014747602,
+        "attn_proj": 0.13700318569608394,
+        "mlp": 0.21987139375358922,
+        "lm_head": 0.0588768798713916,
+        "linear_other": 0.0,
+        "other": 0.3360371175760246
+       },
+       "s_up": {
+        "attn_core": 0.2473646014747602,
+        "attn_proj": 0.13700318569608394,
+        "mlp": 0.21987139375358922,
+        "lm_head": 0.0588768798713916,
+        "other": 0.3360371175760246
+       },
+       "byte_share": {
+        "attn_core": 0.16822535461933502,
+        "attn_proj": 0.0744405408319201,
+        "mlp": 0.5277988359895202,
+        "lm_head": 0.22953526855922474
+       },
+       "effective_gbps": 12.442949438048052,
+       "exploratory_all_weights_time_share_up": 0.4157514593210648,
+       "exploratory_all_weights_byte_share": 0.8317746453806649
+      },
+      {
+       "config": "int8dyn_pc_nolm_fp32",
+       "file": "breakdown_b1_qwen05_fp32.json",
+       "step_s_p50": 0.05471170100008749,
+       "tokens_per_s": 18.277625840922052,
+       "hook_overhead": 0.021817800904972096,
+       "quality_ok": false,
+       "quality": "PPL 2.6677, top-1 0.4766",
+       "s_hooked": {
+        "attn_core": 0.21664671551378853,
+        "attn_proj": 0.11757057523616385,
+        "mlp": 0.1865700303208674,
+        "lm_head": 0.18627826179238063,
+        "linear_other": 0.0,
+        "other": 0.28693495498734856
+       },
+       "s_up": {
+        "attn_core": 0.2213734704195845,
+        "attn_proj": 0.12013570663894951,
+        "mlp": 0.19064057809724272,
+        "lm_head": 0.19034244382109106,
+        "other": 0.2931952447079397
+       },
+       "byte_share": {
+        "attn_core": 0.10010549855194073,
+        "attn_proj": 0.04429717190561342,
+        "mlp": 0.31407611374291755,
+        "lm_head": 0.5415212157995283
+       },
+       "effective_gbps": 18.37947052675975,
+       "exploratory_all_weights_time_share_up": 0.5011187285572832,
+       "exploratory_all_weights_byte_share": 0.8998945014480593
+      },
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_b1_qwen05_bf16.json",
+       "step_s_p50": 0.05087271900083579,
+       "tokens_per_s": 19.656900980338225,
+       "hook_overhead": 0.025537990211164097,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.13721581253671838,
+        "attn_proj": 0.13842937144690043,
+        "mlp": 0.3334886508186662,
+        "lm_head": 0.11599053850749162,
+        "linear_other": 0.0,
+        "other": 0.26597340001337205
+       },
+       "s_up": {
+        "attn_core": 0.14072002861409802,
+        "attn_proj": 0.14196457937984897,
+        "mlp": 0.3420052807188076,
+        "lm_head": 0.11895270374448359,
+        "other": 0.2727658260993436
+       },
+       "byte_share": {
+        "attn_core": 0.048474615719929705,
+        "attn_proj": 0.08488383331328023,
+        "mlp": 0.6044178647578735,
+        "lm_head": 0.2622236862089166
+       },
+       "effective_gbps": 20.40994459098877,
+       "exploratory_all_weights_time_share_up": 0.6029225638431401,
+       "exploratory_all_weights_byte_share": 0.9515253842800703
+      },
+      {
+       "config": "int8wo_bf16",
+       "file": "breakdown_b1_qwen05_bf16.json",
+       "step_s_p50": 0.12717187799989915,
+       "tokens_per_s": 7.86337369336319,
+       "hook_overhead": 0.0161240128855209,
+       "quality_ok": false,
+       "quality": "not evaluated: slower than dense (cannot be C*)",
+       "s_hooked": {
+        "attn_core": 0.057148027780868145,
+        "attn_proj": 0.10501733557370935,
+        "mlp": 0.29542061119450813,
+        "lm_head": 0.4377051226974518,
+        "linear_other": 0.0,
+        "other": 0.10384837937035342
+       },
+       "s_up": {
+        "attn_core": 0.05806948331718897,
+        "attn_proj": 0.1067106364457029,
+        "mlp": 0.30018397693605686,
+        "lm_head": 0.44476268573588407,
+        "other": 0.10552283197746146
+       },
+       "byte_share": {
+        "attn_core": 0.09215340527193523,
+        "attn_proj": 0.08109544660710218,
+        "mlp": 0.5763862523588156,
+        "lm_head": 0.25036489576214704
+       },
+       "effective_gbps": 4.294757808015016,
+       "exploratory_all_weights_time_share_up": 0.8516572991176438,
+       "exploratory_all_weights_byte_share": 0.9078465947280647
+      }
+     ],
+     "C_star": "dense_bf16",
+     "C_star_s_up": {
+      "attn_core": 0.14204190154469065,
+      "attn_proj": 0.14886194420848353,
+      "mlp": 0.3507336920757963,
+      "lm_head": 0.12211777874588228,
+      "other": 0.2813867683303055
+     },
+     "C_star_byte_share": {
+      "attn_core": 0.048474615719929705,
+      "attn_proj": 0.08488383331328023,
+      "mlp": 0.6044178647578735,
+      "lm_head": 0.2622236862089166
+     },
+     "C_star_exploratory_all_weights": [
+      0.6217134150301621,
+      0.9515253842800703
+     ]
+    },
+    "8192": {
+     "candidates": [
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_qwen05_bf16.json",
+       "step_s_p50": 0.060509550999995554,
+       "tokens_per_s": 16.52631664710375,
+       "hook_overhead": 0.03204654419047359,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.2387712089178733,
+        "attn_proj": 0.12121439892097129,
+        "mlp": 0.27581675862025945,
+        "lm_head": 0.09605082407613609,
+        "linear_other": 0.0,
+        "other": 0.2634162557790309
+       },
+       "s_up": {
+        "attn_core": 0.24642300101587272,
+        "attn_proj": 0.12509890151251388,
+        "mlp": 0.2846557325638568,
+        "lm_head": 0.09912892105442339,
+        "other": 0.2718578364603427
+       },
+       "byte_share": {
+        "attn_core": 0.0924669324238143,
+        "attn_proj": 0.08095935947385352,
+        "mlp": 0.5764735318297173,
+        "lm_head": 0.25010017627261494
+       },
+       "effective_gbps": 17.991226277651275,
+       "exploratory_all_weights_time_share_up": 0.5088835551307941,
+       "exploratory_all_weights_byte_share": 0.9075330675761857
+      }
+     ],
+     "C_star": "dense_bf16",
+     "C_star_s_up": {
+      "attn_core": 0.24642300101587272,
+      "attn_proj": 0.12509890151251388,
+      "mlp": 0.2846557325638568,
+      "lm_head": 0.09912892105442339,
+      "other": 0.2718578364603427
+     },
+     "C_star_byte_share": {
+      "attn_core": 0.0924669324238143,
+      "attn_proj": 0.08095935947385352,
+      "mlp": 0.5764735318297173,
+      "lm_head": 0.25010017627261494
+     },
+     "C_star_exploratory_all_weights": [
+      0.5088835551307941,
+      0.9075330675761857
+     ]
+    },
+    "16384": {
+     "candidates": [
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_qwen05_bf16.json",
+       "step_s_p50": 0.08271886900001846,
+       "tokens_per_s": 12.08914014527661,
+       "hook_overhead": 0.029036011116977845,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.37221514015697643,
+        "attn_proj": 0.0933173174814561,
+        "mlp": 0.20740873794567533,
+        "lm_head": 0.07162028794331224,
+        "linear_other": 0.0,
+        "other": 0.24960219604950856
+       },
+       "s_up": {
+        "attn_core": 0.38302278310448185,
+        "attn_proj": 0.0960268801492542,
+        "mlp": 0.21343106036642429,
+        "lm_head": 0.07369985542023541,
+        "other": 0.25684964818882416
+       },
+       "byte_share": {
+        "attn_core": 0.16928097259412966,
+        "attn_proj": 0.07410691991768768,
+        "mlp": 0.5276805317582636,
+        "lm_head": 0.22893157572991915
+       },
+       "effective_gbps": 14.3776665998629,
+       "exploratory_all_weights_time_share_up": 0.3831577959359139,
+       "exploratory_all_weights_byte_share": 0.8307190274058703
+      },
+      {
+       "config": "dense_fp32",
+       "file": "breakdown_b1_qwen05_fp32.json",
+       "step_s_p50": 0.1275851350001176,
+       "tokens_per_s": 7.837903686813345,
+       "hook_overhead": 0.022844416785900545,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.40072245601622186,
+        "attn_proj": 0.04973683811189752,
+        "mlp": 0.22150362454563516,
+        "lm_head": 0.08509034070157663,
+        "linear_other": 0.0,
+        "other": 0.23906707479604425
+       },
+       "s_up": {
+        "attn_core": 0.4098767268169261,
+        "attn_proj": 0.050873047171338566,
+        "mlp": 0.22656374566434329,
+        "lm_head": 0.08703417990901773,
+        "other": 0.24452842269247113
+       },
+       "byte_share": {
+        "attn_core": 0.16928097259412966,
+        "attn_proj": 0.07410691991768768,
+        "mlp": 0.5276805317582636,
+        "lm_head": 0.22893157572991915
+       },
+       "effective_gbps": 18.643305428942078,
+       "exploratory_all_weights_time_share_up": 0.36447097274469953,
+       "exploratory_all_weights_byte_share": 0.8307190274058703
+      },
+      {
+       "config": "int8dyn_fp32",
+       "file": "breakdown_b1_qwen05_fp32.json",
+       "step_s_p50": 0.09065743199971621,
+       "tokens_per_s": 11.030535257199105,
+       "hook_overhead": 0.05042372036944531,
+       "quality_ok": false,
+       "quality": "PPL 3.5556, top-1 0.4375",
+       "s_hooked": {
+        "attn_core": 0.5095130343485555,
+        "attn_proj": 0.06951460020957273,
+        "mlp": 0.10696641114532986,
+        "lm_head": 0.029063846227385136,
+        "linear_other": 0.0,
+        "other": 0.2819699729624051
+       },
+       "s_up": {
+        "attn_core": 0.5352045771171346,
+        "attn_proj": 0.07301978497213402,
+        "mlp": 0.11236005554984509,
+        "lm_head": 0.030529353482415363,
+        "other": 0.2961879480316415
+       },
+       "byte_share": {
+        "attn_core": 0.4490263877913642,
+        "attn_proj": 0.04923558994550695,
+        "mlp": 0.3499248607983483,
+        "lm_head": 0.1518131614647805
+       },
+       "effective_gbps": 9.891356640267587,
+       "exploratory_all_weights_time_share_up": 0.21590919400439446,
+       "exploratory_all_weights_byte_share": 0.5509736122086357
+      },
+      {
+       "config": "int8dyn_pc_fp32",
+       "file": "breakdown_b1_qwen05_fp32.json",
+       "step_s_p50": 0.0914282160001676,
+       "tokens_per_s": 10.937542519676496,
+       "hook_overhead": 0.025742906320933567,
+       "quality_ok": false,
+       "quality": "PPL 3.5363, top-1 0.4219",
+       "s_hooked": {
+        "attn_core": 0.5088020995485466,
+        "attn_proj": 0.0696396186988055,
+        "mlp": 0.10716762800993321,
+        "lm_head": 0.028528199249348567,
+        "linear_other": 0.0,
+        "other": 0.2802369613286425
+       },
+       "s_up": {
+        "attn_core": 0.5219001443331192,
+        "attn_proj": 0.07143234487919438,
+        "mlp": 0.10992643421842957,
+        "lm_head": 0.029262598010129474,
+        "other": 0.28745107517178886
+       },
+       "byte_share": {
+        "attn_core": 0.4472068338430359,
+        "attn_proj": 0.049472801900665435,
+        "mlp": 0.3507724012278353,
+        "lm_head": 0.15254796302846335
+       },
+       "effective_gbps": 9.847873483590117,
+       "exploratory_all_weights_time_share_up": 0.21062137710775344,
+       "exploratory_all_weights_byte_share": 0.552793166156964
+      },
+      {
+       "config": "int8dyn_pc_nolm_fp32",
+       "file": "breakdown_b1_qwen05_fp32.json",
+       "step_s_p50": 0.10407887999917875,
+       "tokens_per_s": 9.608097243243687,
+       "hook_overhead": -0.011326178751079663,
+       "quality_ok": false,
+       "quality": "PPL 3.5275, top-1 0.4453",
+       "s_hooked": {
+        "attn_core": 0.4639558789637019,
+        "attn_proj": 0.06522656494742812,
+        "mlp": 0.10060185375525289,
+        "lm_head": 0.10089094408065642,
+        "linear_other": 0.0,
+        "other": 0.26412898784917616
+       },
+       "s_up": {
+        "attn_core": 0.4639558789637019,
+        "attn_proj": 0.06522656494742812,
+        "mlp": 0.10060185375525289,
+        "lm_head": 0.10089094408065642,
+        "other": 0.26412898784917616
+       },
+       "byte_share": {
+        "attn_core": 0.3079419476300712,
+        "attn_proj": 0.034066453862274415,
+        "mlp": 0.2415382061153592,
+        "lm_head": 0.4164533923922952
+       },
+       "effective_gbps": 12.563182693840647,
+       "exploratory_all_weights_time_share_up": 0.2667193627833374,
+       "exploratory_all_weights_byte_share": 0.6920580523699288
+      },
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_b1_qwen05_bf16.json",
+       "step_s_p50": 0.0855625140002303,
+       "tokens_per_s": 11.687361126360878,
+       "hook_overhead": -0.0033192456238484436,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.36572444546971533,
+        "attn_proj": 0.09575302759750358,
+        "mlp": 0.2088080498739616,
+        "lm_head": 0.0718849034135816,
+        "linear_other": 0.0,
+        "other": 0.25191628282106693
+       },
+       "s_up": {
+        "attn_core": 0.36572444546971533,
+        "attn_proj": 0.09575302759750358,
+        "mlp": 0.2088080498739616,
+        "lm_head": 0.0718849034135816,
+        "other": 0.25191628282106693
+       },
+       "byte_share": {
+        "attn_core": 0.16928097259412966,
+        "attn_proj": 0.07410691991768768,
+        "mlp": 0.5276805317582636,
+        "lm_head": 0.22893157572991915
+       },
+       "effective_gbps": 13.89982907698106,
+       "exploratory_all_weights_time_share_up": 0.37644598088504677,
+       "exploratory_all_weights_byte_share": 0.8307190274058703
+      },
+      {
+       "config": "int8wo_bf16",
+       "file": "breakdown_b1_qwen05_bf16.json",
+       "step_s_p50": 0.15891480200025399,
+       "tokens_per_s": 6.292680023591521,
+       "hook_overhead": 0.02214661539440055,
+       "quality_ok": false,
+       "quality": "not evaluated: slower than dense (cannot be C*)",
+       "s_hooked": {
+        "attn_core": 0.19719054686420956,
+        "attn_proj": 0.09006304439308149,
+        "mlp": 0.24365092663914942,
+        "lm_head": 0.33594175897560014,
+        "linear_other": 0.0,
+        "other": 0.12865683901341077
+       },
+       "s_up": {
+        "attn_core": 0.20155765006502271,
+        "attn_proj": 0.09205763599850389,
+        "mlp": 0.24904697000191597,
+        "lm_head": 0.34338173190655114,
+        "other": 0.13150615254490008
+       },
+       "byte_share": {
+        "attn_core": 0.28877799442590085,
+        "attn_proj": 0.06353151128589841,
+        "mlp": 0.45155050288068566,
+        "lm_head": 0.19613999140751512
+       },
+       "effective_gbps": 4.387051119372038,
+       "exploratory_all_weights_time_share_up": 0.6844863379069709,
+       "exploratory_all_weights_byte_share": 0.7112220055740992
+      }
+     ],
+     "C_star": "dense_bf16",
+     "C_star_s_up": {
+      "attn_core": 0.38302278310448185,
+      "attn_proj": 0.0960268801492542,
+      "mlp": 0.21343106036642429,
+      "lm_head": 0.07369985542023541,
+      "other": 0.25684964818882416
+     },
+     "C_star_byte_share": {
+      "attn_core": 0.16928097259412966,
+      "attn_proj": 0.07410691991768768,
+      "mlp": 0.5276805317582636,
+      "lm_head": 0.22893157572991915
+     },
+     "C_star_exploratory_all_weights": [
+      0.3831577959359139,
+      0.8307190274058703
+     ]
+    },
+    "32000": {
+     "candidates": [
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_qwen05_bf16.json",
+       "step_s_p50": 0.11773545100004412,
+       "tokens_per_s": 8.493618459911664,
+       "hook_overhead": 0.051304852943951484,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.49043314352149003,
+        "attn_proj": 0.06584472316503713,
+        "mlp": 0.14626117892390306,
+        "lm_head": 0.04979066703989865,
+        "linear_other": 0.0,
+        "other": 0.24490363463294862
+       },
+       "s_up": {
+        "attn_core": 0.5155947438287,
+        "attn_proj": 0.06922287700415455,
+        "mlp": 0.15376508720000287,
+        "lm_head": 0.052345169890361906,
+        "other": 0.25746837959323127
+       },
+       "byte_share": {
+        "attn_core": 0.2846928653298953,
+        "attn_proj": 0.06381123676808356,
+        "mlp": 0.45436981306651286,
+        "lm_head": 0.1971260848355083
+       },
+       "effective_gbps": 11.731332544855011,
+       "exploratory_all_weights_time_share_up": 0.27533313409451937,
+       "exploratory_all_weights_byte_share": 0.7153071346701048
+      },
+      {
+       "config": "dense_fp32",
+       "file": "breakdown_b1_qwen05_fp32.json",
+       "step_s_p50": 0.1727851860005103,
+       "tokens_per_s": 5.787533197418016,
+       "hook_overhead": 0.05042470480879957,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.5124448431438776,
+        "attn_proj": 0.0337429910163854,
+        "mlp": 0.1485202560133839,
+        "lm_head": 0.0559983891208162,
+        "linear_other": 0.0,
+        "other": 0.24760504313776166
+       },
+       "s_up": {
+        "attn_core": 0.5382847230901993,
+        "attn_proj": 0.03544447137775261,
+        "mlp": 0.15600934608098613,
+        "lm_head": 0.05882209136200165,
+        "other": 0.2600904543471534
+       },
+       "byte_share": {
+        "attn_core": 0.2846928653298953,
+        "attn_proj": 0.06381123676808356,
+        "mlp": 0.45436981306651286,
+        "lm_head": 0.1971260848355083
+       },
+       "effective_gbps": 15.9874091057311,
+       "exploratory_all_weights_time_share_up": 0.25027590882074036,
+       "exploratory_all_weights_byte_share": 0.7153071346701048
+      },
+      {
+       "config": "int8dyn_fp32",
+       "file": "breakdown_b1_qwen05_fp32.json",
+       "step_s_p50": 0.16036638600053266,
+       "tokens_per_s": 6.23572074509853,
+       "hook_overhead": 0.056457885128569085,
+       "quality_ok": false,
+       "quality": "PPL 3.6196, top-1 0.4141",
+       "s_hooked": {
+        "attn_core": 0.5696412110455779,
+        "attn_proj": 0.042217287234181805,
+        "mlp": 0.06251523753728368,
+        "lm_head": 0.016193972653686738,
+        "linear_other": 0.0,
+        "other": 0.3059062887835583
+       },
+       "s_up": {
+        "attn_core": 0.6018019491032881,
+        "attn_proj": 0.044600785987289046,
+        "mlp": 0.06604471563694884,
+        "lm_head": 0.017108250101543772,
+        "other": 0.3231771108958073
+       },
+       "byte_share": {
+        "attn_core": 0.6141582673059883,
+        "attn_proj": 0.03447922897547525,
+        "mlp": 0.24504914865508937,
+        "lm_head": 0.10631335506344702
+       },
+       "effective_gbps": 7.984864159723266,
+       "exploratory_all_weights_time_share_up": 0.12775375172578166,
+       "exploratory_all_weights_byte_share": 0.3858417326940117
+      },
+      {
+       "config": "int8dyn_pc_fp32",
+       "file": "breakdown_b1_qwen05_fp32.json",
+       "step_s_p50": 0.16767085900028178,
+       "tokens_per_s": 5.964065586365962,
+       "hook_overhead": 0.04980227362921519,
+       "quality_ok": false,
+       "quality": "PPL 3.6183, top-1 0.3984",
+       "s_hooked": {
+        "attn_core": 0.5711885050193561,
+        "attn_proj": 0.04143340011028676,
+        "mlp": 0.06362152713960417,
+        "lm_head": 0.0165828466472899,
+        "linear_other": 0.0,
+        "other": 0.3044059755231119
+       },
+       "s_up": {
+        "attn_core": 0.5996349912401925,
+        "attn_proj": 0.04349687763996802,
+        "mlp": 0.06679002384291928,
+        "lm_head": 0.017408710113569547,
+        "other": 0.3195660852104821
+       },
+       "byte_share": {
+        "attn_core": 0.6124133311537373,
+        "attn_proj": 0.03468747383487965,
+        "mlp": 0.24594136620802118,
+        "lm_head": 0.1069578288033619
+       },
+       "effective_gbps": 7.65876865936401,
+       "exploratory_all_weights_time_share_up": 0.12769561159645684,
+       "exploratory_all_weights_byte_share": 0.3875866688462627
+      },
+      {
+       "config": "int8dyn_pc_nolm_fp32",
+       "file": "breakdown_b1_qwen05_fp32.json",
+       "step_s_p50": 0.1751399599997967,
+       "tokens_per_s": 5.709719243975851,
+       "hook_overhead": -0.019660104978233006,
+       "quality_ok": false,
+       "quality": "not evaluated: slower than dense (cannot be C*)",
+       "s_hooked": {
+        "attn_core": 0.5497419516220613,
+        "attn_proj": 0.03957151285949463,
+        "mlp": 0.059989753752655806,
+        "lm_head": 0.05896841566828561,
+        "linear_other": 0.0,
+        "other": 0.28909599094227945
+       },
+       "s_up": {
+        "attn_core": 0.5497419516220613,
+        "attn_proj": 0.03957151285949463,
+        "mlp": 0.059989753752655806,
+        "lm_head": 0.05896841566828561,
+        "other": 0.28909599094227945
+       },
+       "byte_share": {
+        "attn_core": 0.464975479808682,
+        "attn_proj": 0.02633650178603863,
+        "mlp": 0.18673124659441787,
+        "lm_head": 0.3219567718108615
+       },
+       "effective_gbps": 9.657081113881512,
+       "exploratory_all_weights_time_share_up": 0.15852968228043604,
+       "exploratory_all_weights_byte_share": 0.535024520191318
+      },
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_b1_qwen05_bf16.json",
+       "step_s_p50": 0.13291428499996982,
+       "tokens_per_s": 7.5236457842001485,
+       "hook_overhead": 0.013314595939678986,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.5011886662595052,
+        "attn_proj": 0.06459540651746043,
+        "mlp": 0.14563288450369813,
+        "lm_head": 0.049041601697662814,
+        "linear_other": 0.0,
+        "other": 0.23353352288643936
+       },
+       "s_up": {
+        "attn_core": 0.5078617908402971,
+        "attn_proj": 0.06545546825479973,
+        "mlp": 0.1475719275163948,
+        "lm_head": 0.04969457080850187,
+        "other": 0.23664292738204207
+       },
+       "byte_share": {
+        "attn_core": 0.2846928653298953,
+        "attn_proj": 0.06381123676808356,
+        "mlp": 0.45436981306651286,
+        "lm_head": 0.1971260848355083
+       },
+       "effective_gbps": 10.391612368830886,
+       "exploratory_all_weights_time_share_up": 0.26272196657969643,
+       "exploratory_all_weights_byte_share": 0.7153071346701048
+      },
+      {
+       "config": "int8wo_bf16",
+       "file": "breakdown_b1_qwen05_bf16.json",
+       "step_s_p50": 0.2172832610003752,
+       "tokens_per_s": 4.6022873340357,
+       "hook_overhead": -0.047650315776060825,
+       "quality_ok": false,
+       "quality": "not evaluated: slower than dense (cannot be C*)",
+       "s_hooked": {
+        "attn_core": 0.3099798437728108,
+        "attn_proj": 0.07232586203596225,
+        "mlp": 0.2105836779030431,
+        "lm_head": 0.2637444112607009,
+        "linear_other": 0.0,
+        "other": 0.13726407370178248
+       },
+       "s_up": {
+        "attn_core": 0.3099798437728108,
+        "attn_proj": 0.07232586203596225,
+        "mlp": 0.2105836779030431,
+        "lm_head": 0.2637444112607009,
+        "other": 0.13726407370178248
+       },
+       "byte_share": {
+        "attn_core": 0.4422844683861627,
+        "attn_proj": 0.04981919894681011,
+        "mlp": 0.35409018111203444,
+        "lm_head": 0.15380615155499272
+       },
+       "effective_gbps": 4.091694702605116,
+       "exploratory_all_weights_time_share_up": 0.5466539511997063,
+       "exploratory_all_weights_byte_share": 0.5577155316138374
+      }
+     ],
+     "C_star": "dense_bf16",
+     "C_star_s_up": {
+      "attn_core": 0.5155947438287,
+      "attn_proj": 0.06922287700415455,
+      "mlp": 0.15376508720000287,
+      "lm_head": 0.052345169890361906,
+      "other": 0.25746837959323127
+     },
+     "C_star_byte_share": {
+      "attn_core": 0.2846928653298953,
+      "attn_proj": 0.06381123676808356,
+      "mlp": 0.45436981306651286,
+      "lm_head": 0.1971260848355083
+     },
+     "C_star_exploratory_all_weights": [
+      0.27533313409451937,
+      0.7153071346701048
+     ]
+    }
+   }
+  },
+  "granite4micro": {
+   "hosts": [
+    "('207', '6.18.44-fc-v338')"
+   ],
+   "contexts": {
+    "4096": {
+     "candidates": [
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_granite4micro_bf16.json",
+       "step_s_p50": 0.21796934700023485,
+       "tokens_per_s": 4.587801054424972,
+       "hook_overhead": -0.001265999114531291,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.14186623618802263,
+        "attn_proj": 0.16663489969020318,
+        "mlp": 0.4634285188345214,
+        "lm_head": 0.04323334363150669,
+        "linear_other": 0.0,
+        "other": 0.18270740320990925
+       },
+       "s_up": {
+        "attn_core": 0.14186623618802263,
+        "attn_proj": 0.16663489969020318,
+        "mlp": 0.4634285188345214,
+        "lm_head": 0.04323334363150669,
+        "other": 0.18270740320990925
+       },
+       "byte_share": {
+        "attn_core": 0.04698972099853157,
+        "attn_proj": 0.1762114537444934,
+        "mlp": 0.7048458149779736,
+        "lm_head": 0.07195301027900147
+       },
+       "effective_gbps": 32.76058151420854,
+       "exploratory_all_weights_time_share_up": 0.6732967621562312,
+       "exploratory_all_weights_byte_share": 0.9530102790014684
+      },
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_b1_granite4micro_bf16.json",
+       "step_s_p50": 0.22899479599982442,
+       "tokens_per_s": 4.366911464663882,
+       "hook_overhead": 0.010803271706539386,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.15095370043371234,
+        "attn_proj": 0.1629485762354206,
+        "mlp": 0.457487603981697,
+        "lm_head": 0.041915911950988746,
+        "linear_other": 0.0,
+        "other": 0.18376864989521338
+       },
+       "s_up": {
+        "attn_core": 0.1525844942746053,
+        "attn_proj": 0.1647089539786856,
+        "mlp": 0.46242996686988497,
+        "lm_head": 0.042368740936622656,
+        "other": 0.18575395255117527
+       },
+       "byte_share": {
+        "attn_core": 0.04698972099853157,
+        "attn_proj": 0.1762114537444934,
+        "mlp": 0.7048458149779736,
+        "lm_head": 0.07195301027900147
+       },
+       "effective_gbps": 31.183252566165194,
+       "exploratory_all_weights_time_share_up": 0.6695076617851933,
+       "exploratory_all_weights_byte_share": 0.9530102790014684
+      },
+      {
+       "config": "int8wo_bf16",
+       "file": "breakdown_b1_granite4micro_bf16.json",
+       "step_s_p50": 1.3301787820000754,
+       "tokens_per_s": 0.7517786432410131,
+       "hook_overhead": -0.010258165432586841,
+       "quality_ok": false,
+       "quality": "not evaluated: slower than dense (cannot be C*)",
+       "s_hooked": {
+        "attn_core": 0.029125923591256604,
+        "attn_proj": 0.07012071703317525,
+        "mlp": 0.7520827242038011,
+        "lm_head": 0.10980885229432714,
+        "linear_other": 0.0,
+        "other": 0.04261160494144899
+       },
+       "s_up": {
+        "attn_core": 0.029125923591256604,
+        "attn_proj": 0.07012071703317525,
+        "mlp": 0.7520827242038011,
+        "lm_head": 0.10980885229432714,
+        "other": 0.04261160494144899
+       },
+       "byte_share": {
+        "attn_core": 0.08965567056794328,
+        "attn_proj": 0.16836704541226066,
+        "mlp": 0.6732274071431229,
+        "lm_head": 0.06874987687667311
+       },
+       "effective_gbps": 2.8135984265006777,
+       "exploratory_all_weights_time_share_up": 0.9320122935313034,
+       "exploratory_all_weights_byte_share": 0.9103443294320567
+      }
+     ],
+     "C_star": "dense_bf16",
+     "C_star_s_up": {
+      "attn_core": 0.14186623618802263,
+      "attn_proj": 0.16663489969020318,
+      "mlp": 0.4634285188345214,
+      "lm_head": 0.04323334363150669,
+      "other": 0.18270740320990925
+     },
+     "C_star_byte_share": {
+      "attn_core": 0.04698972099853157,
+      "attn_proj": 0.1762114537444934,
+      "mlp": 0.7048458149779736,
+      "lm_head": 0.07195301027900147
+     },
+     "C_star_exploratory_all_weights": [
+      0.6732967621562312,
+      0.9530102790014684
+     ]
+    },
+    "8192": {
+     "candidates": [
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_granite4micro_bf16.json",
+       "step_s_p50": 0.2760465609999301,
+       "tokens_per_s": 3.6225772796360007,
+       "hook_overhead": 0.0484710294952615,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.266456958489418,
+        "attn_proj": 0.1307745061447477,
+        "mlp": 0.3611115899829784,
+        "lm_head": 0.03292507692513811,
+        "linear_other": 0.0,
+        "other": 0.20510482777228403
+       },
+       "s_up": {
+        "attn_core": 0.2793724015835763,
+        "attn_proj": 0.13711328108931803,
+        "mlp": 0.3786150405121241,
+        "lm_head": 0.03452098929991023,
+        "other": 0.21504646992885493
+       },
+       "byte_share": {
+        "attn_core": 0.08976157082748948,
+        "attn_proj": 0.16830294530154277,
+        "mlp": 0.6732117812061711,
+        "lm_head": 0.06872370266479663
+       },
+       "effective_gbps": 27.0836443421655,
+       "exploratory_all_weights_time_share_up": 0.5502493109013523,
+       "exploratory_all_weights_byte_share": 0.9102384291725105
+      },
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_b1_granite4micro_bf16.json",
+       "step_s_p50": 0.29126895399986097,
+       "tokens_per_s": 3.4332529652318433,
+       "hook_overhead": 0.029651831687804275,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.2680184780114989,
+        "attn_proj": 0.12911753746962734,
+        "mlp": 0.358426292444468,
+        "lm_head": 0.03254266508068706,
+        "linear_other": 0.0,
+        "other": 0.205653420575724
+       },
+       "s_up": {
+        "attn_core": 0.27596571681071735,
+        "attn_proj": 0.1329461089586205,
+        "mlp": 0.3690542885405151,
+        "lm_head": 0.033507614708332176,
+        "other": 0.21175142118865659
+       },
+       "byte_share": {
+        "attn_core": 0.08976157082748948,
+        "attn_proj": 0.16830294530154277,
+        "mlp": 0.6732117812061711,
+        "lm_head": 0.06872370266479663
+       },
+       "effective_gbps": 25.66819009486184,
+       "exploratory_all_weights_time_share_up": 0.5355080122074678,
+       "exploratory_all_weights_byte_share": 0.9102384291725105
+      },
+      {
+       "config": "int8wo_bf16",
+       "file": "breakdown_b1_granite4micro_bf16.json",
+       "step_s_p50": 1.335568186999808,
+       "tokens_per_s": 0.7487449983713514,
+       "hook_overhead": 0.0021768660175567334,
+       "quality_ok": false,
+       "quality": "not evaluated: slower than dense (cannot be C*)",
+       "s_hooked": {
+        "attn_core": 0.05648699652766258,
+        "attn_proj": 0.07218475174049209,
+        "mlp": 0.6974984533493327,
+        "lm_head": 0.12424648644912804,
+        "linear_other": 0.0,
+        "other": 0.05755630608890967
+       },
+       "s_up": {
+        "attn_core": 0.05660996115083749,
+        "attn_proj": 0.07234188827354174,
+        "mlp": 0.6990168140297273,
+        "lm_head": 0.12451695440327998,
+        "other": 0.05768159845573071
+       },
+       "byte_share": {
+        "attn_core": 0.1645578011285226,
+        "attn_proj": 0.15451399002448682,
+        "mlp": 0.6178349962536585,
+        "lm_head": 0.06309321259333212
+       },
+       "effective_gbps": 3.0534818721319144,
+       "exploratory_all_weights_time_share_up": 0.895875656706549,
+       "exploratory_all_weights_byte_share": 0.8354421988714774
+      }
+     ],
+     "C_star": "dense_bf16",
+     "C_star_s_up": {
+      "attn_core": 0.2793724015835763,
+      "attn_proj": 0.13711328108931803,
+      "mlp": 0.3786150405121241,
+      "lm_head": 0.03452098929991023,
+      "other": 0.21504646992885493
+     },
+     "C_star_byte_share": {
+      "attn_core": 0.08976157082748948,
+      "attn_proj": 0.16830294530154277,
+      "mlp": 0.6732117812061711,
+      "lm_head": 0.06872370266479663
+     },
+     "C_star_exploratory_all_weights": [
+      0.5502493109013523,
+      0.9102384291725105
+     ]
+    },
+    "16384": {
+     "candidates": [
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_granite4micro_bf16.json",
+       "step_s_p50": 0.40650143299990305,
+       "tokens_per_s": 2.4600159281609186,
+       "hook_overhead": 0.013087835781668167,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.3797642644870673,
+        "attn_proj": 0.09432355752724723,
+        "mlp": 0.2590455626976019,
+        "lm_head": 0.023306804185152335,
+        "linear_other": 0.0,
+        "other": 0.2390174737033118
+       },
+       "s_up": {
+        "attn_core": 0.38473455681642005,
+        "attn_proj": 0.09555804875850657,
+        "mlp": 0.262435908482158,
+        "lm_head": 0.023611839810923105,
+        "other": 0.24214569514808995
+       },
+       "byte_share": {
+        "attn_core": 0.16473616473616473,
+        "attn_proj": 0.15444015444015444,
+        "mlp": 0.6177606177606177,
+        "lm_head": 0.06306306306306306
+       },
+       "effective_gbps": 20.042821152864036,
+       "exploratory_all_weights_time_share_up": 0.3816057970515877,
+       "exploratory_all_weights_byte_share": 0.8352638352638353
+      },
+      {
+       "config": "dense_bf16",
+       "file": "breakdown_b1_granite4micro_bf16.json",
+       "step_s_p50": 0.3894191620001948,
+       "tokens_per_s": 2.5679270502859843,
+       "hook_overhead": -0.0023047119610654088,
+       "quality_ok": true,
+       "quality": "reference precision",
+       "s_hooked": {
+        "attn_core": 0.3855681746754463,
+        "attn_proj": 0.09224419350521851,
+        "mlp": 0.2598290018819014,
+        "lm_head": 0.023982797965524508,
+        "linear_other": 0.0,
+        "other": 0.23496595301957918
+       },
+       "s_up": {
+        "attn_core": 0.3855681746754463,
+        "attn_proj": 0.09224419350521851,
+        "mlp": 0.2598290018819014,
+        "lm_head": 0.023982797965524508,
+        "other": 0.23496595301957918
+       },
+       "byte_share": {
+        "attn_core": 0.16473616473616473,
+        "attn_proj": 0.15444015444015444,
+        "mlp": 0.6177606177606177,
+        "lm_head": 0.06306306306306306
+       },
+       "effective_gbps": 20.922020062268853,
+       "exploratory_all_weights_time_share_up": 0.3760559933526444,
+       "exploratory_all_weights_byte_share": 0.8352638352638353
+      },
+      {
+       "config": "int8wo_bf16",
+       "file": "breakdown_b1_granite4micro_bf16.json",
+       "step_s_p50": 1.3493037349999213,
+       "tokens_per_s": 0.7411229762882545,
+       "hook_overhead": 0.001981949601852273,
+       "quality_ok": false,
+       "quality": "not evaluated: slower than dense (cannot be C*)",
+       "s_hooked": {
+        "attn_core": 0.11659885658906405,
+        "attn_proj": 0.0646004662065765,
+        "mlp": 0.6756295203235423,
+        "lm_head": 0.06980370385845307,
+        "linear_other": 0.0,
+        "other": 0.07135013670242618
+       },
+       "s_up": {
+        "attn_core": 0.11682994964645717,
+        "attn_proj": 0.0647285010748541,
+        "mlp": 0.6769685839823472,
+        "lm_head": 0.06994205128152314,
+        "other": 0.07149154907745565
+       },
+       "byte_share": {
+        "attn_core": 0.2826099330905804,
+        "attn_proj": 0.1326803958332974,
+        "mlp": 0.5305318427775257,
+        "lm_head": 0.05417782829859644
+       },
+       "effective_gbps": 3.5197574606878836,
+       "exploratory_all_weights_time_share_up": 0.8116391363387243,
+       "exploratory_all_weights_byte_share": 0.7173900669094195
+      }
+     ],
+     "C_star": "dense_bf16",
+     "C_star_s_up": {
+      "attn_core": 0.3855681746754463,
+      "attn_proj": 0.09224419350521851,
+      "mlp": 0.2598290018819014,
+      "lm_head": 0.023982797965524508,
+      "other": 0.23496595301957918
+     },
+     "C_star_byte_share": {
+      "attn_core": 0.16473616473616473,
+      "attn_proj": 0.15444015444015444,
+      "mlp": 0.6177606177606177,
+      "lm_head": 0.06306306306306306
+     },
+     "C_star_exploratory_all_weights": [
+      0.3760559933526444,
+      0.8352638352638353
+     ]
+    }
+   }
+  }
+ },
+ "eligible": {
+  "attn_core": {
+   "time_eligible_per_family": {
+    "qwen05": true,
+    "granite4micro": false
+   },
+   "time_eligible": false,
+   "byte_eligible_per_family": {
+    "qwen05": false,
+    "granite4micro": false
+   },
+   "byte_eligible": false,
+   "processor_target": true
+  },
+  "attn_proj": {
+   "time_eligible_per_family": {
+    "qwen05": false,
+    "granite4micro": false
+   },
+   "time_eligible": false,
+   "byte_eligible_per_family": {
+    "qwen05": false,
+    "granite4micro": false
+   },
+   "byte_eligible": false,
+   "processor_target": true
+  },
+  "mlp": {
+   "time_eligible_per_family": {
+    "qwen05": false,
+    "granite4micro": false
+   },
+   "time_eligible": false,
+   "byte_eligible_per_family": {
+    "qwen05": true,
+    "granite4micro": true
+   },
+   "byte_eligible": true,
+   "processor_target": true
+  },
+  "lm_head": {
+   "time_eligible_per_family": {
+    "qwen05": false,
+    "granite4micro": false
+   },
+   "time_eligible": false,
+   "byte_eligible_per_family": {
+    "qwen05": false,
+    "granite4micro": false
+   },
+   "byte_eligible": false,
+   "processor_target": true
+  },
+  "other": {
+   "time_eligible_per_family": {
+    "qwen05": false,
+    "granite4micro": false
+   },
+   "time_eligible": false,
+   "byte_eligible_per_family": {
+    "qwen05": null,
+    "granite4micro": null
+   },
+   "byte_eligible": false,
+   "processor_target": false
+  }
+ },
+ "B2": {
+  "qwen05": {
+   "typical": {
+    "speedup": 0.45748473071227114,
+    "ci95": [
+     0.4102547240599636,
+     0.46282236314984776
+    ],
+    "identical": false,
+    "plain_consistent": true,
+    "errors": []
+   },
+   "favorable": {
+    "speedup": 4.392660492967559,
+    "ci95": [
+     3.682617723619274,
+     4.488015944728358
+    ],
+    "identical": true,
+    "plain_consistent": true,
+    "errors": []
+   }
+  },
+  "granite4micro": {
+   "typical": {
+    "speedup": null,
+    "ci95": null,
+    "identical": null,
+    "plain_consistent": true,
+    "errors": [
+     "ValueError: assisted generation is not supported with stateful models, such as GraniteMoeHybridForCausalLM"
+    ]
+   },
+   "favorable": {
+    "speedup": null,
+    "ci95": null,
+    "identical": null,
+    "plain_consistent": true,
+    "errors": [
+     "ValueError: assisted generation is not supported with stateful models, such as GraniteMoeHybridForCausalLM"
+    ]
+   }
+  }
+ },
+ "rule4_B2_raises_bar": {
+  "qwen05": false,
+  "granite4micro": false
+ },
+ "eligible_processor_targets": [
+  "mlp"
+ ],
+ "conclusion": "eligible: mlp"
+}
