@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 """C2 diagnostic: why prompt-lookup output diverges from plain greedy (Qwen bf16, typical, 8K).
 
-Version 1.0, 2026-11-10. Investigation required by the charter (§4 B2). Exploratory: it does
+Version 1.1, 2026-11-10. Investigation required by the charter (§4 B2). Exploratory: it does
 not enter the decision rule.
+
+v1.1 fix: v1.0 took the reference token from torch.topk, whose order among EXACTLY tied logits
+differs from torch.argmax (first maximal index), which HF greedy `generate` uses. At bf16 ties
+the v1.0 reference therefore was not plain greedy, and its first_divergence (14) was measured
+against the wrong path. v1.1 takes the token from argmax on float32 logits (as `generate` does),
+keeps the margin from topk, and records every exact tie.
 
 [Hypothesis] The divergence is a near-tie flipped by finite-precision arithmetic: the
 multi-token verification forward uses different kernels from one-token decode.
@@ -36,16 +42,17 @@ def bf16_ulp(x: float) -> float:
 
 @torch.no_grad()
 def greedy_with_margins(model, cache, last_tok, n):
-    toks, margins, top1 = [], [], []
+    toks, margins, top1, ties = [], [], [], []
     nxt = last_tok
     for _ in range(n):
         o = model(input_ids=torch.tensor([[nxt]]), past_key_values=cache, use_cache=True)
         cache = o.past_key_values
         lg = o.logits[0, -1].float()
-        v, i = torch.topk(lg, 2)
-        nxt = int(i[0])
+        v, _ = torch.topk(lg, 2)
+        nxt = int(lg.argmax())  # first maximal index, as HF greedy generate
         toks.append(nxt); margins.append(float(v[0] - v[1])); top1.append(float(v[0]))
-    return toks, margins, top1
+        ties.append(torch.nonzero(lg == v[0]).flatten().tolist() if float(v[0] - v[1]) == 0.0 else None)
+    return toks, margins, top1, ties
 
 
 def main():
@@ -62,7 +69,7 @@ def main():
     ids = tok(a.book.read_text().replace("\r\n", "\n"), add_special_tokens=False)["input_ids"][:a.context]
     T, n = a.context, a.new_tokens
     x = torch.tensor([ids])
-    res = {"meta": {"version": "1.0", "date": "2026-11-10", "label": "exploratory diagnostic (charter §4 B2 investigation)",
+    res = {"meta": {"version": "1.1", "date": "2026-11-10", "label": "exploratory diagnostic (charter §4 B2 investigation)",
                     "context": T, "new_tokens": n, "lookup_tokens": a.lookup_tokens, "book": a.book.name,
                     "torch": torch.__version__, "transformers": transformers.__version__, "host": g5r_host.host_info()},
            "dtypes": {}}
@@ -72,7 +79,7 @@ def main():
             pre = model(input_ids=x[:, :T - 1], past_key_values=KC.make_cache(model, 1), use_cache=True, logits_to_keep=1)
         cache0 = pre.past_key_values
         KC.require_len(cache0, T - 1, "divergence prefill")
-        ref, margins, top1 = greedy_with_margins(model, copy.deepcopy(cache0), ids[-1], n)
+        ref, margins, top1, ties = greedy_with_margins(model, copy.deepcopy(cache0), ids[-1], n)
         with torch.no_grad():
             out = model.generate(input_ids=x, past_key_values=copy.deepcopy(cache0), max_new_tokens=n, min_new_tokens=n,
                                  do_sample=False, num_beams=1, prompt_lookup_num_tokens=a.lookup_tokens,
@@ -86,6 +93,9 @@ def main():
              "bf16_ulp_at_that_logit": bf16_ulp(top1[div]) if div is not None else None,
              "margin_median": srt[len(srt) // 2], "margin_min": srt[0],
              "rank_of_divergence_margin_among_positions": (sorted(range(n), key=lambda k: margins[k]).index(div) + 1) if div is not None else None,
+             "exact_tie_positions": [k for k in range(n) if ties[k] is not None],
+             "exact_tie_token_sets": {str(k): ties[k] for k in range(n) if ties[k] is not None},
+             "lookup_token_at_divergence_in_tie_set": (lk[div] in ties[div]) if (div is not None and ties[div] is not None) else None,
              "margins": margins}
         res["dtypes"][name] = e
         print(json.dumps({"dtype": name, "first_divergence": div, "margin_at_div": e["margin_at_divergence"],
