@@ -36,6 +36,11 @@
    "tests/c3_build_kernel.py": "17829020e0d7ce380a4b27caac02528549c46464dbf362754fda6fc125880295",
    "tests/c3_analyze.py": "31f0364b5a960df1a22f80d2783fa3a2ff5cd599f163891cea86a6fefe04d54f"
   },
-  "note": "AFTER main run 1 (graph-mode timings invalid, defect C3-D4). Post-data defect fix; rules and thresholds unchanged. Before run 2."
+  "note": "AFTER main run 1 (graph-mode timings invalid, defect C3-D4). Post-data defect fix; rules and thresholds unchanged. Before run 2.",
+  "analyzer_update": {
+   "tests/c3_analyze.py": "1273952ada4e70956f3f6aa166ad7d3fb61e722a85361370192f20bf6e5dbaca",
+   "utc": "2026-11-10T16:41:12Z",
+   "note": "v1.1: contexts with an incomplete quality-passing unit are BLOCKED (charter \u00a76). Written while run 2 was queued, before any run-2 data."
+  }
  }
 }

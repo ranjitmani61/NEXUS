@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""C3 decision analysis: applies the pre-registered rule (charter §5). Version 1.0, 2026-11-10.
+"""C3 decision analysis: applies the pre-registered rule (charter §5). Version 1.1, 2026-11-10 (BLOCKED contexts per charter §6; written before run-2 data).
 
   python tests/c3_analyze.py --dir results/c3/main [--out-prefix results/c3/]
 
@@ -22,6 +22,23 @@ MODELS = ("qwen05", "granite4micro")
 
 def overlap(a, b):
     return a[0] <= b[1] and b[0] <= a[1]
+
+
+def blocked_units(d):
+    """Charter §6: a unit not completed is BLOCKED. For each context, the quality-passing formats
+    whose unit errored, was skipped, or was truncated by the budget. A C* chosen without them
+    would not be the fastest matched-quality configuration, so such a context is BLOCKED."""
+    out = {}
+    for fmt, f in d.get("formats", {}).items():
+        if not (f.get("quality_vs_fp32") or {}).get("matched_quality"):
+            continue
+        for T, c in f.get("contexts", {}).items():
+            why = c.get("error") or c.get("skipped") or (f"truncated at rep {c['truncated_by_budget_at_rep']}" if c.get("truncated_by_budget_at_rep") is not None else None)
+            if why is None and "full" not in c.get("modes", {}).get("eager", {}):
+                why = "eager full missing"
+            if why:
+                out.setdefault(int(T), []).append(f"{fmt}: {str(why)[:120]}")
+    return out
 
 
 def candidates(d):
@@ -77,16 +94,18 @@ def main():
         p2_fp32 = (d.get("reference", {}).get("consistency_fp32") or {}).get("pass")
         out["admissible"][m] = {"P1": p1, "P2_fp16": p2, "P2_fp32_reported": p2_fp32, "admissible": p1 and p2}
         cands = candidates(d)
-        mres = {"contexts": {}}
+        blocked = blocked_units(d)
+        mres = {"contexts": {}, "blocked_units": {str(k): v for k, v in blocked.items()}}
         lines += [f"## {m} (admissible: {p1 and p2}; P1 {p1}, P2 fp16 {p2}, P2 fp32 {p2_fp32})", "",
                   "| T | config | full p50 ms (CI) | quality | P3 | " + " | ".join(f"s {c}" for c in CLASSES) + " | other floor | bytes MLP | bytes KV | eff GB/s |",
                   "|---:|---|---|---|---|" + "---:|" * len(CLASSES) + "---:|---:|---:|---:|"]
-        for T in sorted(cands):
-            cs = cands[T]
+        for T in sorted(set(cands) | set(blocked)):
+            cs = cands.get(T, [])
             ok = [c for c in cs if c["eligible_candidate"]]
-            cstar = min(ok, key=lambda c: c["p50_s"]) if ok else None
+            cstar = min(ok, key=lambda c: c["p50_s"]) if ok and T not in blocked else None
             ties = [c for c in ok if cstar and c is not cstar and overlap(c["ci95"], cstar["ci95"])]
-            mres["contexts"][str(T)] = {"candidates": cs, "C_star": cstar["config"] if cstar else None, "near_ties": [c["config"] for c in ties]}
+            mres["contexts"][str(T)] = {"candidates": cs, "C_star": cstar["config"] if cstar else ("BLOCKED" if T in blocked else None),
+                                        "blocked_because": blocked.get(T), "near_ties": [c["config"] for c in ties]}
             if p1 and p2 and cstar:
                 cstar_choice.setdefault(m, {})[T] = cstar
                 near.setdefault(m, {})[T] = [cstar] + ties
@@ -97,6 +116,8 @@ def main():
                              + " | ".join(f"{c['s'].get(k, float('nan')):.3f}" for k in CLASSES)
                              + f" | {c['other_floor'] if c['other_floor'] is None else round(c['other_floor'], 3)} | {c['b'].get('mlp', 0):.3f} | {c['b'].get('attn_core', 0):.3f} | "
                              + (f"{c['eff_gbps']:.1f} |" if c["eff_gbps"] else "– |"))
+        for T, why in sorted(blocked.items()):
+            lines.append(f"| {T} | **BLOCKED** | {'; '.join(why)} | | | | | | | | | | |")
         lines.append("")
         out["models"][m] = mres
     elig_table, elig = eligibility(cstar_choice) if len(cstar_choice) == len(MODELS) else ({}, [])
