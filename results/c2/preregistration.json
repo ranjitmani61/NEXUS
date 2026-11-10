@@ -5,5 +5,11 @@
   "registered_utc": "2026-11-10T09:02:15Z",
   "git_head_before_commit": "4c5cf0a8ae0380038526f4e05324d0f2c3ebeb18",
   "note": "Registered before any cycle-2 measurement. Results directories results/c2/ contained no data files at registration."
+ },
+ "amendment_A1": {
+  "file": "specs/C2_G0_batch1_decode_bottleneck_charter.md",
+  "sha256_after_A1": "4df29220f3e962c02aa63c86a3195ca743722983535167b9f346d2b9f0fed80e",
+  "registered_utc": "2026-11-10T09:06:49Z",
+  "note": "After the pipeline smoke test only (scratchpad, not a result); before any recorded cycle-2 run."
  }
 }

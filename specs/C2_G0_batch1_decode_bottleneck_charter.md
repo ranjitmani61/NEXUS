@@ -96,3 +96,20 @@ Eligibility is **not** novelty, and **not** feasibility. Any eligible class proc
 ## 7. Reproduce
 
 Commands are recorded in `results/c2/README.md` as runs complete.
+
+## Amendment A1 (2026-11-10, before any recorded cycle-2 run; motivated by the pipeline smoke test)
+
+The smoke test was Qwen fp32 at T = 512, 4 decode steps, 1 rep, 8 quality tokens on one book. Its output was written to the scratchpad and is not a result. It showed two things:
+- B1 as registered (per-tensor qint8, all Linear) gave PPL ratio 4.6 and top-1 0.25. A weak baseline would set C* too low and make eligibility too easy.
+- Hook overhead was 10–16%, above the 5% expected in §4.
+
+Changes, which make the "no eligible target" conclusion **harder** to reach, never easier:
+
+1. **The B1 family is extended** with two standard dynamic-int8 settings:
+   - `int8dyn_pc`: per-channel weight scales (`per_channel_dynamic_qconfig`), all Linear;
+   - `int8dyn_pc_nolm`: per-channel, lm_head kept fp32.
+
+   All three variants are timed and quality-checked and all are reported. C* is the fastest **dense or B1-family** configuration that meets matched quality.
+2. **Rule 1 uses an upper bound on each class's share** of the un-instrumented step: s_X^up = min(1, s_X^hooked · (1 + o)), where o is the measured hook overhead. This assumes the hooks never make a class's own work faster. A class is rejected only if even s_X^up < 0.5. The hooked shares and o are reported alongside.
+
+Nothing else changes.
