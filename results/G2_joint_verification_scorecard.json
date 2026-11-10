@@ -1,0 +1,92 @@
+{
+  "assumed_delta": 0.05,
+  "assumed_h": 0.0,
+  "date": "2026-11-10",
+  "evidence": "G2 hypothetical cost model + local CPU single-head timings; no LLM or model weights",
+  "full_scenario_rows": 336,
+  "gate": {
+    "G1": "generic combination not original",
+    "G2": "conditional analytic only",
+    "G5": "not run",
+    "G6+": "not authorized"
+  },
+  "granite_p_min_by_beta_4_draft": {
+    "0": 0.6221819809501999,
+    "0.1": 0.7350056194703638,
+    "0.25": 0.8636936375454582,
+    "0.3": 0.899680228356096,
+    "0.5": null,
+    "1": null
+  },
+  "inputs": {
+    "granite4micro_b1_T16384_hostB": {
+      "batch": 1,
+      "context": 16384,
+      "f": 0.7052066730549075,
+      "host": "G5-R host B",
+      "model": "Granite-4.0-micro-base"
+    },
+    "qwen05_b4_T32000_hostA": {
+      "batch": 4,
+      "context": 32000,
+      "f": 0.5861178531211508,
+      "host": "G5-R host A",
+      "model": "Qwen2.5-0.5B"
+    }
+  },
+  "k": 4,
+  "posthoc_cpu_rows": 12,
+  "primary_cpu_rows": 12,
+  "rows": [
+    {
+      "E_committed": 2.7731,
+      "anchor": "qwen05_b4_T32000_hostA",
+      "beta_max_for_2x": 0.07957017475521257,
+      "p_assumed": 0.7
+    },
+    {
+      "E_committed": 3.3616,
+      "anchor": "qwen05_b4_T32000_hostA",
+      "beta_max_for_2x": 0.2050782097148551,
+      "p_assumed": 0.8
+    },
+    {
+      "E_committed": 4.0951,
+      "anchor": "qwen05_b4_T32000_hostA",
+      "beta_max_for_2x": 0.36151005957534416,
+      "p_assumed": 0.9
+    },
+    {
+      "E_committed": 4.524381249999999,
+      "anchor": "qwen05_b4_T32000_hostA",
+      "beta_max_for_2x": 0.45306187968157846,
+      "p_assumed": 0.95
+    },
+    {
+      "E_committed": 2.7731,
+      "anchor": "granite4micro_b1_T16384_hostB",
+      "beta_max_for_2x": 0.06613309513645056,
+      "p_assumed": 0.7
+    },
+    {
+      "E_committed": 3.3616,
+      "anchor": "granite4micro_b1_T16384_hostB",
+      "beta_max_for_2x": 0.1704464869558051,
+      "p_assumed": 0.8
+    },
+    {
+      "E_committed": 4.0951,
+      "anchor": "granite4micro_b1_T16384_hostB",
+      "beta_max_for_2x": 0.30046156410023434,
+      "p_assumed": 0.9
+    },
+    {
+      "E_committed": 4.524381249999999,
+      "anchor": "granite4micro_b1_T16384_hostB",
+      "beta_max_for_2x": 0.3765529544688871,
+      "p_assumed": 0.95
+    }
+  ],
+  "source": "G5-R @8510d899",
+  "tests_passed": 67
+}

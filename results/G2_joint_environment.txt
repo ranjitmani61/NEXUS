@@ -1,0 +1,2 @@
+Linux bac854e100f4 6.18.57 #1 SMP Tue Oct 20 21:56:04 UTC 2026 x86_64 GNU/Linux
+python=3.13.5 numpy=2.3.5 pytest=9.0.2
