@@ -130,3 +130,14 @@ Nothing else changes.
 4. **Queue exit codes are captured before any other expansion** (`rc=$?` first). Every step's output is checked for completeness regardless of its exit code.
 
 The thresholds and rules in §5 are unchanged.
+
+## Amendment A3 (2026-11-10, after the Qwen fp32 B1 run was OOM-killed; before its rerun)
+
+**What happened:** run 1 of the Qwen fp32 B1 arm was killed by the memory cgroup (anon-rss 13.9 GB) during the 32K context. It saved interleaved timing at 4K and 16K but no 32K timing and no quality. It is kept unchanged as `results/c2/breakdown_b1_qwen05_fp32_run1_oomkilled.json`.
+
+**Rerun design** (`results/c2/breakdown_b1_qwen05_fp32.json`):
+1. **Variants:** dense, int8dyn, int8dyn_pc, int8dyn_pc_nolm, run with `--sequential-variants` (the same RAM reason as A2's Granite change).
+2. **int8wo is not rerun at fp32.** Run 1 measured it at 0.39× (4K) and 0.55× (16K) of dense, and the bf16 arms measured 0.40–0.61× (Qwen) and 0.17–0.29× (Granite). It cannot be C*. Its fp32 32K point is therefore **not measured**.
+3. **Interleaved and sequential timings are both reported.** The rule uses the rerun, so every C* candidate at a context comes from one run design.
+
+§5 is unchanged.

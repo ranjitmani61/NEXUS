@@ -18,5 +18,11 @@
   "registered_utc": "2026-11-10T09:30:15Z",
   "note": "After the B1 v1.0 crash (no data) and an int8wo smoke test under CPU contention (scratchpad, not a result); before any B1 data.",
   "torchao_version": "0.18.0"
+ },
+ "amendment_A3": {
+  "file": "specs/C2_G0_batch1_decode_bottleneck_charter.md",
+  "sha256_after_A3": "2fe1000f235c40a023c4abe7f9c4cf595aa6bd1e1b08053edf0100009c3efc30",
+  "registered_utc": "2026-11-10T10:37:40Z",
+  "note": "After the OOM kill of Qwen fp32 B1 run 1; before its rerun."
  }
 }
