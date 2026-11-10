@@ -308,3 +308,44 @@ Read `AGENTS.md` v1.0 before work.
 **Next step:** a user decision. My recommendation is a dated C3 charter on hardware closer to bandwidth-bound decode (for example a free Kaggle GPU, with explicit approval), with weight-only int8/int4 baselines and a bf16 consistency criterion pre-registered before any data.
 
 **Gate status:** C2-G0 HOLD; G5 FAIL stands for the NX candidates; G6–G12 not authorized; no breakthrough.
+
+## 2026-11-10 — Cycle 3, G0: batch-1 decode bottleneck on a Kaggle T4 GPU (C3-G0 PASS, target selection only)
+
+**Setup:**
+- The user chose option 1 of the C2 review: a charter change with GPU re-measurement.
+- Read `AGENTS.md` v1.0 before work.
+- **Charter:** `specs/C3_G0_gpu_decode_bottleneck_charter.md`, pre-registered at 14:45:39Z. A1 (defect fixes after the smoke runs) and A2 (post-data defect fix after main run 1) are each registered before the data they govern.
+- **Review:** `reviews/2026-11-10_C3_G0_gpu_bottleneck_review.md`. **Data:** `results/c3/`.
+
+**Method:**
+- Measured removal: s_X = 1 − t(without X)/t(full), in eager and CUDA-graph modes.
+- Dense fp32 quality reference; P1 provenance hashes, P2 decode consistency and P3 graph = eager.
+- Platform: one T4 (sm_75), torch 2.11, transformers 4.57.1, bitsandbytes 0.50.2.
+
+**Result (run 2):**
+- C* is fp16 with a CUDA graph (Granite 16K: eager, tied within CI).
+- **Attention core is time-eligible in both families:** 0.58–0.92 of the Qwen step at 4K–32K, and 0.47–0.76 of the Granite step at 4K–16K.
+- **MLP weights are byte-eligible in both families:** 0.60/0.71 of bytes at 4K.
+- The near-tie check is unchanged.
+
+**Interpretation (exploratory, labelled):**
+- At C*, attention moves K/V at 1.8–4.6% of the measured copy bandwidth (241 GB/s). Every stock PyTorch SDPA variant tested on this T4 stays at 2–15 GB/s.
+- On a bandwidth-efficient implementation, attention would be ≤ 0.285 of the step and MLP weights ≥ 0.5.
+- So the attention target is most likely a decode-kernel software problem (prior art: FlashAttention, Flash-Decoding, PagedAttention; not tested on sm_75 here). MLP weight streaming is the classic memory-traffic problem.
+- NF4 weight-only quantization fails matched quality on both models. LLM.int8 passes on Granite but is 3.3× slower.
+
+**Defects (all fixed and disclosed):**
+- C3-D1: no attention mask for a custom attention name with a static cache.
+- C3-D2: a Granite host sync blocking graph capture.
+- C3-D3: models not released between formats.
+- C3-D4: graph capture ran with autograd enabled, so main run 1's graph timings are invalid; run 1 is kept and the decision is fully re-run.
+- C3-D5: the KV layer count missed Qwen's `full_attention` label; derived bytes recomputed, conclusion unchanged.
+- The feasibility probe's hashing filter bug cost 913 s of quota.
+
+**GPU quota used this cycle:** 4,501 s including the probe, from 101,771 s to 106,272 s (the weekly limit is 108,000 s; 1,728 s remain until 2026-11-14).
+
+**Tests:** 236 pass (logic and math only).
+
+**Not shown:** any mechanism, any novelty, energy, newer GPUs, serving-grade kernels, speculative decoding, models above about 3.4B parameters, or contexts above 32K.
+
+**Gate status:** C3-G0 PASS (target selection only). G1 for both targets is next, under their own contracts; the expected outcome is strong prior art. G5 FAIL stands for the NX candidates. G6–G12 are not authorized. No breakthrough.

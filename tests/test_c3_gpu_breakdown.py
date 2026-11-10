@@ -126,3 +126,14 @@ def test_capture_is_no_grad():
     import inspect
     src = inspect.getsource(G.Decoder.capture)
     assert "@torch.no_grad()" in src and "assert not torch.is_grad_enabled()" in src
+
+
+def test_kv_layer_count_full_attention():
+    """C3-D5: Qwen2 configs label layers 'full_attention'; they must count as KV layers."""
+    import c3_analyze as A
+    q = {"num_hidden_layers": 24, "layer_types": ["full_attention"] * 24, "num_key_value_heads": 2, "hidden_size": 896, "num_attention_heads": 14}
+    g = {"num_hidden_layers": 40, "layer_types": ["attention"] * 40, "num_key_value_heads": 8, "hidden_size": 2560, "num_attention_heads": 40}
+    h = {"num_hidden_layers": 4, "layer_types": ["mamba", "attention", "mamba", "attention"], "num_key_value_heads": 1, "hidden_size": 64, "num_attention_heads": 1}
+    assert A.kv_bytes_per_slot(q) == 2 * 24 * 2 * 64 * 2 == 12288
+    assert A.kv_bytes_per_slot(g) == 2 * 40 * 8 * 64 * 2 == 81920
+    assert A.kv_bytes_per_slot(h) == 2 * 2 * 1 * 64 * 2

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """C3: batch-1 decode cost by measured removal, on GPU (charter specs/C3_G0_gpu_decode_bottleneck_charter.md).
 
-Version 1.2, 2026-11-10 (A1: C3-D2, C3-D3; A2: C3-D4 no-grad capture, prefill chunk 512, memory/traceback records). Self-contained (torch, transformers 4.57.1, numpy; bitsandbytes optional).
+Version 1.3, 2026-11-10 (A1: C3-D2, C3-D3; A2: C3-D4 no-grad capture, prefill chunk 512, memory/traceback records; C3-D5 KV layer count, after run 2). Self-contained (torch, transformers 4.57.1, numpy; bitsandbytes optional).
 Also runs on CPU for logic tests (graph modes are then skipped and recorded as such).
 
 Per model:
@@ -182,8 +182,9 @@ def weight_bytes(model):
 def kv_read_bytes(model, max_len, elem):
     c = model.config
     hd = getattr(c, "head_dim", None) or c.hidden_size // c.num_attention_heads
-    L = sum(1 for t in getattr(c, "layer_types", ["attention"] * c.num_hidden_layers) if t == "attention") \
-        if getattr(c, "layer_types", None) else c.num_hidden_layers
+    # Defect C3-D5 (fixed in v1.3): Qwen2 configs label layers "full_attention"; counting only
+    # "attention" gave 0 KV layers and zero KV bytes for Qwen. Count every attention-type layer.
+    L = sum(1 for t in c.layer_types if "attention" in str(t)) if getattr(c, "layer_types", None) else c.num_hidden_layers
     return 2 * L * c.num_key_value_heads * hd * max_len * elem
 
 
@@ -457,7 +458,7 @@ def main():
     dev = torch.device(a.device)
     torch.manual_seed(20261110)
     rng = np.random.default_rng(20261110)
-    out = {"meta": {"version": "1.2", "date": "2026-11-10", "label": a.label, "charter": "specs/C3_G0_gpu_decode_bottleneck_charter.md",
+    out = {"meta": {"version": "1.3", "date": "2026-11-10", "label": a.label, "charter": "specs/C3_G0_gpu_decode_bottleneck_charter.md",
                     "model": a.model_name, "args": {k: (str(v) if isinstance(v, Path) else v) for k, v in vars(a).items() if k != "books"},
                     "books": [b.name for b in a.books], "torch": torch.__version__, "cuda": torch.version.cuda,
                     "transformers": transformers.__version__, "python": platform.python_version(),

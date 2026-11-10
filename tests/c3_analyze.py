@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""C3 decision analysis: applies the pre-registered rule (charter §5). Version 1.1, 2026-11-10 (BLOCKED contexts per charter §6; written before run-2 data).
+"""C3 decision analysis: applies the pre-registered rule (charter §5). Version 1.2, 2026-11-10 (v1.1: BLOCKED contexts per charter §6, before run-2 data; v1.2: derived KV bytes recomputed from the verified configs, defect C3-D5, after run-2 data).
 
   python tests/c3_analyze.py --dir results/c3/main [--out-prefix results/c3/]
 
@@ -22,6 +22,36 @@ MODELS = ("qwen05", "granite4micro")
 
 def overlap(a, b):
     return a[0] <= b[1] and b[0] <= a[1]
+
+
+def kv_bytes_per_slot(cfg: dict, elem: int = 2) -> int:
+    """K+V bytes per cache slot for one token, all attention layers (fp16 = 2 bytes).
+    C3-D5: count every layer type containing 'attention' (Qwen2: 'full_attention')."""
+    L = cfg["num_hidden_layers"]
+    lt = cfg.get("layer_types")
+    if lt:
+        L = sum(1 for t in lt if "attention" in str(t))
+    hd = cfg.get("head_dim") or cfg["hidden_size"] // cfg["num_attention_heads"]
+    return 2 * L * cfg["num_key_value_heads"] * hd * elem
+
+
+def recompute_bytes(d, per_slot):
+    """Replaces bytes_derived using the corrected KV count (derived quantity only)."""
+    for fmt, f in d.get("formats", {}).items():
+        for T, c in f.get("contexts", {}).items():
+            b = c.get("bytes_derived")
+            if not b:
+                continue
+            kv = per_slot * c["max_cache_len"]
+            wb = b["weights_by_class"]
+            tot = sum(wb.values()) + kv
+            c["bytes_derived_as_recorded"] = dict(b)
+            c["bytes_derived"] = {"weights_by_class": wb, "kv_read": kv, "total": tot, "kv_source": "recomputed (C3-D5)",
+                                  "shares": {"attn_core": kv / tot, "attn_proj": wb.get("attn_proj", 0) / tot,
+                                             "mlp": wb.get("mlp", 0) / tot, "lm_head": wb.get("lm_head", 0) / tot}}
+            for mode, mres in c.get("modes", {}).items():
+                if "full" in mres:
+                    mres["effective_gbps_derived"] = tot / mres["full"]["p50_s"] / 1e9
 
 
 def blocked_units(d):
@@ -78,6 +108,7 @@ def eligibility(choice):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", type=Path, required=True); ap.add_argument("--out-prefix", type=Path, default=None)
+    ap.add_argument("--configs", type=Path, default=Path(__file__).resolve().parent.parent / "results" / "c3" / "model_configs")
     a = ap.parse_args()
     rec = json.loads((a.dir / "c3_run_record.json").read_text())
     out = {"rule": "C3 charter §5", "models": {}, "admissible": {}}
@@ -89,6 +120,10 @@ def main():
             out["admissible"][m] = {"admissible": False, "why": "no output file"}
             continue
         d = json.loads(p.read_text())
+        cfgp = a.configs / m / "config.json"
+        if cfgp.exists():
+            recompute_bytes(d, kv_bytes_per_slot(json.loads(cfgp.read_text())))
+            out.setdefault("bytes_recomputed_from", {})[m] = str(cfgp)
         p1 = bool(rec.get("P1", {}).get(m, {}).get("pass")) and bool(rec.get("P1", {}).get("pg19", {}).get("pass"))
         p2 = bool((d.get("formats", {}).get("fp16", {}).get("consistency") or {}).get("pass"))
         p2_fp32 = (d.get("reference", {}).get("consistency_fp32") or {}).get("pass")
