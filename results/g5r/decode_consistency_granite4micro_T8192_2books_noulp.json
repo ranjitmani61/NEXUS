@@ -1,0 +1,26 @@
+{
+ "model": "granite4micro",
+ "dtype": "bf16",
+ "criterion": "max KL <= 1e-3 and argmax agreement 1.0",
+ "rows": [
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 0.25,
+   "max_kl": 0.004082221078234315,
+   "argmax_agree": 1.0,
+   "book": "3340.txt",
+   "pass": false
+  },
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 0.25,
+   "max_kl": 0.0004229230178099765,
+   "argmax_agree": 1.0,
+   "book": "860.txt",
+   "pass": true
+  }
+ ],
+ "all_pass": false
+}

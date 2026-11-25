@@ -1,0 +1,231 @@
+{
+ "meta": {
+  "version": "1.0",
+  "date": "2026-11-04",
+  "model": "qwen05",
+  "dtype": "fp32",
+  "context": 16384,
+  "methods": [
+   "dense",
+   "nx_box",
+   "quest:1024",
+   "quest:2048",
+   "quest:4096"
+  ],
+  "seed": 20277488
+ },
+ "accuracy": {
+  "dense": 1.0,
+  "nx_box": 1.0,
+  "quest:1024": 1.0,
+  "quest:2048": 1.0,
+  "quest:4096": 1.0
+ },
+ "n_trials": 6,
+ "trials": [
+  {
+   "depth": 0.1,
+   "key": 98292,
+   "book": "860.txt",
+   "needle_token_pos": 1662,
+   "prefill_s": 55.454659347000415,
+   "answers": {
+    "dense": {
+     "text": " 98292.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 98292.",
+     "correct": true,
+     "pages_frac": 0.9868945570849869
+    },
+    "quest:1024": {
+     "text": " 98292.",
+     "correct": true,
+     "pages_frac": 0.24422907249498926
+    },
+    "quest:2048": {
+     "text": " 98292.",
+     "correct": true,
+     "pages_frac": 0.3656679275085394
+    },
+    "quest:4096": {
+     "text": " 98292.",
+     "correct": true,
+     "pages_frac": 0.5523378934920534
+    }
+   }
+  },
+  {
+   "depth": 0.1,
+   "key": 79260,
+   "book": "2544.txt",
+   "needle_token_pos": 1662,
+   "prefill_s": 55.39220043000023,
+   "answers": {
+    "dense": {
+     "text": " 79260.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 79260.",
+     "correct": true,
+     "pages_frac": 0.9868280319940477
+    },
+    "quest:1024": {
+     "text": " 79260.",
+     "correct": true,
+     "pages_frac": 0.24771917189793644
+    },
+    "quest:2048": {
+     "text": " 79260.",
+     "correct": true,
+     "pages_frac": 0.3684178331163195
+    },
+    "quest:4096": {
+     "text": " 79260.",
+     "correct": true,
+     "pages_frac": 0.5516267451533565
+    }
+   }
+  },
+  {
+   "depth": 0.5,
+   "key": 82531,
+   "book": "3247.txt",
+   "needle_token_pos": 8194,
+   "prefill_s": 52.297004673999254,
+   "answers": {
+    "dense": {
+     "text": " 82531.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 82531.",
+     "correct": true,
+     "pages_frac": 0.9868131768766534
+    },
+    "quest:1024": {
+     "text": " 82531.",
+     "correct": true,
+     "pages_frac": 0.2382686790735095
+    },
+    "quest:2048": {
+     "text": " 82531.",
+     "correct": true,
+     "pages_frac": 0.359011252523007
+    },
+    "quest:4096": {
+     "text": " 82531.",
+     "correct": true,
+     "pages_frac": 0.5481722258832289
+    }
+   }
+  },
+  {
+   "depth": 0.5,
+   "key": 60896,
+   "book": "3340.txt",
+   "needle_token_pos": 8194,
+   "prefill_s": 51.35582237899871,
+   "answers": {
+    "dense": {
+     "text": " 60896.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 60896.",
+     "correct": true,
+     "pages_frac": 0.9866536458333334
+    },
+    "quest:1024": {
+     "text": " 60896.",
+     "correct": true,
+     "pages_frac": 0.2373777047340786
+    },
+    "quest:2048": {
+     "text": " 60896.",
+     "correct": true,
+     "pages_frac": 0.3561121730235857
+    },
+    "quest:4096": {
+     "text": " 60896.",
+     "correct": true,
+     "pages_frac": 0.5419961186713104
+    }
+   }
+  },
+  {
+   "depth": 0.9,
+   "key": 15579,
+   "book": "3608.txt",
+   "needle_token_pos": 14725,
+   "prefill_s": 51.14445453100052,
+   "answers": {
+    "dense": {
+     "text": " 15579.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 15579.",
+     "correct": true,
+     "pages_frac": 0.9866678550760583
+    },
+    "quest:1024": {
+     "text": " 15579.",
+     "correct": true,
+     "pages_frac": 0.23638668015505024
+    },
+    "quest:2048": {
+     "text": " 15579.",
+     "correct": true,
+     "pages_frac": 0.35051844816543865
+    },
+    "quest:4096": {
+     "text": " 15579.",
+     "correct": true,
+     "pages_frac": 0.5316776816653258
+    }
+   }
+  },
+  {
+   "depth": 0.9,
+   "key": 21116,
+   "book": "3754.txt",
+   "needle_token_pos": 14725,
+   "prefill_s": 50.762161123000624,
+   "answers": {
+    "dense": {
+     "text": " 21116.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 21116.",
+     "correct": true,
+     "pages_frac": 0.9865926106770834
+    },
+    "quest:1024": {
+     "text": " 21116.",
+     "correct": true,
+     "pages_frac": 0.23464456697789635
+    },
+    "quest:2048": {
+     "text": " 21116.",
+     "correct": true,
+     "pages_frac": 0.3487900803039606
+    },
+    "quest:4096": {
+     "text": " 21116.",
+     "correct": true,
+     "pages_frac": 0.5302904446402862
+    }
+   }
+  }
+ ]
+}

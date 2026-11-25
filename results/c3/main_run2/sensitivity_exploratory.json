@@ -1,0 +1,289 @@
+{
+ "label": "EXPLORATORY: does not alter the charter \u00a75 rule",
+ "version": "1.0",
+ "date": "2026-11-10",
+ "roofline_projection_at_C_star": {
+  "qwen05": {
+   "4096": {
+    "C_star": "fp16/graph",
+    "roofline_step_ms": 4.308868368024433,
+    "measured_step_ms": 17.761858499966365,
+    "measured_over_roofline": 4.122163172069695,
+    "projected_share": {
+     "attn_core": 0.04865475671635611,
+     "attn_proj": 0.08486776326557981,
+     "mlp": 0.6043034375043139,
+     "lm_head": 0.26217404251375026
+    }
+   },
+   "8192": {
+    "C_star": "fp16/graph",
+    "roofline_step_ms": 4.517699563336775,
+    "measured_step_ms": 28.12862700000096,
+    "measured_over_roofline": 6.226316426235556,
+    "projected_share": {
+     "attn_core": 0.09263080282662384,
+     "attn_proj": 0.08094474089595023,
+     "mlp": 0.5763694398101039,
+     "lm_head": 0.25005501646732214
+    }
+   },
+   "16384": {
+    "C_star": "fp16/graph",
+    "roofline_step_ms": 4.9353619539614595,
+    "measured_step_ms": 53.231813499991176,
+    "measured_over_roofline": 10.785797272125842,
+    "projected_share": {
+     "attn_core": 0.16941827892378072,
+     "attn_proj": 0.07409467107200106,
+     "mlp": 0.52759331348752,
+     "lm_head": 0.22889373651669823
+    }
+   },
+   "32000": {
+    "C_star": "fp16/graph",
+    "roofline_step_ms": 5.7315308860897645,
+    "measured_step_ms": 98.96510549998538,
+    "measured_over_roofline": 17.26678394775302,
+    "projected_share": {
+     "attn_core": 0.2847946722569225,
+     "attn_proj": 0.06380215475895729,
+     "mlp": 0.45430514434987335,
+     "lm_head": 0.19709802863424694
+    }
+   }
+  },
+  "granite4micro": {
+   "4096": {
+    "C_star": "fp16/graph",
+    "roofline_step_ms": 29.65521136507804,
+    "measured_step_ms": 65.3685234999557,
+    "measured_over_roofline": 2.204284525077897,
+    "projected_share": {
+     "attn_core": 0.047164617360983666,
+     "attn_proj": 0.1761791154340246,
+     "mlp": 0.7047164617360984,
+     "lm_head": 0.07193980546889338
+    }
+   },
+   "8192": {
+    "C_star": "fp16/graph",
+    "roofline_step_ms": 31.048445740093634,
+    "measured_step_ms": 95.33156649990815,
+    "measured_over_roofline": 3.070413485361817,
+    "projected_share": {
+     "attn_core": 0.08992112182296232,
+     "attn_proj": 0.16827344434706398,
+     "mlp": 0.6730937773882559,
+     "lm_head": 0.0687116564417178
+    }
+   },
+   "16384": {
+    "C_star": "fp16/eager",
+    "roofline_step_ms": 33.834914490124824,
+    "measured_step_ms": 170.0303585000711,
+    "measured_over_roofline": 5.025292986914352,
+    "projected_share": {
+     "attn_core": 0.16487051632620234,
+     "attn_proj": 0.1544153128518578,
+     "mlp": 0.6176612514074312,
+     "lm_head": 0.0630529194145086
+    }
+   }
+  }
+ },
+ "projected_time_eligible": {
+  "attn_core": {
+   "qwen05": false,
+   "granite4micro": false
+  },
+  "attn_proj": {
+   "qwen05": false,
+   "granite4micro": false
+  },
+  "mlp": {
+   "qwen05": true,
+   "granite4micro": true
+  },
+  "lm_head": {
+   "qwen05": false,
+   "granite4micro": false
+  }
+ },
+ "attention_efficiency_at_C_star": {
+  "qwen05": {
+   "4096": {
+    "attn_removed_ms": 10.31377499998598,
+    "kv_bytes": 50528256,
+    "attn_gbps": 4.899103965334582,
+    "fraction_of_copy_bw": 0.02032688731035107,
+    "kv_at_copy_bw_ms": 0.20964694216903113,
+    "microbench_best_stock": {
+     "variant": "gqa_nomask",
+     "backend": "math",
+     "per_step_ms": 11.86691999987488,
+     "c3_path_default_ms": 24.532656000019415
+    }
+   },
+   "8192": {
+    "attn_removed_ms": 20.535305500004597,
+    "kv_bytes": 100859904,
+    "attn_gbps": 4.911536572951273,
+    "fraction_of_copy_bw": 0.0203784714808007,
+    "kv_at_copy_bw_ms": 0.4184781374813734,
+    "microbench_best_stock": {
+     "variant": "repeat_nomask",
+     "backend": "efficient",
+     "per_step_ms": 17.265143999566135,
+     "c3_path_default_ms": 23.404031999916697
+    }
+   },
+   "16384": {
+    "attn_removed_ms": 45.56654299997831,
+    "kv_bytes": 201523200,
+    "attn_gbps": 4.422613319603727,
+    "fraction_of_copy_bw": 0.018349878508590305,
+    "kv_at_copy_bw_ms": 0.836140528106058,
+    "microbench_best_stock": {
+     "variant": "repeat_nomask",
+     "backend": "efficient",
+     "per_step_ms": 38.0572559997745,
+     "c3_path_default_ms": 44.14723200034132
+    }
+   },
+   "32000": {
+    "attn_removed_ms": 91.33602149995568,
+    "kv_bytes": 393412608,
+    "attn_gbps": 4.307310539031864,
+    "fraction_of_copy_bw": 0.01787147538756278,
+    "kv_at_copy_bw_ms": 1.6323094602343629,
+    "microbench_best_stock": {
+     "variant": "repeat_nomask",
+     "backend": "efficient",
+     "per_step_ms": 78.16689599985693,
+     "c3_path_default_ms": 88.69329599974662
+    }
+   }
+  },
+  "granite4micro": {
+   "4096": {
+    "attn_removed_ms": 30.784997499949892,
+    "kv_bytes": 336855040,
+    "attn_gbps": 10.942181820886889,
+    "fraction_of_copy_bw": 0.04543371156016097,
+    "kv_at_copy_bw_ms": 1.3986766967929998,
+    "microbench_best_stock": {
+     "variant": "repeat_nomask",
+     "backend": "default",
+     "per_step_ms": 22.63416000005236,
+     "c3_path_default_ms": 28.305920000093465
+    }
+   },
+   "8192": {
+    "attn_removed_ms": 60.6593794999526,
+    "kv_bytes": 672399360,
+    "attn_gbps": 11.084837424038033,
+    "fraction_of_copy_bw": 0.04602604073473545,
+    "kv_at_copy_bw_ms": 2.791911071808595,
+    "microbench_best_stock": {
+     "variant": "repeat_nomask",
+     "backend": "default",
+     "per_step_ms": 48.68375999990349,
+     "c3_path_default_ms": 52.30932000017674
+    }
+   },
+   "16384": {
+    "attn_removed_ms": 129.95469600014076,
+    "kv_bytes": 1343488000,
+    "attn_gbps": 10.338125834241072,
+    "fraction_of_copy_bw": 0.042925573246185296,
+    "kv_at_copy_bw_ms": 5.5783798218397855,
+    "microbench_best_stock": {
+     "variant": "repeat_nomask",
+     "backend": "default",
+     "per_step_ms": 116.46039999959612,
+     "c3_path_default_ms": 125.62419999994745
+    }
+   }
+  }
+ },
+ "eager_reproducibility_run1_vs_run2": {
+  "qwen05/fp16/4096": {
+   "run1_ms": 31.50410850000185,
+   "run2_ms": 28.63925900001618,
+   "ratio_run2_over_run1": 0.9090642574448504
+  },
+  "qwen05/fp16/8192": {
+   "run1_ms": 31.085734499981754,
+   "run2_ms": 29.33436700004677,
+   "ratio_run2_over_run1": 0.9436600894877998
+  },
+  "qwen05/nf4/4096": {
+   "run1_ms": 42.00733650000643,
+   "run2_ms": 39.21988650000685,
+   "ratio_run2_over_run1": 0.933643733874935
+  },
+  "qwen05/nf4/8192": {
+   "run1_ms": 42.48894500000233,
+   "run2_ms": 39.27385200000799,
+   "ratio_run2_over_run1": 0.9243310701173173
+  },
+  "qwen05/nf4/16384": {
+   "run1_ms": 54.29631300000892,
+   "run2_ms": 52.00703299999532,
+   "ratio_run2_over_run1": 0.9578372844577269
+  },
+  "qwen05/nf4/32000": {
+   "run1_ms": 102.69394499999862,
+   "run2_ms": 98.25535449999734,
+   "ratio_run2_over_run1": 0.9567784595284431
+  },
+  "qwen05/int8/4096": {
+   "run1_ms": 165.20248849997188,
+   "run2_ms": 142.6921825000136,
+   "ratio_run2_over_run1": 0.8637411203405564
+  },
+  "qwen05/int8/8192": {
+   "run1_ms": 184.4990850000272,
+   "run2_ms": 150.7550350000315,
+   "ratio_run2_over_run1": 0.8171045130115918
+  },
+  "granite4micro/nf4/4096": {
+   "run1_ms": 64.87245349995874,
+   "run2_ms": 60.949241000002985,
+   "ratio_run2_over_run1": 0.9395242157758339
+  },
+  "granite4micro/int8/4096": {
+   "run1_ms": 236.81052299991734,
+   "run2_ms": 214.8170340000206,
+   "ratio_run2_over_run1": 0.9071262175291745
+  }
+ },
+ "eager_reproducibility_range": [
+  0.8171045130115918,
+  0.9578372844577269
+ ],
+ "nvsmi_gpu0_after_each_context": {
+  "qwen05/fp16/4096": "0, 1590 MHz, 5000 MHz, 67, 38.66 W, 0 %",
+  "qwen05/fp16/8192": "0, 1590 MHz, 5000 MHz, 74, 41.38 W, 2 %",
+  "qwen05/fp16/16384": "0, 1590 MHz, 5000 MHz, 73, 41.31 W, 0 %",
+  "qwen05/fp16/32000": "0, 1590 MHz, 5000 MHz, 74, 45.72 W, 11 %",
+  "qwen05/nf4/4096": "0, 1590 MHz, 5000 MHz, 77, 43.00 W, 0 %",
+  "qwen05/nf4/8192": "0, 1590 MHz, 5000 MHz, 75, 42.24 W, 2 %",
+  "qwen05/nf4/16384": "0, 1590 MHz, 5000 MHz, 74, 41.94 W, 4 %",
+  "qwen05/nf4/32000": "0, 1590 MHz, 5000 MHz, 74, 44.21 W, 0 %",
+  "qwen05/int8/4096": "0, 585 MHz, 5000 MHz, 70, 31.10 W, 0 %",
+  "qwen05/int8/8192": "0, 810 MHz, 5000 MHz, 74, 32.07 W, 0 %",
+  "qwen05/int8/16384": "0, 585 MHz, 5000 MHz, 75, 32.56 W, 0 %",
+  "qwen05/int8/32000": "0, 1590 MHz, 5000 MHz, 76, 43.03 W, 0 %",
+  "granite4micro/fp16/4096": "0, 1485 MHz, 5000 MHz, 76, 39.22 W, 0 %",
+  "granite4micro/fp16/8192": "0, 1590 MHz, 5000 MHz, 75, 41.77 W, 0 %",
+  "granite4micro/fp16/16384": "0, 1590 MHz, 5000 MHz, 75, 44.31 W, 0 %",
+  "granite4micro/nf4/4096": "0, 1590 MHz, 5000 MHz, 74, 41.28 W, 0 %",
+  "granite4micro/nf4/8192": "0, 1590 MHz, 5000 MHz, 75, 41.97 W, 0 %",
+  "granite4micro/nf4/16384": "0, 1590 MHz, 5000 MHz, 75, 41.97 W, 0 %",
+  "granite4micro/int8/4096": "0, 660 MHz, 5000 MHz, 76, 32.47 W, 0 %",
+  "granite4micro/int8/8192": "0, 795 MHz, 5000 MHz, 75, 35.40 W, 0 %",
+  "granite4micro/int8/16384": "0, 1590 MHz, 5000 MHz, 76, 42.14 W, 0 %"
+ }
+}

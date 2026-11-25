@@ -1,0 +1,241 @@
+{
+ "meta": {
+  "version": "1.0",
+  "date": "2026-11-04",
+  "model": "qwen05",
+  "dtype": "fp32",
+  "context": 32000,
+  "methods": [
+   "dense",
+   "nx_box",
+   "quest:1024",
+   "quest:2048",
+   "quest:4096"
+  ],
+  "host": {
+   "kernel": "6.18.44-fc-v236",
+   "cpu_model_name": "Intel(R) Xeon(R) Processor @ 2.80GHz",
+   "cpu_family": "6",
+   "cpu_model": "85",
+   "logical_cpus": 4,
+   "amx_bf16": false,
+   "avx512_bf16": false,
+   "avx512f": true
+  },
+  "seed": 20293104
+ },
+ "accuracy": {
+  "dense": 1.0,
+  "nx_box": 1.0,
+  "quest:1024": 0.5,
+  "quest:2048": 0.8333333333333334,
+  "quest:4096": 1.0
+ },
+ "n_trials": 6,
+ "trials": [
+  {
+   "depth": 0.1,
+   "key": 80671,
+   "book": "860.txt",
+   "needle_token_pos": 3224,
+   "prefill_s": 217.1175349869991,
+   "answers": {
+    "dense": {
+     "text": " 80671.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 80671.",
+     "correct": true,
+     "pages_frac": 0.9779571759259258
+    },
+    "quest:1024": {
+     "text": " in the drawer.\n\n\"WHAT IS",
+     "correct": false,
+     "pages_frac": 0.1690330427957318
+    },
+    "quest:2048": {
+     "text": " in the drawer.\n\n\"Alfred",
+     "correct": false,
+     "pages_frac": 0.24170063463638553
+    },
+    "quest:4096": {
+     "text": " 80671.",
+     "correct": true,
+     "pages_frac": 0.3635406781562922
+    }
+   }
+  },
+  {
+   "depth": 0.1,
+   "key": 59466,
+   "book": "2544.txt",
+   "needle_token_pos": 3224,
+   "prefill_s": 213.52815803299927,
+   "answers": {
+    "dense": {
+     "text": " 59466.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 59466.",
+     "correct": true,
+     "pages_frac": 0.9780800264550265
+    },
+    "quest:1024": {
+     "text": " the key to the pass.\n\nshe",
+     "correct": false,
+     "pages_frac": 0.1662673405773965
+    },
+    "quest:2048": {
+     "text": " 59466.",
+     "correct": true,
+     "pages_frac": 0.2384980119893757
+    },
+    "quest:4096": {
+     "text": " 59466.",
+     "correct": true,
+     "pages_frac": 0.35744177159105633
+    }
+   }
+  },
+  {
+   "depth": 0.5,
+   "key": 18604,
+   "book": "3247.txt",
+   "needle_token_pos": 16002,
+   "prefill_s": 209.13987038199957,
+   "answers": {
+    "dense": {
+     "text": " 18604.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 18604.",
+     "correct": true,
+     "pages_frac": 0.977830853174603
+    },
+    "quest:1024": {
+     "text": " the key to the pass. The",
+     "correct": false,
+     "pages_frac": 0.16856523763581172
+    },
+    "quest:2048": {
+     "text": " 18604.",
+     "correct": true,
+     "pages_frac": 0.24237768384326355
+    },
+    "quest:4096": {
+     "text": " 18604.",
+     "correct": true,
+     "pages_frac": 0.3636928329816573
+    }
+   }
+  },
+  {
+   "depth": 0.5,
+   "key": 56829,
+   "book": "3340.txt",
+   "needle_token_pos": 16002,
+   "prefill_s": 202.99701678099882,
+   "answers": {
+    "dense": {
+     "text": " 56829.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 56829.",
+     "correct": true,
+     "pages_frac": 0.9780871362433863
+    },
+    "quest:1024": {
+     "text": " 56829.",
+     "correct": true,
+     "pages_frac": 0.16988281235539637
+    },
+    "quest:2048": {
+     "text": " 56829.",
+     "correct": true,
+     "pages_frac": 0.23974842902622762
+    },
+    "quest:4096": {
+     "text": " 56829.",
+     "correct": true,
+     "pages_frac": 0.35844971958465216
+    }
+   }
+  },
+  {
+   "depth": 0.9,
+   "key": 99572,
+   "book": "3608.txt",
+   "needle_token_pos": 28779,
+   "prefill_s": 207.98726919,
+   "answers": {
+    "dense": {
+     "text": " 99572.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 99572.",
+     "correct": true,
+     "pages_frac": 0.9776056547619048
+    },
+    "quest:1024": {
+     "text": " 99572.",
+     "correct": true,
+     "pages_frac": 0.16783265745599424
+    },
+    "quest:2048": {
+     "text": " 99572.",
+     "correct": true,
+     "pages_frac": 0.2371978839862476
+    },
+    "quest:4096": {
+     "text": " 99572.",
+     "correct": true,
+     "pages_frac": 0.35397232402317363
+    }
+   }
+  },
+  {
+   "depth": 0.9,
+   "key": 13136,
+   "book": "3754.txt",
+   "needle_token_pos": 28779,
+   "prefill_s": 208.98571571499997,
+   "answers": {
+    "dense": {
+     "text": " 13136.",
+     "correct": true,
+     "pages_frac": 1.0
+    },
+    "nx_box": {
+     "text": " 13136.",
+     "correct": true,
+     "pages_frac": 0.9777683531746033
+    },
+    "quest:1024": {
+     "text": " 13136.",
+     "correct": true,
+     "pages_frac": 0.16862131578886483
+    },
+    "quest:2048": {
+     "text": " 13136.",
+     "correct": true,
+     "pages_frac": 0.23664861579626853
+    },
+    "quest:4096": {
+     "text": " 13136.",
+     "correct": true,
+     "pages_frac": 0.3527205263109186
+    }
+   }
+  }
+ ]
+}

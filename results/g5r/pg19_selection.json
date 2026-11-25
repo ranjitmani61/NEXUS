@@ -1,0 +1,24 @@
+{
+  "rule": "PG-19 test split, sorted by numeric book id, first 8 files with >=250000 bytes",
+  "n_test_files_listed": 100,
+  "selected": [
+    "test/test/860.txt",
+    "test/test/2544.txt",
+    "test/test/3247.txt",
+    "test/test/3340.txt",
+    "test/test/3608.txt",
+    "test/test/3754.txt",
+    "test/test/4047.txt",
+    "test/test/5396.txt"
+  ],
+  "listed_bytes": {
+    "test/test/860.txt": 280293,
+    "test/test/2544.txt": 352384,
+    "test/test/3247.txt": 539667,
+    "test/test/3340.txt": 392865,
+    "test/test/3608.txt": 1434234,
+    "test/test/3754.txt": 507933,
+    "test/test/4047.txt": 624607,
+    "test/test/5396.txt": 956818
+  }
+}

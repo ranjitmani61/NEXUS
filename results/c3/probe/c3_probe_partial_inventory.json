@@ -1,0 +1,92 @@
+{
+ "version": "1.0",
+ "label": "feasibility probe, NOT a result",
+ "utc": "2026-11-10T14:12:04Z",
+ "python": "3.13.16",
+ "env_allowlist": {
+  "KAGGLE_KERNEL_RUN_TYPE": "Batch",
+  "KAGGLE_DOCKER_IMAGE": "gcr.io/kaggle-gpu-images/python@sha256:de153e6d303881930c51286216393d56f56b26458d0661350305a1e8144eea01",
+  "KAGGLE_CONTAINER_NAME": "kaggle_zV87324QKVIOniel41JLVO8QYZrssgkixbVSsKtU-368086715-webtier",
+  "CUDA_VERSION": "13.0.3",
+  "NVIDIA_DRIVER_CAPABILITIES": "compute,utility"
+ },
+ "nvidia_smi": {
+  "rc": 0,
+  "out": "name, driver_version, memory.total [MiB], clocks.max.sm [MHz], clocks.max.memory [MHz], power.limit [W]\nTesla T4, 580.178.04, 15360 MiB, 1590 MHz, 5001 MHz, 70.00 W\nTesla T4, 580.178.04, 15360 MiB, 1590 MHz, 5001 MHz, 70.00 W\n",
+  "err": ""
+ },
+ "nvidia_smi_full": {
+  "rc": 0,
+  "out": "Tue Nov 10 14:12:04 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.178.04             Driver Version: 580.178.04     CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |\n| N/A   51C    P8             11W /   70W |       0MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n|   1  Tesla T4                       Off |   00000000:00:05.0 Off |                    0 |\n| N/A   51C    P8             10W /   70W |       0MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+  "err": ""
+ },
+ "cpu": {
+  "rc": 0,
+  "out": "4\nmodel name\t: Intel(R) Xeon(R) CPU @ 2.00GHz\n               total        used        free      shared  buff/cache   available\nMem:              31           1          26           0           4          30\n",
+  "err": ""
+ },
+ "torch": {
+  "version": "2.11.0+cu130",
+  "cuda": "13.0",
+  "cudnn": 92700,
+  "available": true,
+  "count": 2,
+  "devices": [
+   {
+    "name": "Tesla T4",
+    "capability": [
+     7,
+     5
+    ],
+    "mem_gb": 14.56219482421875
+   },
+   {
+    "name": "Tesla T4",
+    "capability": [
+     7,
+     5
+    ],
+    "mem_gb": 14.56219482421875
+   }
+  ],
+  "bf16_supported": true,
+  "arch_list": [
+   "sm_75",
+   "sm_80",
+   "sm_86",
+   "sm_90",
+   "sm_100",
+   "sm_120"
+  ]
+ },
+ "libs": {
+  "transformers": "5.20.2",
+  "accelerate": "1.15.0",
+  "bitsandbytes": "NOT AVAILABLE: ModuleNotFoundError: No module named 'bitsandbytes'",
+  "torchao": "0.10.0",
+  "flash_attn": "NOT AVAILABLE: ModuleNotFoundError: No module named 'flash_attn'",
+  "xformers": "NOT AVAILABLE: ModuleNotFoundError: No module named 'xformers'",
+  "triton": "3.6.0",
+  "vllm": "NOT AVAILABLE: ModuleNotFoundError: No module named 'vllm'",
+  "llama_cpp": "NOT AVAILABLE: ModuleNotFoundError: No module named 'llama_cpp'",
+  "auto_gptq": "NOT AVAILABLE: ModuleNotFoundError: No module named 'auto_gptq'",
+  "gptqmodel": "NOT AVAILABLE: ModuleNotFoundError: No module named 'gptqmodel'",
+  "awq": "NOT AVAILABLE: ModuleNotFoundError: No module named 'awq'",
+  "optimum": "NOT AVAILABLE: ModuleNotFoundError: No module named 'optimum'",
+  "exllamav2": "NOT AVAILABLE: ModuleNotFoundError: No module named 'exllamav2'",
+  "hqq": "NOT AVAILABLE: ModuleNotFoundError: No module named 'hqq'",
+  "safetensors": "0.8.0",
+  "numpy": "2.1.3"
+ },
+ "pip_freeze_head": {
+  "rc": 0,
+  "out": "accelerate==1.15.0\nnvidia-cublas==13.1.0.3\nnvidia-cublas-cu12==12.9.2.10\npytorch-ignite==0.5.5\npytorch-lightning==2.6.6\nsentence-transformers==5.7.0\ntorch==2.11.0+cu130\ntorchao==0.10.0\ntorchaudio==2.11.0+cu130\ntorchcodec==0.11.0+cu130\ntorchdata==0.11.0\ntorchinfo==1.8.0\ntorchmetrics==1.9.0\ntorchsummary==1.5.1\ntorchtune==0.6.1\ntorchvision==0.26.0+cu130\ntransformers==5.20.2\ntriton==3.6.0\n",
+  "err": ""
+ },
+ "internet_pip": {
+  "rc": 0,
+  "out": "Collecting transformers==4.57.1\n  Downloading transformers-4.57.1-py3-none-any.whl.metadata (43 kB)\nDownloading transformers-4.57.1-py3-none-any.whl (12.0 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 12.0/12.0 MB 91.4 MB/s  0:00:00\nSaved /tmp/pipprobe/transformers-4.57.1-py3-none-any.whl\nSuccessfully downloaded transformers\n",
+  "err": "",
+  "seconds": 1.3216383457183838
+ }
+}

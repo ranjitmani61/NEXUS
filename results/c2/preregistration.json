@@ -1,0 +1,28 @@
+{
+ "charter": {
+  "file": "specs/C2_G0_batch1_decode_bottleneck_charter.md",
+  "sha256": "03eeb36c85ae6f27ab999811fc6f6ec63ce70036b23077c52c182d7b16e5faba",
+  "registered_utc": "2026-11-10T09:02:15Z",
+  "git_head_before_commit": "4c5cf0a8ae0380038526f4e05324d0f2c3ebeb18",
+  "note": "Registered before any cycle-2 measurement. Results directories results/c2/ contained no data files at registration."
+ },
+ "amendment_A1": {
+  "file": "specs/C2_G0_batch1_decode_bottleneck_charter.md",
+  "sha256_after_A1": "4df29220f3e962c02aa63c86a3195ca743722983535167b9f346d2b9f0fed80e",
+  "registered_utc": "2026-11-10T09:06:49Z",
+  "note": "After the pipeline smoke test only (scratchpad, not a result); before any recorded cycle-2 run."
+ },
+ "amendment_A2": {
+  "file": "specs/C2_G0_batch1_decode_bottleneck_charter.md",
+  "sha256_after_A2": "21d8ace9fa47851bcff8b78ee177cbaf36c124e72ddaff1c282a1c3007960138",
+  "registered_utc": "2026-11-10T09:30:15Z",
+  "note": "After the B1 v1.0 crash (no data) and an int8wo smoke test under CPU contention (scratchpad, not a result); before any B1 data.",
+  "torchao_version": "0.18.0"
+ },
+ "amendment_A3": {
+  "file": "specs/C2_G0_batch1_decode_bottleneck_charter.md",
+  "sha256_after_A3": "2fe1000f235c40a023c4abe7f9c4cf595aa6bd1e1b08053edf0100009c3efc30",
+  "registered_utc": "2026-11-10T10:37:40Z",
+  "note": "After the OOM kill of Qwen fp32 B1 run 1; before its rerun."
+ }
+}

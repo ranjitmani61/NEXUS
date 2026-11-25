@@ -1,0 +1,22 @@
+{
+  "model": "granite-4.0-micro-base",
+  "signature_file": "model.sig",
+  "bundle_mediaType": "application/vnd.dev.sigstore.bundle.v0.3+json",
+  "signer_identity": "Granite-verify@ibm.com",
+  "oidc_issuer": "https://sigstore.verify.ibm.com/oauth2",
+  "cert_issuer": "CN=sigstore-intermediate,O=sigstore.dev",
+  "tlog_integrated_time_unix": 1759288302,
+  "dsse_signature_verified": true,
+  "verifier": "sigstore-python 4.5.1, Verifier.production(offline=True), policy.Identity(identity, issuer)",
+  "trust_root": "sigstore-python embedded TUF trust root (offline; no online refresh/revocation check)",
+  "per_file_digests_signed": 11,
+  "per_file_digests_matching_local_sha256": 11,
+  "subject_digest_signed": "55da5cb2f0e6e97999620994d8b5789fc6bcf2ad95610e72b8f6261a90235aec",
+  "subject_digest_recomputed_from_local_files": "55da5cb2f0e6e97999620994d8b5789fc6bcf2ad95610e72b8f6261a90235aec",
+  "subject_match": true,
+  "subject_rule": "sha256 over concatenated raw file digests in alphabetical name order (model_signing Payload docstring)",
+  "files_not_covered": [
+    ".gitattributes",
+    "model.sig"
+  ]
+}

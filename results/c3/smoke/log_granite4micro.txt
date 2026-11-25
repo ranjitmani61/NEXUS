@@ -1,0 +1,8 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794322285.076584      98 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:34<00:34, 34.22s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:42<00:00, 19.23s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:42<00:00, 21.48s/it]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:03<00:03,  3.19s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:04<00:00,  2.03s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:04<00:00,  2.20s/it]
+{"format": "fp16", "T": 512, "full_ms": {"eager": 51.512}, "shares": {"eager": {"attn_core": 0.127, "attn_proj": 0.057, "mlp": 0.048, "lm_head": 0.035}}, "graph_vs_eager": null, "error": null}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:05<00:05,  5.58s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:07<00:00,  3.66s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:07<00:00,  3.95s/it]
+{"format": "nf4", "T": 512, "full_ms": {"eager": 65.251}, "shares": {"eager": {"attn_core": -0.017, "attn_proj": 0.169, "mlp": 0.083, "lm_head": 0.01}}, "graph_vs_eager": null, "error": null}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:03<?, ?it/s]

@@ -1,0 +1,62 @@
+{
+ "model": "qwen05",
+ "dtype": "fp32",
+ "host": {
+  "kernel": "6.18.44-fc-v338",
+  "cpu_model_name": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+  "cpu_family": "6",
+  "cpu_model": "207",
+  "logical_cpus": 4,
+  "amx_bf16": true,
+  "avx512_bf16": true,
+  "avx512f": true
+ },
+ "criterion": "max KL <= 1e-3 and argmax agreement 1.0",
+ "rows": [
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 1.5735626220703125e-05,
+   "max_abs_logit": 21.78963851928711,
+   "bf16_ulp_at_max_abs_logit": 0.125,
+   "max_kl": 2.757067354017216e-12,
+   "argmax_agree": 1.0,
+   "book": "860.txt",
+   "pass": true
+  },
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 1.9788742065429688e-05,
+   "max_abs_logit": 20.311054229736328,
+   "bf16_ulp_at_max_abs_logit": 0.125,
+   "max_kl": 2.409232549140565e-12,
+   "argmax_agree": 1.0,
+   "book": "2544.txt",
+   "pass": true
+  },
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 1.621246337890625e-05,
+   "max_abs_logit": 22.738357543945312,
+   "bf16_ulp_at_max_abs_logit": 0.125,
+   "max_kl": 4.681765446634448e-12,
+   "argmax_agree": 1.0,
+   "book": "3247.txt",
+   "pass": true
+  },
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 1.8596649169921875e-05,
+   "max_abs_logit": 23.54315948486328,
+   "bf16_ulp_at_max_abs_logit": 0.125,
+   "max_kl": 2.8491588789872837e-12,
+   "argmax_agree": 1.0,
+   "book": "3340.txt",
+   "pass": true
+  }
+ ],
+ "all_pass": true
+}

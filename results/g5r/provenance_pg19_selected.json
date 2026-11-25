@@ -1,0 +1,58 @@
+{
+  "source": "kaggle_datasets",
+  "owner": "tunguz",
+  "dataset": "the-pg19-language-modeling-benchmark-dataset",
+  "files": [
+    {
+      "path": "test/test/860.txt",
+      "listed_bytes": 280293,
+      "bytes": 280293,
+      "sha256": "4b52c996d63bfeb3c942fff20b6b2298d3455be8954d44a3350022c3187dd584"
+    },
+    {
+      "path": "test/test/2544.txt",
+      "listed_bytes": 352384,
+      "bytes": 352384,
+      "sha256": "0c79ceaf5bcc208b8c924037613c2c7fb1606de21ec8d99d5c446a516c4af787"
+    },
+    {
+      "path": "test/test/3247.txt",
+      "listed_bytes": 539667,
+      "bytes": 539667,
+      "sha256": "aa97806b530ffb25b5678e4c562e49055715eb5734c533c0b244537734b6a59c"
+    },
+    {
+      "path": "test/test/3340.txt",
+      "listed_bytes": 392865,
+      "bytes": 392865,
+      "sha256": "0d3bea08577a6bde3265827ddf5e688d8aa8ce1ab4ff4243075358c19709d788"
+    },
+    {
+      "path": "test/test/3608.txt",
+      "listed_bytes": 1434234,
+      "served_as_zip": true,
+      "zip_sha256": "d7555535f372796f6a93792e4cc40a31e12731ebc26f4dcde7ba88404d7b1d72",
+      "bytes": 1434234,
+      "sha256": "acfd0b06c2fea46583b113cf10df45d83f24f3b85bf2d8ccd22d2f0a1127dc9a"
+    },
+    {
+      "path": "test/test/3754.txt",
+      "listed_bytes": 507933,
+      "bytes": 507933,
+      "sha256": "05c3b16201f534fd6ab8643feb9b1c59e482a913c9a47fd513255791d9e67f60"
+    },
+    {
+      "path": "test/test/4047.txt",
+      "listed_bytes": 624607,
+      "bytes": 624607,
+      "sha256": "a1126b6bec29256f9e92fb120c71520623694813d3a9772853c09ad1c5f75f8a"
+    },
+    {
+      "path": "test/test/5396.txt",
+      "listed_bytes": 956818,
+      "bytes": 956818,
+      "sha256": "ff10a13b1a0007d7c1a06ebc5c5e85990063c43bbc44af62059455631f62dc42"
+    }
+  ],
+  "fetched_utc": "2026-11-04T20:04:55Z"
+}

@@ -1,0 +1,86 @@
+{
+  "source": "kaggle_models",
+  "owner": "qwen-lm",
+  "model": "qwen2.5",
+  "instance": "0.5b",
+  "framework": "transformers",
+  "version": 1,
+  "publisher_author": "QwenLM",
+  "title": "Qwen2.5",
+  "license": "Apache 2.0",
+  "instance_url": "https://www.kaggle.com/models/qwen-lm/qwen2.5/Transformers/0.5b",
+  "skipped_git_directory_entries": 0,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 1519,
+      "listed_bytes": 1519,
+      "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+      "kaggle_creation_date": "2024-11-14T06:47:44.827245500Z"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 11343,
+      "listed_bytes": 11343,
+      "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+      "kaggle_creation_date": "2024-11-14T06:47:44.827245500Z"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3850,
+      "listed_bytes": 3850,
+      "sha256": "3c93cbc9f60417337fcbf093da872007586b9d886b0f0187f21aec35b869616a",
+      "kaggle_creation_date": "2024-11-14T06:47:44.827245500Z"
+    },
+    {
+      "path": "config.json",
+      "bytes": 681,
+      "listed_bytes": 681,
+      "sha256": "479dcf0c5286339e41ad3992cd08ae88a467c4187587936248e2b7c96283484b",
+      "kaggle_creation_date": "2024-11-14T06:47:44.827245500Z"
+    },
+    {
+      "path": "generation_config.json",
+      "bytes": 138,
+      "listed_bytes": 138,
+      "sha256": "8c970692323e3ea0e9b8b0a4dca79388d31226e41f83c9fd6014804280ebf6e8",
+      "kaggle_creation_date": "2024-11-14T06:47:44.827245500Z"
+    },
+    {
+      "path": "merges.txt",
+      "bytes": 1671839,
+      "listed_bytes": 1671839,
+      "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+      "kaggle_creation_date": "2024-11-14T06:47:44.827245500Z"
+    },
+    {
+      "path": "model.safetensors",
+      "bytes": 988097824,
+      "listed_bytes": 988097824,
+      "sha256": "88c142557820ccad55bb59756bfcfcf891de9cc6202816bd346445188a0ed342",
+      "kaggle_creation_date": "2024-11-14T06:47:44.827245500Z"
+    },
+    {
+      "path": "tokenizer.json",
+      "bytes": 7031645,
+      "listed_bytes": 7031645,
+      "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "kaggle_creation_date": "2024-11-14T06:47:44.827245500Z"
+    },
+    {
+      "path": "tokenizer_config.json",
+      "bytes": 7228,
+      "listed_bytes": 7228,
+      "sha256": "c91efca15ceff6e9ee9424db58a6f59cd41294e550a86cbd07e3c1fb500b34f9",
+      "kaggle_creation_date": "2024-11-14T06:47:44.827245500Z"
+    },
+    {
+      "path": "vocab.json",
+      "bytes": 2776833,
+      "listed_bytes": 2776833,
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "kaggle_creation_date": "2024-11-14T06:47:44.827245500Z"
+    }
+  ],
+  "fetched_utc": "2026-11-04T19:57:30Z"
+}

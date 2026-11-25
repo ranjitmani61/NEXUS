@@ -1,0 +1,65 @@
+{
+ "model": "qwen05_bf16",
+ "dtype": "bf16",
+ "criterion": "max KL <= 1e-3 and argmax agreement 1.0",
+ "rows": [
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 0.265625,
+   "max_abs_logit": 21.75,
+   "bf16_ulp_at_max_abs_logit": 0.125,
+   "max_kl": 0.0017593748447219991,
+   "argmax_agree": 1.0,
+   "book": "860.txt",
+   "pass": false
+  },
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 0.21875,
+   "max_abs_logit": 20.375,
+   "bf16_ulp_at_max_abs_logit": 0.125,
+   "max_kl": 0.0007072890866617106,
+   "argmax_agree": 1.0,
+   "book": "2544.txt",
+   "pass": true
+  },
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 0.25,
+   "max_abs_logit": 22.75,
+   "bf16_ulp_at_max_abs_logit": 0.125,
+   "max_kl": 0.000941556731574175,
+   "argmax_agree": 1.0,
+   "book": "3247.txt",
+   "pass": true
+  },
+  {
+   "T": 8192,
+   "steps": 3,
+   "max_abs_logit_diff": 0.21875,
+   "max_abs_logit": 23.625,
+   "bf16_ulp_at_max_abs_logit": 0.125,
+   "max_kl": 0.0006583539335218396,
+   "argmax_agree": 1.0,
+   "book": "3340.txt",
+   "pass": true
+  }
+ ],
+ "all_pass": false,
+ "host_post_hoc": {
+  "cpu_model_name": "Intel(R) Xeon(R) Processor @ 2.80GHz",
+  "cpu_family": "6",
+  "cpu_model": "85",
+  "logical_cpus": 4,
+  "amx_bf16": false,
+  "avx512_bf16": false,
+  "avx512f": true,
+  "l3": "33 MiB",
+  "kernel": "6.18.44-fc-v236",
+  "evidence": "lscpu and /proc/cpuinfo captured 2026-11-05 ~02:15 UTC after the container restart",
+  "annotation": "Added 2026-11-05 after the fact from queue.log timestamps (queue v7, 02:14:02-02:24:50 UTC); the script did not record the host at run time. See results/g5r/host_log.json."
+ }
+}

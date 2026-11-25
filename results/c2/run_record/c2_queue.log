@@ -1,0 +1,33 @@
+[09:15:27] BEGIN decode consistency qwen fp32 8K (host C)
+[09:19:19] END rc=0
+[09:19:19] BEGIN M1-M3 qwen bf16 breakdown
+[09:22:09] END rc=0
+[09:22:09] BEGIN B1 qwen fp32 dense+int8 family, timing+quality
+[09:22:31] END rc=0
+[09:22:31] BEGIN decode consistency granite bf16 8K (host C)
+[09:30:43] c2b queue armed; it waits for the main queue's completion line
+[09:33:27] END rc=0
+[09:33:27] BEGIN M1-M3 granite bf16 breakdown
+[09:41:10] END rc=0
+[09:41:10] BEGIN B2 qwen bf16 prompt lookup 8K
+[09:42:55] END rc=0
+[09:42:55] BEGIN B2 granite bf16 prompt lookup 8K (expected library refusal; recorded)
+[09:46:22] END rc=0
+[09:46:22] C2 QUEUE DONE
+[09:46:40] BEGIN B1(A2) qwen fp32 dense+int8dyn family+int8wo
+[10:06:26] END rc=137
+[10:06:26] BEGIN B1(A2) qwen bf16 dense+int8wo
+[10:12:17] END rc=0
+[10:12:17] BEGIN B1(A2) granite bf16 dense+int8wo (sequential variants)
+[10:36:20] END rc=0
+[10:36:20] C2B QUEUE DONE
+[10:37:59] BEGIN B1(A3) qwen fp32 dense+int8dyn family, sequential variants
+[11:42:23] END rc=0
+[11:42:23] C2C QUEUE DONE
+[11:42:37] BEGIN diag prompt-lookup divergence qwen 8K bf16+fp32
+[11:44:00] END rc=0
+[11:44:00] C2D QUEUE DONE
+[11:49:58] BEGIN diag granite trunc12 fp32+bf16 consistency 8K
+[12:02:02] END rc=0
+[12:02:19] BEGIN diag prompt-lookup divergence v1.1 qwen 8K bf16+fp32
+[12:03:49] END rc=0

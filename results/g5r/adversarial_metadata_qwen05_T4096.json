@@ -1,0 +1,93 @@
+{
+ "version": "1.1",
+ "date": "2026-11-04",
+ "page_size": 32,
+ "real_samples_used": 21,
+ "bound_slack_upper_minus_exact_page_max": {
+  "box": {
+   "median_nats": 16.210999958895904,
+   "p05_nats": 10.42390241275717,
+   "p95_nats": 28.209612624715,
+   "min_nats": 5.885681813749085
+  },
+  "sph": {
+   "median_nats": 24.41402712081407,
+   "p05_nats": 13.789029583120138,
+   "p95_nats": 50.01641147222889,
+   "min_nats": 6.8340319673336225
+  },
+  "exact_page_max_spread_within_head_median_nats": 13.658363768714917
+ },
+ "sample_files": [
+  "qwen05_T4096_2544_samples.npz",
+  "qwen05_T4096_3247_samples.npz",
+  "qwen05_T4096_3340_samples.npz",
+  "qwen05_T4096_3608_samples.npz",
+  "qwen05_T4096_3754_samples.npz",
+  "qwen05_T4096_5396_samples.npz",
+  "qwen05_T4096_860_samples.npz"
+ ],
+ "results": {
+  "exact_fp64": {
+   "samples": 21,
+   "heads": 294,
+   "page_bounds": 37632,
+   "bound_violations": 0,
+   "false_certificates": 0,
+   "max_err_over_cert": 0.0,
+   "heads_stopping_earlier_than_exact": 0,
+   "max_true_err": 1.3022882009286335e-07
+  },
+  "stale_slot_reuse": {
+   "samples": 21,
+   "heads": 294,
+   "page_bounds": 37632,
+   "bound_violations": 0,
+   "false_certificates": 0,
+   "max_err_over_cert": 0.0,
+   "heads_stopping_earlier_than_exact": 0,
+   "max_true_err": 3.913350540487552e-05
+  },
+  "stale_worst_smallest_box": {
+   "samples": 21,
+   "heads": 294,
+   "page_bounds": 37632,
+   "bound_violations": 0,
+   "false_certificates": 0,
+   "max_err_over_cert": 0.0,
+   "heads_stopping_earlier_than_exact": 0,
+   "max_true_err": 1.3022882009286335e-07
+  },
+  "bf16_nearest": {
+   "samples": 21,
+   "heads": 294,
+   "page_bounds": 37632,
+   "bound_violations": 0,
+   "false_certificates": 0,
+   "max_err_over_cert": 0.0,
+   "heads_stopping_earlier_than_exact": 0,
+   "max_true_err": 1.3022882009286335e-07
+  },
+  "fp16_nearest": {
+   "samples": 21,
+   "heads": 294,
+   "page_bounds": 37632,
+   "bound_violations": 0,
+   "false_certificates": 0,
+   "max_err_over_cert": 0.0,
+   "heads_stopping_earlier_than_exact": 0,
+   "max_true_err": 1.3022882009286335e-07
+  },
+  "bf16_outward_guarded": {
+   "samples": 21,
+   "heads": 294,
+   "page_bounds": 37632,
+   "bound_violations": 0,
+   "false_certificates": 0,
+   "max_err_over_cert": 0.0,
+   "heads_stopping_earlier_than_exact": 0,
+   "max_true_err": 1.3022882009286335e-07
+  }
+ },
+ "note": "Real captured decode tensors; certificate math in float64 log domain; metadata variants as described in module docstring."
+}

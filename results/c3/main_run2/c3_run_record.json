@@ -1,0 +1,257 @@
+{
+ "plan": "main",
+ "label": "result",
+ "script_sha256": "479429867485c37612ccd61bd952b86c8706ff3758c5bd88c2fb1df782d038b3",
+ "start_utc": "2026-11-10T17:38:04Z",
+ "script_sha256_check": true,
+ "test_overrides": {},
+ "env": {
+  "KAGGLE_DOCKER_IMAGE": "gcr.io/kaggle-gpu-images/python@sha256:de153e6d303881930c51286216393d56f56b26458d0661350305a1e8144eea01",
+  "KAGGLE_KERNEL_RUN_TYPE": "Batch",
+  "CUDA_VERSION": "13.0.3"
+ },
+ "nvidia_smi": {
+  "cmd": "nvidia-smi --query-gpu=index,name,driver_version,memory.total,clocks.max.sm,power.limit --format=csv",
+  "rc": 0,
+  "out": "index, name, driver_version, memory.total [MiB], clocks.max.sm [MHz], power.limit [W]\n0, Tesla T4, 580.178.04, 15360 MiB, 1590 MHz, 70.00 W\n1, Tesla T4, 580.178.04, 15360 MiB, 1590 MHz, 70.00 W\n",
+  "err": ""
+ },
+ "pip": {
+  "cmd": "/usr/bin/python3 -m pip install --no-input transformers==4.57.1 bitsandbytes",
+  "rc": 0,
+  "out": "parse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == \"Linux\"->torch<3,>=2.4->bitsandbytes) (13.0.88)\nRequirement already satisfied: nvidia-cuda-nvrtc==13.0.88.* in /usr/local/lib/python3.13/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == \"Linux\"->torch<3,>=2.4->bitsandbytes) (13.0.88)\nRequirement already satisfied: nvidia-nvtx==13.0.85.* in /usr/local/lib/python3.13/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == \"Linux\"->torch<3,>=2.4->bitsandbytes) (13.0.85)\nRequirement already satisfied: cuda-pathfinder~=1.1 in /usr/local/lib/python3.13/dist-packages (from cuda-bindings<14,>=13.0.3->torch<3,>=2.4->bitsandbytes) (1.8.4)\nRequirement already satisfied: mpmath<1.4,>=1.1.0 in /usr/local/lib/python3.13/dist-packages (from sympy>=1.13.3->torch<3,>=2.4->bitsandbytes) (1.3.0)\nRequirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.13/dist-packages (from jinja2->torch<3,>=2.4->bitsandbytes) (3.0.4)\nRequirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.13/dist-packages (from requests->transformers==4.57.1) (3.4.9)\nRequirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.13/dist-packages (from requests->transformers==4.57.1) (3.20)\nRequirement already satisfied: urllib3<3,>=1.26 in /usr/local/lib/python3.13/dist-packages (from requests->transformers==4.57.1) (2.8.0)\nRequirement already satisfied: certifi>=2023.5.7 in /usr/local/lib/python3.13/dist-packages (from requests->transformers==4.57.1) (2026.10.23)\nDownloading transformers-4.57.1-py3-none-any.whl (12.0 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 12.0/12.0 MB 82.6 MB/s  0:00:00\nDownloading huggingface_hub-0.36.2-py3-none-any.whl (566 kB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 566.4/566.4 kB 16.4 MB/s  0:00:00\nDownloading tokenizers-0.22.2-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.3 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 3.3/3.3 MB 103.8 MB/s  0:00:00\nDownloading bitsandbytes-0.50.2-py3-none-manylinux_2_24_x86_64.whl (43.1 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 43.1/43.1 MB 143.0 MB/s  0:00:00\nInstalling collected packages: huggingface-hub, tokenizers, transformers, bitsandbytes\n  Attempting uninstall: huggingface-hub\n    Found existing installation: huggingface_hub 1.33.0\n    Uninstalling huggingface_hub-1.33.0:\n      Successfully uninstalled huggingface_hub-1.33.0\n  Attempting uninstall: tokenizers\n    Found existing installation: tokenizers 0.23.3\n    Uninstalling tokenizers-0.23.3:\n      Successfully uninstalled tokenizers-0.23.3\n  Attempting uninstall: transformers\n    Found existing installation: transformers 5.20.2\n    Uninstalling transformers-5.20.2:\n      Successfully uninstalled transformers-5.20.2\n\nSuccessfully installed bitsandbytes-0.50.2 huggingface-hub-0.36.2 tokenizers-0.22.2 transformers-4.57.1\n",
+  "err": "ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\ngradio-client 2.7.2 requires huggingface-hub<3.0,>=1.16.0, but you have huggingface-hub 0.36.2 which is incompatible.\ngradio 6.30.0 requires huggingface-hub<3.0,>=1.16.0, but you have huggingface-hub 0.36.2 which is incompatible.\ngradio 6.30.0 requires pillow<13.0,>=8.0, but you have pillow 13.0.0 which is incompatible.\ndiffusers 0.42.0 requires huggingface-hub<3.0,>=1.32.0, but you have huggingface-hub 0.36.2 which is incompatible.\n",
+  "seconds": 18.19590663909912
+ },
+ "versions": {
+  "cmd": "/usr/bin/python3 -c \"import torch, transformers; print(torch.__version__, torch.version.cuda, transformers.__version__); import bitsandbytes; print('bnb', bitsandbytes.__version__)\"",
+  "rc": 0,
+  "out": "2.11.0+cu130 13.0 4.57.1\nbnb 0.50.2\n",
+  "err": ""
+ },
+ "P1": {
+  "qwen05": {
+   "files": {
+    "config.json": {
+     "ok": true,
+     "sha256": "479dcf0c5286339e41ad3992cd08ae88a467c4187587936248e2b7c96283484b",
+     "path": "/kaggle/input/models/qwen-lm/qwen2.5/transformers/0.5b/1/config.json"
+    },
+    "generation_config.json": {
+     "ok": true,
+     "sha256": "8c970692323e3ea0e9b8b0a4dca79388d31226e41f83c9fd6014804280ebf6e8",
+     "path": "/kaggle/input/models/qwen-lm/qwen2.5/transformers/0.5b/1/generation_config.json"
+    },
+    "merges.txt": {
+     "ok": true,
+     "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+     "path": "/kaggle/input/models/qwen-lm/qwen2.5/transformers/0.5b/1/merges.txt"
+    },
+    "model.safetensors": {
+     "ok": true,
+     "sha256": "88c142557820ccad55bb59756bfcfcf891de9cc6202816bd346445188a0ed342",
+     "path": "/kaggle/input/models/qwen-lm/qwen2.5/transformers/0.5b/1/model.safetensors"
+    },
+    "tokenizer.json": {
+     "ok": true,
+     "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+     "path": "/kaggle/input/models/qwen-lm/qwen2.5/transformers/0.5b/1/tokenizer.json"
+    },
+    "tokenizer_config.json": {
+     "ok": true,
+     "sha256": "c91efca15ceff6e9ee9424db58a6f59cd41294e550a86cbd07e3c1fb500b34f9",
+     "path": "/kaggle/input/models/qwen-lm/qwen2.5/transformers/0.5b/1/tokenizer_config.json"
+    },
+    "vocab.json": {
+     "ok": true,
+     "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+     "path": "/kaggle/input/models/qwen-lm/qwen2.5/transformers/0.5b/1/vocab.json"
+    }
+   },
+   "pass": true,
+   "dir": "/kaggle/input/models/qwen-lm/qwen2.5/transformers/0.5b/1"
+  },
+  "granite4micro": {
+   "files": {
+    "config.json": {
+     "ok": true,
+     "sha256": "e11a24434769f1926c2b73ea4b6bf7115533e3644d553d5a347797082e65c0f2",
+     "path": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1/config.json"
+    },
+    "generation_config.json": {
+     "ok": true,
+     "sha256": "7c04cb9d2ba771f7528fba5a7104999cdaf7566d02b5fbd58472829f62716177",
+     "path": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1/generation_config.json"
+    },
+    "merges.txt": {
+     "ok": true,
+     "sha256": "b6fe424e334903f7fb84d3a106d9730455f4744b9fe3c21ee136d97a00e72502",
+     "path": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1/merges.txt"
+    },
+    "model-00001-of-00002.safetensors": {
+     "ok": true,
+     "sha256": "75418829cdcadec6a9a4cab2ee0e420bedffdc97f2da1875e9f6f836a1defd36",
+     "path": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1/model-00001-of-00002.safetensors"
+    },
+    "model-00002-of-00002.safetensors": {
+     "ok": true,
+     "sha256": "9d0e185ab087789816189a907861ad609e2c1be814f682c75ccd14703229dba6",
+     "path": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1/model-00002-of-00002.safetensors"
+    },
+    "model.safetensors.index.json": {
+     "ok": true,
+     "sha256": "ab7da764b6c72d67b8691eed0786364f7231f7791ffef92cc016b0687d89efad",
+     "path": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1/model.safetensors.index.json"
+    },
+    "model.sig": {
+     "ok": true,
+     "sha256": "89a426f6a2658216925523d6f415e32c3c1fbef8db316605d54b31628b1d612c",
+     "path": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1/model.sig"
+    },
+    "special_tokens_map.json": {
+     "ok": true,
+     "sha256": "c08676c49fd7969a3130f72be6d4bf34da66aa484a6e21dffe359893a1bd5f2e",
+     "path": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1/special_tokens_map.json"
+    },
+    "tokenizer.json": {
+     "ok": true,
+     "sha256": "e2bad66439538cb4d5a7580680932432ed9ece9d3b8577e675512bdf11599253",
+     "path": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1/tokenizer.json"
+    },
+    "tokenizer_config.json": {
+     "ok": true,
+     "sha256": "a5ec5daab12ba090a90f3dd169c8f9c275557013a87b9c1258dc7cb497a35c86",
+     "path": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1/tokenizer_config.json"
+    },
+    "vocab.json": {
+     "ok": true,
+     "sha256": "8af71076de8b0b626eed0f4c984faf0a7c062479164b2a31308a948524d4f69c",
+     "path": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1/vocab.json"
+    }
+   },
+   "pass": true,
+   "dir": "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1"
+  },
+  "pg19": {
+   "files": {
+    "860.txt": {
+     "ok": true,
+     "paths": [
+      "/kaggle/input/datasets/tunguz/the-pg19-language-modeling-benchmark-dataset/test/test/860.txt"
+     ]
+    },
+    "2544.txt": {
+     "ok": true,
+     "paths": [
+      "/kaggle/input/datasets/tunguz/the-pg19-language-modeling-benchmark-dataset/test/test/2544.txt"
+     ]
+    },
+    "3247.txt": {
+     "ok": true,
+     "paths": [
+      "/kaggle/input/datasets/tunguz/the-pg19-language-modeling-benchmark-dataset/test/test/3247.txt"
+     ]
+    },
+    "3340.txt": {
+     "ok": true,
+     "paths": [
+      "/kaggle/input/datasets/tunguz/the-pg19-language-modeling-benchmark-dataset/test/test/3340.txt"
+     ]
+    }
+   },
+   "pass": true
+  }
+ },
+ "P1_seconds": 60.13724422454834,
+ "inputs_file_names": 28832,
+ "runs": {
+  "qwen05": {
+   "rc": 0,
+   "seconds": 835.2519071102142,
+   "output": "c3_main_qwen05.json",
+   "cmd": [
+    "/usr/bin/python3",
+    "/kaggle/working/c3_gpu_breakdown.py",
+    "--model-dir",
+    "/kaggle/input/models/qwen-lm/qwen2.5/transformers/0.5b/1",
+    "--model-name",
+    "qwen05",
+    "--books",
+    "/kaggle/input/datasets/tunguz/the-pg19-language-modeling-benchmark-dataset/test/test/860.txt",
+    "/kaggle/input/datasets/tunguz/the-pg19-language-modeling-benchmark-dataset/test/test/2544.txt",
+    "/kaggle/input/datasets/tunguz/the-pg19-language-modeling-benchmark-dataset/test/test/3247.txt",
+    "/kaggle/input/datasets/tunguz/the-pg19-language-modeling-benchmark-dataset/test/test/3340.txt",
+    "--label",
+    "result",
+    "--budget-s",
+    "1000",
+    "--output",
+    "/kaggle/working/c3_main_qwen05.json",
+    "--contexts",
+    "4096",
+    "8192",
+    "16384",
+    "32000",
+    "--formats",
+    "fp16",
+    "nf4",
+    "int8",
+    "--steps",
+    "16",
+    "--reps",
+    "5",
+    "--quality-T",
+    "4096",
+    "--quality-steps",
+    "32",
+    "--consistency-T",
+    "4096"
+   ]
+  },
+  "granite4micro": {
+   "rc": 0,
+   "seconds": 1140.7331743240356,
+   "output": "c3_main_granite4micro.json",
+   "cmd": [
+    "/usr/bin/python3",
+    "/kaggle/working/c3_gpu_breakdown.py",
+    "--model-dir",
+    "/kaggle/input/models/ibm-research/granite-4.0/transformers/granite-4.0-micro-base/1",
+    "--model-name",
+    "granite4micro",
+    "--books",
+    "/kaggle/input/datasets/tunguz/the-pg19-language-modeling-benchmark-dataset/test/test/860.txt",
+    "/kaggle/input/datasets/tunguz/the-pg19-language-modeling-benchmark-dataset/test/test/2544.txt",
+    "/kaggle/input/datasets/tunguz/the-pg19-language-modeling-benchmark-dataset/test/test/3247.txt",
+    "/kaggle/input/datasets/tunguz/the-pg19-language-modeling-benchmark-dataset/test/test/3340.txt",
+    "--label",
+    "result",
+    "--budget-s",
+    "1500",
+    "--output",
+    "/kaggle/working/c3_main_granite4micro.json",
+    "--contexts",
+    "4096",
+    "8192",
+    "16384",
+    "--formats",
+    "fp16",
+    "nf4",
+    "int8",
+    "--steps",
+    "16",
+    "--reps",
+    "5",
+    "--quality-T",
+    "4096",
+    "--quality-steps",
+    "32",
+    "--consistency-T",
+    "4096",
+    "--ref-device-map",
+    "auto"
+   ]
+  }
+ },
+ "end_utc": "2026-11-10T18:12:41Z"
+}

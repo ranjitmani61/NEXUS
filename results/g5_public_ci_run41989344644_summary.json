@@ -1,0 +1,34 @@
+{
+ "title": "G5 public pretrained Pythia pilot: run summary transcribed from the GitHub Actions job log",
+ "recorded": "2026-11-10",
+ "label": "[Measured, remote] by the project's own workflow on a GitHub-hosted runner; NOT run in this session. Values below are copied from the job log returned by the GitHub API; the full trace artifact was NOT retrieved (its storage host was refused by this session's network policy).",
+ "provenance": {
+  "repository": "ranjitmani61/NEXUS",
+  "workflow": ".github/workflows/g5-pretrained-pythia.yml",
+  "run_id": 41989344644,
+  "run_number": 3,
+  "job_id": 127117578907,
+  "head_sha": "60e1aba3183104d0934d01457de47f5692482037",
+  "runner_labels": ["ubuntu-24.04"],
+  "started_utc": "2026-11-05T07:44:29Z",
+  "completed_utc": "2026-11-05T07:45:24Z",
+  "conclusion": "success",
+  "artifact": {"id": 13397505997, "name": "nexus-g5-pythia-41989344644", "bytes": 61564,
+               "sha256": "02497d676b9afd02df9fc97ec7319fba1875ad6f8955f2f582983224fe687938",
+               "expires_utc": "2026-11-12T07:45:21Z", "retrieved_here": false},
+  "earlier_runs": "runs 41988725501 and 41989040926 of the same workflow concluded 'failure' with created == updated timestamps, i.e. no job ran (commit ea9165e calls it a pre-job failure); run 41989048069 of g5-runner-smoke.yml succeeded"
+ },
+ "model": {"name": "EleutherAI/pythia-14m", "revision": "cf967c0a9a04383db6f7b1108d86b2962634b4ac",
+           "checkpoint_fingerprint_reported": "6d9d472d6fe96c991e01027b7c695bc1436d89d23efed9063b1fbbd8980cc0fb"},
+ "offline_tests_in_run": "93 passed in 2.31s",
+ "design": "3 sampled layers x 4 heads x last 16 query positions = 192 observations per cell; page size 32; normalized output-error tolerance 0.02; perfect-information oracles (full dense attention computed)",
+ "matrix": [
+  {"input": "heterogeneous", "tokens": 128, "pages": 4, "median_mass_oracle_page_fraction": 1.0, "median_value_oracle_page_fraction": 1.0, "median_greedy_hindsight_fraction": 0.5, "max_value_oracle_true_error": 0.0011482966651659556},
+  {"input": "heterogeneous", "tokens": 512, "pages": 16, "median_mass_oracle_page_fraction": 0.6875, "median_value_oracle_page_fraction": 0.875, "median_greedy_hindsight_fraction": 0.1875, "max_value_oracle_true_error": 0.0011890586722098733},
+  {"input": "repetitive", "tokens": 128, "pages": 4, "median_mass_oracle_page_fraction": 1.0, "median_value_oracle_page_fraction": 1.0, "median_greedy_hindsight_fraction": 0.5, "max_value_oracle_true_error": 0.0005605051836594753},
+  {"input": "repetitive", "tokens": 512, "pages": 16, "median_mass_oracle_page_fraction": 0.75, "median_value_oracle_page_fraction": 0.9375, "median_greedy_hindsight_fraction": 0.125, "max_value_oracle_true_error": 0.0013022933182790456}
+ ],
+ "all_value_certificates_verified_numerically_reported": true,
+ "run_status_line": "PRETRAINED DIAGNOSTIC ONLY; G5 NOT PASSED",
+ "interpretation": "Oracle page fractions (69-100% median) at 4-16 pages are consistent with the G5-R finding that even perfect-information oracles need most pages, but contexts this short cannot test long-context decode. 'greedy_hindsight' is a hindsight selection, not an executable method. No speed, quality, energy or hardware result."
+}
